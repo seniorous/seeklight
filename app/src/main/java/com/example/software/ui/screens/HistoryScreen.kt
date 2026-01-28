@@ -77,14 +77,15 @@ import java.util.Locale
 /**
  * SeekLight 记忆库页面
  * 
- * 商业化设计 - 卡片式列表
+ * 商业化设计 - 卡片式列表 + 时间分组
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel,
     onMemoryClick: (Long) -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToBatchImport: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -114,6 +115,34 @@ fun HistoryScreen(
                             contentDescription = "返回"
                         )
                     }
+                },
+                actions = {
+                    // 批量导入按钮
+                    Surface(
+                        onClick = onNavigateToBatchImport,
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.ImageSearch,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            Text(
+                                text = "批量导入",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+                    Spacer(Modifier.width(8.dp))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent
@@ -320,7 +349,7 @@ private fun EmptyContent(
 }
 
 /**
- * 记忆列表
+ * 按时间分组的记忆列表
  */
 @Composable
 private fun MemoryList(
@@ -328,24 +357,95 @@ private fun MemoryList(
     onMemoryClick: (Long) -> Unit,
     onDeleteClick: (ImageMemory) -> Unit
 ) {
+    // 按日期分组
+    val groupedMemories = memories.groupBy { memory ->
+        getDateGroup(memory.createdAt)
+    }.toSortedMap(compareByDescending { it })
+    
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(
-            items = memories,
-            key = { it.id }
-        ) { memory ->
-            MemoryCard(
-                memory = memory,
-                onClick = { onMemoryClick(memory.id) },
-                onDeleteClick = { onDeleteClick(memory) }
-            )
+        groupedMemories.forEach { (dateGroup, memoriesInGroup) ->
+            // 日期分组标题
+            item(key = "header_$dateGroup") {
+                DateGroupHeader(
+                    dateGroup = dateGroup,
+                    count = memoriesInGroup.size
+                )
+            }
+            
+            // 该组的记忆卡片
+            items(
+                items = memoriesInGroup,
+                key = { it.id }
+            ) { memory ->
+                MemoryCard(
+                    memory = memory,
+                    onClick = { onMemoryClick(memory.id) },
+                    onDeleteClick = { onDeleteClick(memory) }
+                )
+            }
         }
         
         // 底部间距
         item {
             Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+/**
+ * 日期分组标题
+ */
+@Composable
+private fun DateGroupHeader(
+    dateGroup: String,
+    count: Int
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = dateGroup,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+        ) {
+            Text(
+                text = "$count 张",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+            )
+        }
+    }
+}
+
+/**
+ * 获取日期分组名称
+ */
+private fun getDateGroup(timestamp: Long): String {
+    val now = System.currentTimeMillis()
+    val diff = now - timestamp
+    val dayMs = 24 * 60 * 60 * 1000L
+    
+    return when {
+        diff < dayMs -> "今天"
+        diff < 2 * dayMs -> "昨天"
+        diff < 7 * dayMs -> "本周"
+        diff < 30 * dayMs -> "本月"
+        else -> {
+            val sdf = java.text.SimpleDateFormat("yyyy年MM月", java.util.Locale.getDefault())
+            sdf.format(java.util.Date(timestamp))
         }
     }
 }
