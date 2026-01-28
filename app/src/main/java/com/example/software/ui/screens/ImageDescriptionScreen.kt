@@ -3,6 +3,8 @@ package com.example.software.ui.screens
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -29,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.History
@@ -36,6 +39,9 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.outlined.Bolt
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
@@ -43,6 +49,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +72,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -79,13 +88,19 @@ import coil.request.ImageRequest
 import com.example.software.ui.components.DescriptionCard
 import com.example.software.ui.components.ImagePickerButton
 import com.example.software.ui.components.PerformanceIndicator
+import com.example.software.ui.components.SeekLightGradientButton
+import com.example.software.ui.components.SeekLightOutlinedButton
+import com.example.software.ui.theme.CardShape
+import com.example.software.ui.theme.GradientEnd
+import com.example.software.ui.theme.GradientStart
+import com.example.software.ui.theme.Success
 import com.example.software.ui.viewmodels.ImageDescriptionUiState
 import com.example.software.ui.viewmodels.ImageDescriptionViewModel
 
 /**
- * 图像描述主界面
+ * SeekLight 图像描述主界面
  * 
- * 提供图片选择、AI 描述生成、性能监控等功能
+ * 商业化设计 - 现代简洁风格
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,7 +110,7 @@ fun ImageDescriptionScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val promptLanguageState = rememberSaveable { mutableStateOf(PromptLanguage.ENGLISH) }
+    val promptLanguageState = rememberSaveable { mutableStateOf(PromptLanguage.CHINESE) }
     
     // 显示错误消息
     LaunchedEffect(uiState.errorMessage) {
@@ -107,35 +122,9 @@ fun ImageDescriptionScreen(
     
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = "Qwen3-VL 图像描述",
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                        Text(
-                            text = if (uiState.isModelLoaded) "模型已加载" else "模型未加载",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (uiState.isModelLoaded) {
-                                Color(0xFF4CAF50)
-                            } else {
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                            }
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onNavigateToHistory) {
-                        Icon(
-                            imageVector = Icons.Default.History,
-                            contentDescription = "历史记录"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
+            SeekLightTopBar(
+                isModelLoaded = uiState.isModelLoaded,
+                onNavigateToHistory = onNavigateToHistory
             )
         },
         snackbarHost = {
@@ -143,19 +132,22 @@ fun ImageDescriptionScreen(
                 Snackbar(
                     snackbarData = data,
                     containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    shape = RoundedCornerShape(12.dp)
                 )
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+            // 语言选择器
             PromptLanguageSelector(promptLanguageState)
 
             // 图片预览区域
@@ -193,9 +185,105 @@ fun ImageDescriptionScreen(
             )
             
             // 底部空间
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
+}
+
+/**
+ * SeekLight 顶部栏
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SeekLightTopBar(
+    isModelLoaded: Boolean,
+    onNavigateToHistory: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // 品牌图标
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(GradientStart, GradientEnd)
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                
+                Spacer(modifier = Modifier.width(12.dp))
+                
+                Column {
+                    Text(
+                        text = "SeekLight",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(6.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    if (isModelLoaded) Success else MaterialTheme.colorScheme.outline
+                                )
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = if (isModelLoaded) "AI 就绪" else "演示模式",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        },
+        actions = {
+            // 历史记录按钮
+            Surface(
+                onClick = onNavigateToHistory,
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                modifier = Modifier.padding(end = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.History,
+                        contentDescription = "历史记录",
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "记忆库",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent
+        )
+    )
 }
 
 private enum class PromptLanguage(val label: String, val prompt: String) {
@@ -215,6 +303,7 @@ Tags: tag1, tag2, tag3, ..."""),
 标签：标签1, 标签2, 标签3, ...""")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PromptLanguageSelector(promptLanguage: MutableState<PromptLanguage>) {
     Row(
@@ -222,32 +311,34 @@ private fun PromptLanguageSelector(promptLanguage: MutableState<PromptLanguage>)
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         val selected = promptLanguage.value
-        OutlinedButton(
-            onClick = { promptLanguage.value = PromptLanguage.ENGLISH },
-            modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (selected == PromptLanguage.ENGLISH) {
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
-                } else {
-                    Color.Transparent
-                }
-            )
-        ) {
-            Text("English")
-        }
-        OutlinedButton(
+        
+        FilterChip(
+            selected = selected == PromptLanguage.CHINESE,
             onClick = { promptLanguage.value = PromptLanguage.CHINESE },
-            modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = if (selected == PromptLanguage.CHINESE) {
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
-                } else {
-                    Color.Transparent
-                }
-            )
-        ) {
-            Text("中文")
-        }
+            label = { Text("中文") },
+            leadingIcon = if (selected == PromptLanguage.CHINESE) {
+                { Icon(Icons.Outlined.Bolt, null, Modifier.size(16.dp)) }
+            } else null,
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            modifier = Modifier.weight(1f)
+        )
+        
+        FilterChip(
+            selected = selected == PromptLanguage.ENGLISH,
+            onClick = { promptLanguage.value = PromptLanguage.ENGLISH },
+            label = { Text("English") },
+            leadingIcon = if (selected == PromptLanguage.ENGLISH) {
+                { Icon(Icons.Outlined.Bolt, null, Modifier.size(16.dp)) }
+            } else null,
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
@@ -265,12 +356,16 @@ private fun ImagePreviewSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(4f / 3f),
-        shape = RoundedCornerShape(16.dp),
+            .aspectRatio(4f / 3f)
+            .shadow(
+                elevation = 8.dp,
+                shape = CardShape,
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            ),
+        shape = CardShape,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -283,26 +378,27 @@ private fun ImagePreviewSection(
                     contentDescription = "选中的图片",
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(16.dp)),
+                        .clip(CardShape),
                     contentScale = ContentScale.Fit
                 )
                 
                 // 清除按钮
                 if (!isProcessing) {
-                    IconButton(
+                    Surface(
                         onClick = onClearImage,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(8.dp)
-                            .background(
-                                Color.Black.copy(alpha = 0.5f),
-                                CircleShape
-                            )
+                            .padding(12.dp),
+                        shape = CircleShape,
+                        color = Color.Black.copy(alpha = 0.6f)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "清除图片",
-                            tint = Color.White
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .size(20.dp)
                         )
                     }
                 }
@@ -316,21 +412,39 @@ private fun ImagePreviewSection(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.3f)),
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Black.copy(alpha = 0.2f),
+                                        Color.Black.copy(alpha = 0.5f)
+                                    )
+                                )
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            CircularProgressIndicator(
-                                color = Color.White,
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
+                            // 脉冲动画加载指示器
+                            Box(
+                                modifier = Modifier
+                                    .size(72.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.White.copy(alpha = 0.2f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = Color.White,
+                                    modifier = Modifier.size(40.dp),
+                                    strokeWidth = 3.dp
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = "AI 正在分析图像...",
+                                text = "AI 正在理解图像...",
                                 color = Color.White,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Medium
                             )
                         }
                     }
@@ -353,50 +467,74 @@ private fun ImagePlaceholder(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+                    )
+                )
+            )
+            .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // 图标容器
-        Surface(
-            modifier = Modifier.size(80.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-        ) {
-            Box(
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Image,
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+        // 渐变图标容器
+        Box(
+            modifier = Modifier
+                .size(88.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            GradientStart.copy(alpha = 0.15f),
+                            GradientEnd.copy(alpha = 0.15f)
+                        )
+                    )
                 )
-            }
+                .border(
+                    width = 2.dp,
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            GradientStart.copy(alpha = 0.3f),
+                            GradientEnd.copy(alpha = 0.3f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(24.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Image,
+                contentDescription = null,
+                modifier = Modifier.size(44.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
         }
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         
         Text(
-            text = "选择一张图片",
+            text = "上传图片开始分析",
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
         )
         
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         
         Text(
             text = "支持 JPG、PNG、WebP 格式",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         
         // 选择按钮
         ImagePickerButton(
             onImageSelected = onImageSelected,
-            modifier = Modifier.fillMaxWidth(0.6f)
+            modifier = Modifier.fillMaxWidth(0.7f)
         )
     }
 }
@@ -416,17 +554,20 @@ private fun ActionButtonsSection(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // 主操作按钮
         if (isProcessing) {
             // 取消按钮
             Button(
                 onClick = onCancelInference,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error
-                )
+                ),
+                shape = RoundedCornerShape(14.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Stop,
@@ -434,29 +575,24 @@ private fun ActionButtonsSection(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("停止生成")
+                Text(
+                    text = "停止生成",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         } else {
-            // 生成描述按钮（始终可用，模型未加载时使用演示模式）
-            Button(
+            // 生成描述按钮（带渐变效果）
+            SeekLightGradientButton(
                 onClick = onDescribeImage,
-                modifier = Modifier.fillMaxWidth(),
+                text = if (isModelLoaded) "开始分析" else "开始分析（演示）",
                 enabled = hasImage,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PlayArrow,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(if (isModelLoaded) "生成描述" else "生成描述（演示）")
-            }
+                icon = Icons.Default.AutoAwesome,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
         
-        // 模型状态提示（如果模型未加载）
+        // 模型状态提示
         AnimatedVisibility(
             visible = !isModelLoaded && hasImage && !isProcessing,
             enter = slideInVertically() + fadeIn(),
@@ -480,58 +616,68 @@ private fun ModelStatusCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
-        )
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (isModelLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    strokeWidth = 2.dp
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.size(24.dp)
-                )
+            // 图标
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)),
+                contentAlignment = Alignment.Center
+            ) {
+                if (isModelLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
             
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(14.dp))
             
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = if (isModelLoading) "正在检查模型..." else "演示模式",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     text = if (isModelLoading) {
                         "请稍候"
                     } else {
-                        "MNN 模型未加载，可直接点击上方按钮体验演示效果"
+                        "MNN 模型未加载，可直接体验演示效果"
                     },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             
             if (!isModelLoading) {
-                OutlinedButton(
-                    onClick = onLoadModel
-                ) {
-                    Text("检查模型")
-                }
+                SeekLightOutlinedButton(
+                    onClick = onLoadModel,
+                    text = "检查"
+                )
             }
         }
     }

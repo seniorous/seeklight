@@ -4,10 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +26,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -36,6 +41,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,6 +53,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -55,6 +63,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.software.data.local.entity.ImageMemory
+import com.example.software.ui.components.SeekLightButton
+import com.example.software.ui.theme.CardShape
+import com.example.software.ui.theme.GradientEnd
+import com.example.software.ui.theme.GradientStart
+import com.example.software.ui.theme.ThumbnailShape
 import com.example.software.ui.viewmodels.HistoryUiState
 import com.example.software.ui.viewmodels.HistoryViewModel
 import java.text.SimpleDateFormat
@@ -62,7 +75,9 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * 历史记录页面
+ * SeekLight 记忆库页面
+ * 
+ * 商业化设计 - 卡片式列表
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,16 +92,35 @@ fun HistoryScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "历史记录",
-                        style = MaterialTheme.typography.titleLarge
-                    )
+                    Column {
+                        Text(
+                            text = "记忆库",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                        if (uiState.memories.isNotEmpty()) {
+                            Text(
+                                text = "${uiState.memories.size} 条记忆",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateToHome) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "返回"
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = Color.Transparent
                 )
             )
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -100,7 +134,7 @@ fun HistoryScreen(
                 onClear = viewModel::clearSearch,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
             )
             
             // 内容区域
@@ -149,12 +183,18 @@ private fun SearchBar(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier,
-        placeholder = { Text("搜索标签或描述...") },
+        placeholder = { 
+            Text(
+                text = "搜索标签或描述...",
+                style = MaterialTheme.typography.bodyMedium
+            ) 
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
             )
         },
         trailingIcon = {
@@ -166,13 +206,20 @@ private fun SearchBar(
                 IconButton(onClick = onClear) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "清除搜索"
+                        contentDescription = "清除搜索",
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             }
         },
         singleLine = true,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(14.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        )
     )
 }
 
@@ -185,7 +232,10 @@ private fun LoadingContent() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.primary,
+            strokeWidth = 3.dp
+        )
     }
 }
 
@@ -200,30 +250,49 @@ private fun EmptyContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp),
+            .padding(40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Surface(
-            modifier = Modifier.size(80.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    imageVector = Icons.Default.History,
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+        // 渐变图标背景
+        Box(
+            modifier = Modifier
+                .size(100.dp)
+                .clip(RoundedCornerShape(28.dp))
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            GradientStart.copy(alpha = 0.1f),
+                            GradientEnd.copy(alpha = 0.1f)
+                        )
+                    )
                 )
-            }
+                .border(
+                    width = 2.dp,
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            GradientStart.copy(alpha = 0.2f),
+                            GradientEnd.copy(alpha = 0.2f)
+                        )
+                    ),
+                    shape = RoundedCornerShape(28.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = if (hasSearchQuery) Icons.Outlined.ImageSearch else Icons.Default.History,
+                contentDescription = null,
+                modifier = Modifier.size(48.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
         }
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         
         Text(
-            text = if (hasSearchQuery) "未找到匹配的记忆" else "暂无历史记录",
+            text = if (hasSearchQuery) "未找到匹配的记忆" else "记忆库为空",
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
         )
         
@@ -233,18 +302,19 @@ private fun EmptyContent(
             text = if (hasSearchQuery) {
                 "尝试使用其他关键词搜索"
             } else {
-                "去主页生成第一条图像描述吧"
+                "上传图片，让 AI 帮你记录和理解"
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         
         if (!hasSearchQuery) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             
-            TextButton(onClick = onNavigateToHome) {
-                Text("去生成描述")
-            }
+            SeekLightButton(
+                onClick = onNavigateToHome,
+                text = "开始创建"
+            )
         }
     }
 }
@@ -259,8 +329,8 @@ private fun MemoryList(
     onDeleteClick: (ImageMemory) -> Unit
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
             items = memories,
@@ -272,12 +342,18 @@ private fun MemoryList(
                 onDeleteClick = { onDeleteClick(memory) }
             )
         }
+        
+        // 底部间距
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
 /**
  * 记忆卡片
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MemoryCard(
     memory: ImageMemory,
@@ -287,17 +363,21 @@ private fun MemoryCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .shadow(
+                elevation = 4.dp,
+                shape = CardShape,
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
+            )
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = CardShape,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(14.dp),
             verticalAlignment = Alignment.Top
         ) {
             // 缩略图
@@ -305,71 +385,111 @@ private fun MemoryCard(
                 model = memory.imageUri,
                 contentDescription = "图片缩略图",
                 modifier = Modifier
-                    .size(72.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(80.dp)
+                    .clip(ThumbnailShape)
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentScale = ContentScale.Crop
             )
             
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(14.dp))
             
             // 内容
             Column(
                 modifier = Modifier.weight(1f)
             ) {
+                // 描述
                 Text(
-                    text = memory.getDescriptionSummary(60),
+                    text = memory.getDescriptionSummary(80),
                     style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 
-                // 显示标签
+                // 标签
                 if (memory.tags.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = memory.tags.take(5).joinToString(" ") { "#$it" },
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.secondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        memory.tags.take(4).forEach { tag ->
+                            TagChip(text = tag)
+                        }
+                        if (memory.tags.size > 4) {
+                            TagChip(text = "+${memory.tags.size - 4}")
+                        }
+                    }
                 }
                 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 
+                // 元信息
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = formatDate(memory.createdAt),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     
                     Spacer(modifier = Modifier.width(12.dp))
                     
-                    Text(
-                        text = "${memory.tokensGenerated} tok",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
-                    )
+                    // 性能标签
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+                    ) {
+                        Text(
+                            text = "${memory.tokensGenerated} tok",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
                 }
             }
             
             // 删除按钮
-            IconButton(
+            Surface(
                 onClick = onDeleteClick,
-                modifier = Modifier.size(32.dp)
+                shape = CircleShape,
+                color = Color.Transparent,
+                modifier = Modifier.size(36.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "删除",
-                    tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f),
-                    modifier = Modifier.size(20.dp)
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "删除",
+                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f),
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             }
         }
+    }
+}
+
+/**
+ * 标签芯片
+ */
+@Composable
+private fun TagChip(text: String) {
+    Surface(
+        shape = RoundedCornerShape(6.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+    ) {
+        Text(
+            text = "#$text",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        )
     }
 }
 
@@ -384,15 +504,25 @@ private fun DeleteConfirmationDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("确认删除") },
+        shape = RoundedCornerShape(20.dp),
+        title = { 
+            Text(
+                text = "确认删除",
+                fontWeight = FontWeight.SemiBold
+            ) 
+        },
         text = { 
-            Text("确定要删除这条记忆吗？此操作无法撤销。")
+            Text(
+                text = "确定要删除这条记忆吗？此操作无法撤销。",
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(
                     text = "删除",
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         },
@@ -408,6 +538,17 @@ private fun DeleteConfirmationDialog(
  * 格式化日期
  */
 private fun formatDate(timestamp: Long): String {
-    val sdf = SimpleDateFormat("MM-dd HH:mm", Locale.getDefault())
-    return sdf.format(Date(timestamp))
+    val now = System.currentTimeMillis()
+    val diff = now - timestamp
+    
+    return when {
+        diff < 60_000 -> "刚刚"
+        diff < 3600_000 -> "${diff / 60_000} 分钟前"
+        diff < 86400_000 -> "${diff / 3600_000} 小时前"
+        diff < 604800_000 -> "${diff / 86400_000} 天前"
+        else -> {
+            val sdf = SimpleDateFormat("MM月dd日", Locale.getDefault())
+            sdf.format(Date(timestamp))
+        }
+    }
 }
