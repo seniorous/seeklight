@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -90,7 +91,8 @@ fun HistoryScreen(
     viewModel: HistoryViewModel,
     onMemoryClick: (Long) -> Unit,
     onNavigateToHome: () -> Unit,
-    onNavigateToBatchImport: () -> Unit = {}
+    onNavigateToBatchImport: () -> Unit = {},
+    onNavigateToTagManagement: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
@@ -122,6 +124,15 @@ fun HistoryScreen(
                     }
                 },
                 actions = {
+                    // 标签管理按钮
+                    IconButton(onClick = onNavigateToTagManagement) {
+                        Icon(
+                            imageVector = Icons.Default.Tag,
+                            contentDescription = "标签管理",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
                     // 批量导入按钮
                     Surface(
                         onClick = onNavigateToBatchImport,

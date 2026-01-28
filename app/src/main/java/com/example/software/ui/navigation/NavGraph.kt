@@ -3,7 +3,6 @@ package com.example.software.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -16,9 +15,11 @@ import com.example.software.ui.screens.HistoryScreen
 import com.example.software.ui.screens.ImageDescriptionScreen
 import com.example.software.ui.screens.MemoryDetailScreen
 import com.example.software.ui.screens.SplashScreen
+import com.example.software.ui.screens.TagManagementScreen
 import com.example.software.ui.viewmodels.BatchImportViewModel
 import com.example.software.ui.viewmodels.HistoryViewModel
 import com.example.software.ui.viewmodels.ImageDescriptionViewModel
+import com.example.software.ui.viewmodels.TagManagementViewModel
 
 /**
  * 导航路由定义
@@ -35,6 +36,9 @@ sealed class Screen(val route: String) {
     
     /** 批量导入 */
     data object BatchImport : Screen("batch_import")
+    
+    /** 标签管理 */
+    data object TagManagement : Screen("tag_management")
     
     /** 记忆详情 */
     data object MemoryDetail : Screen("memory/{memoryId}") {
@@ -93,6 +97,9 @@ fun NavGraph(
                 },
                 onNavigateToBatchImport = {
                     navController.navigate(Screen.BatchImport.route)
+                },
+                onNavigateToTagManagement = {
+                    navController.navigate(Screen.TagManagement.route)
                 }
             )
         }
@@ -114,6 +121,23 @@ fun NavGraph(
                     navController.navigate(Screen.History.route) {
                         popUpTo(Screen.History.route) { inclusive = true }
                     }
+                }
+            )
+        }
+        
+        // 标签管理
+        composable(Screen.TagManagement.route) {
+            val tagManagementViewModel: TagManagementViewModel = viewModel(
+                factory = TagManagementViewModel.Factory(repository)
+            )
+            
+            TagManagementScreen(
+                viewModel = tagManagementViewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onTagClick = { tag ->
+                    // 点击标签后返回历史页面并筛选
+                    historyViewModel.selectTag(tag)
+                    navController.popBackStack()
                 }
             )
         }
