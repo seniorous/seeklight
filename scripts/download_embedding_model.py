@@ -39,11 +39,11 @@ OUTPUT_DIR = Path(__file__).parent.parent / "app" / "src" / "main" / "assets" / 
 
 def download_file(url: str, filepath: Path, expected_size_mb: int = None) -> bool:
     """下载文件并显示进度"""
-    print(f"\n📥 下载: {filepath.name}")
+    print(f"\n[Download] {filepath.name}")
     print(f"   URL: {url}")
     
     if filepath.exists():
-        print(f"   ✓ 文件已存在，跳过")
+        print(f"   [OK] File exists, skip")
         return True
     
     try:
@@ -56,15 +56,15 @@ def download_file(url: str, filepath: Path, expected_size_mb: int = None) -> boo
                 percent = min(100, count * block_size * 100 // total_size)
                 downloaded_mb = count * block_size / (1024 * 1024)
                 total_mb = total_size / (1024 * 1024)
-                sys.stdout.write(f"\r   进度: {percent}% ({downloaded_mb:.1f}/{total_mb:.1f} MB)")
+                sys.stdout.write(f"\r   Progress: {percent}% ({downloaded_mb:.1f}/{total_mb:.1f} MB)")
                 sys.stdout.flush()
         
         urllib.request.urlretrieve(url, filepath, reporthook=progress_hook)
-        print(f"\n   ✓ 下载完成: {filepath.stat().st_size / (1024*1024):.1f} MB")
+        print(f"\n   [OK] Downloaded: {filepath.stat().st_size / (1024*1024):.1f} MB")
         return True
         
     except Exception as e:
-        print(f"\n   ✗ 下载失败: {e}")
+        print(f"\n   [ERROR] Download failed: {e}")
         if filepath.exists():
             filepath.unlink()
         return False
@@ -74,8 +74,8 @@ def main():
     print("=" * 60)
     print("SeekLight Embedding Model Downloader")
     print("=" * 60)
-    print(f"模型: {MODEL_CONFIG['name']}")
-    print(f"输出目录: {OUTPUT_DIR}")
+    print(f"Model: {MODEL_CONFIG['name']}")
+    print(f"Output: {OUTPUT_DIR}")
     
     # 下载所有文件
     success = True
@@ -86,13 +86,13 @@ def main():
     
     print("\n" + "=" * 60)
     if success:
-        print("✓ 所有文件下载完成!")
-        print(f"\n模型目录: {OUTPUT_DIR}")
-        print("\n文件列表:")
+        print("[SUCCESS] All files downloaded!")
+        print(f"\nModel directory: {OUTPUT_DIR}")
+        print("\nFiles:")
         for f in OUTPUT_DIR.iterdir():
             print(f"  - {f.name} ({f.stat().st_size / (1024*1024):.1f} MB)")
     else:
-        print("✗ 部分文件下载失败，请重试")
+        print("[FAILED] Some files failed to download, please retry")
         sys.exit(1)
 
 
