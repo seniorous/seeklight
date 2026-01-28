@@ -5,7 +5,7 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     
-    <!-- 主星星 - 四角星形状 (居中于 54,54，安全区域内) -->
+    <!-- 主星星 - 四角星形状 -->
     <path
         android:pathData="
             M54,24
@@ -17,7 +17,7 @@
             L28,54
             L50,46
             Z"
-        android:fillColor="#FFFFFF" />
+        android:fillColor="#000000" />
     
     <!-- 小闪光点 - 右上 -->
     <path
@@ -31,8 +31,7 @@
             L64,40
             L70,38
             Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.85" />
+        android:fillColor="#000000" />
     
     <!-- 小闪光点 - 左下 -->
     <path
@@ -46,37 +45,6 @@
             L28,68
             L34,66
             Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.7" />
-    
-    <!-- 微小闪光点 - 右下 -->
-    <path
-        android:pathData="
-            M70,70
-            L71,73
-            L74,74
-            L71,75
-            L70,78
-            L69,75
-            L66,74
-            L69,73
-            Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.5" />
-    
-    <!-- 微小闪光点 - 左上 -->
-    <path
-        android:pathData="
-            M38,34
-            L39,37
-            L42,38
-            L39,39
-            L38,42
-            L37,39
-            L34,38
-            L37,37
-            Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.6" />
+        android:fillColor="#000000" />
     
 </vector>
