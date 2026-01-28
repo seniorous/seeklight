@@ -113,6 +113,12 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.compose)
     
+    // ONNX Runtime for Text Embedding
+    implementation(libs.onnxruntime.android)
+    
+    // WorkManager for background embedding generation
+    implementation(libs.androidx.work.runtime.ktx)
+    
     // Unit Testing
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

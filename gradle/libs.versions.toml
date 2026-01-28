@@ -15,6 +15,10 @@ lifecycleViewModelCompose = "2.8.7"
 materialIconsExtended = "1.7.8"
 # Room Database
 room = "2.6.1"
+# ONNX Runtime for Text Embedding
+onnxruntime = "1.20.0"
+# WorkManager for background tasks
+workManager = "2.9.0"
 # Navigation
 navigationCompose = "2.7.7"
 # Testing
@@ -59,6 +63,10 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 # Navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+# ONNX Runtime
+onnxruntime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnxruntime" }
+# WorkManager
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

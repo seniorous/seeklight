@@ -63,7 +63,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.software.data.local.entity.ImageMemory
+import com.example.software.domain.usecase.TimeRange
 import com.example.software.ui.components.SeekLightButton
+import com.example.software.ui.components.TimeFilterSheet
+import com.example.software.ui.components.TimeFilterTag
 import com.example.software.ui.theme.CardShape
 import com.example.software.ui.theme.GradientEnd
 import com.example.software.ui.theme.GradientStart
@@ -73,6 +76,8 @@ import com.example.software.ui.viewmodels.HistoryViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.rememberModalBottomSheetState
 
 /**
  * SeekLight 记忆库页面
@@ -156,15 +161,88 @@ fun HistoryScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // 搜索栏
-            SearchBar(
-                query = uiState.searchQuery,
-                onQueryChange = viewModel::onSearchQueryChanged,
-                onClear = viewModel::clearSearch,
+            // 搜索栏 + 筛选按钮
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
-            )
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SearchBar(
+                    query = uiState.searchQuery,
+                    onQueryChange = viewModel::onSearchQueryChanged,
+                    onClear = viewModel::clearSearch,
+                    modifier = Modifier.weight(1f)
+                )
+                
+                Spacer(modifier = Modifier.width(8.dp))
+                
+                // 筛选按钮
+                Surface(
+                    onClick = { viewModel.toggleTimeFilter(true) },
+                    shape = RoundedCornerShape(12.dp),
+                    color = if (uiState.timeRange !is TimeRange.All) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FilterList,
+                        contentDescription = "筛选",
+                        modifier = Modifier.padding(12.dp),
+                        tint = if (uiState.timeRange !is TimeRange.All) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                }
+            }
+            
+            // 筛选标签显示
+            if (uiState.timeRange !is TimeRange.All || uiState.selectedTag != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    TimeFilterTag(
+                        timeRange = uiState.timeRange,
+                        onClear = viewModel::clearTimeFilter
+                    )
+                    
+                    uiState.selectedTag?.let { tag ->
+                        Surface(
+                            shape = RoundedCornerShape(20.dp),
+                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f)
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "#$tag",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                                IconButton(
+                                    onClick = viewModel::clearTagFilter,
+                                    modifier = Modifier.height(24.dp).width(24.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Close,
+                                        contentDescription = "清除标签筛选",
+                                        modifier = Modifier.height(14.dp),
+                                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             
             // 内容区域
             when {
@@ -173,7 +251,9 @@ fun HistoryScreen(
                 }
                 uiState.memories.isEmpty() -> {
                     EmptyContent(
-                        hasSearchQuery = uiState.searchQuery.isNotBlank(),
+                        hasSearchQuery = uiState.searchQuery.isNotBlank() || 
+                                        uiState.timeRange !is TimeRange.All ||
+                                        uiState.selectedTag != null,
                         onNavigateToHome = onNavigateToHome
                     )
                 }
@@ -181,7 +261,8 @@ fun HistoryScreen(
                     MemoryList(
                         memories = uiState.memories,
                         onMemoryClick = onMemoryClick,
-                        onDeleteClick = viewModel::requestDeleteMemory
+                        onDeleteClick = viewModel::requestDeleteMemory,
+                        onTagClick = viewModel::selectTag
                     )
                 }
             }
@@ -193,6 +274,15 @@ fun HistoryScreen(
                 memory = uiState.memoryToDelete,
                 onConfirm = viewModel::confirmDelete,
                 onDismiss = viewModel::cancelDelete
+            )
+        }
+        
+        // 时间筛选 Sheet
+        if (uiState.showTimeFilter) {
+            TimeFilterSheet(
+                currentTimeRange = uiState.timeRange,
+                onTimeRangeSelected = viewModel::onTimeRangeChanged,
+                onDismiss = { viewModel.toggleTimeFilter(false) }
             )
         }
     }
@@ -355,7 +445,8 @@ private fun EmptyContent(
 private fun MemoryList(
     memories: List<ImageMemory>,
     onMemoryClick: (Long) -> Unit,
-    onDeleteClick: (ImageMemory) -> Unit
+    onDeleteClick: (ImageMemory) -> Unit,
+    onTagClick: (String) -> Unit = {}
 ) {
     // 按日期分组
     val groupedMemories = memories.groupBy { memory ->
