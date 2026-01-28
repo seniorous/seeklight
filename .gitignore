@@ -1,0 +1,97 @@
+# Android/Gradle
+*.iml
+.gradle/
+/local.properties
+local.properties
+/build/
+/app/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+
+# IDE - IntelliJ/Android Studio
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetDropDown.xml
+.idea/other.xml
+*.ipr
+*.iws
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Large model files
+/models/
+*.gguf
+*.mnn
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.env
+*.egg-info/
+
+# ========================================
+# 本地大型依赖（不上传到仓库，本地下载）
+# ========================================
+
+# Android NDK（本地下载）
+/android-ndk-r25c/
+/android-ndk-r25c.zip
+
+# MNN 库（本地下载）
+/MNN-3.3.0/
+/mnn-3.3.0.zip
+
+# 外部规则库（本地克隆）
+/awesome-cursorrules/
+
+# ========================================
+# Cursor/Claude 本地配置
+# ========================================
+
+# Claude skills（本地配置）
+.claude/
+
+# Cursor agent transcripts
+agent-transcripts/
+
+# Cursor MCP 工具描述
+mcps/
+
+# ========================================
+# 其他本地文件
+# ========================================
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*~
+
+# 测试输出
+/test-output/
+/coverage/

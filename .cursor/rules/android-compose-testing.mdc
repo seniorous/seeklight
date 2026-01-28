@@ -1,0 +1,118 @@
+---
+description: Android Jetpack Compose 测试规范
+globs: ["app/src/test/**/*.kt", "app/src/androidTest/**/*.kt"]
+alwaysApply: false
+---
+
+# Compose 测试规范
+
+## 单元测试
+
+### ViewModel 测试
+
+```kotlin
+@Test
+fun `when login called with valid credentials then state is success`() = runTest {
+    // Given
+    val fakeRepository = FakeUserRepository()
+    val viewModel = LoginViewModel(fakeRepository)
+    
+    // When
+    viewModel.login("user@example.com", "password123")
+    
+    // Then
+    assertEquals(LoginUiState.Success, viewModel.uiState.value)
+}
+```
+
+### UseCase 测试
+
+```kotlin
+@Test
+fun `get user by id returns user when exists`() = runTest {
+    // Given
+    val fakeRepository = FakeUserRepository()
+    fakeRepository.addUser(User(id = "1", name = "Test"))
+    val useCase = GetUserUseCase(fakeRepository)
+    
+    // When
+    val result = useCase("1")
+    
+    // Then
+    assertEquals("Test", result?.name)
+}
+```
+
+## UI 测试
+
+### Compose 测试规则
+
+```kotlin
+@get:Rule
+val composeTestRule = createComposeRule()
+
+@Test
+fun loginButton_displaysCorrectText() {
+    composeTestRule.setContent {
+        LoginScreen()
+    }
+    
+    composeTestRule
+        .onNodeWithText("登录")
+        .assertIsDisplayed()
+}
+```
+
+### 常用断言
+
+```kotlin
+// 存在性检查
+onNodeWithText("文本").assertExists()
+onNodeWithTag("tag").assertDoesNotExist()
+
+// 显示状态
+onNodeWithText("文本").assertIsDisplayed()
+onNodeWithText("文本").assertIsNotDisplayed()
+
+// 交互状态
+onNodeWithText("按钮").assertIsEnabled()
+onNodeWithText("按钮").assertIsNotEnabled()
+
+// 点击操作
+onNodeWithText("按钮").performClick()
+
+// 输入操作
+onNodeWithTag("input").performTextInput("文本")
+```
+
+## 测试协程
+
+```kotlin
+@OptIn(ExperimentalCoroutinesApi::class)
+class MyViewModelTest {
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+    
+    @Test
+    fun testCoroutine() = runTest {
+        // 测试代码
+    }
+}
+```
+
+## Fake Repository 模式
+
+```kotlin
+class FakeUserRepository : UserRepository {
+    private val users = mutableListOf<User>()
+    
+    fun addUser(user: User) = users.add(user)
+    
+    override suspend fun getUser(id: String): User? = 
+        users.find { it.id == id }
+    
+    override suspend fun saveUser(user: User) {
+        users.add(user)
+    }
+}
+```

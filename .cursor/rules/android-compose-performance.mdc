@@ -1,0 +1,99 @@
+---
+description: Jetpack Compose 性能优化规范
+globs: ["app/src/main/java/**/*.kt"]
+alwaysApply: false
+---
+
+# Compose 性能优化规范
+
+## 减少重组（Recomposition）
+
+### 使用 key 优化列表
+
+```kotlin
+LazyColumn {
+    items(
+        items = users,
+        key = { it.id }  // 使用唯一标识符作为 key
+    ) { user ->
+        UserItem(user)
+    }
+}
+```
+
+### 使用 derivedStateOf
+
+```kotlin
+val showButton by remember {
+    derivedStateOf { scrollState.value > 100 }
+}
+```
+
+### 稳定类型
+
+- 使用 `@Stable` 或 `@Immutable` 注解标记数据类
+- 避免在 Composable 中创建 lambda（使用 remember）
+
+```kotlin
+@Immutable
+data class User(val id: String, val name: String)
+```
+
+## 懒加载列表
+
+```kotlin
+// 使用 LazyColumn 而不是 Column + forEach
+LazyColumn {
+    items(items) { item ->
+        ItemRow(item)
+    }
+}
+
+// 使用 LazyRow 实现横向列表
+LazyRow {
+    items(items) { item ->
+        ItemCard(item)
+    }
+}
+```
+
+## 图片加载优化
+
+- 使用 Coil 或 Glide 进行图片加载
+- 设置适当的占位符和错误图
+- 使用正确的图片尺寸，避免内存浪费
+
+```kotlin
+AsyncImage(
+    model = ImageRequest.Builder(LocalContext.current)
+        .data(imageUrl)
+        .crossfade(true)
+        .build(),
+    contentDescription = "描述",
+    placeholder = painterResource(R.drawable.placeholder),
+    error = painterResource(R.drawable.error),
+    contentScale = ContentScale.Crop,
+    modifier = Modifier.size(120.dp)
+)
+```
+
+## 内存管理
+
+- 在 ViewModel 中使用 `viewModelScope` 管理协程
+- 正确处理生命周期，避免内存泄漏
+- 使用 `DisposableEffect` 清理资源
+
+```kotlin
+DisposableEffect(key) {
+    // 初始化资源
+    onDispose {
+        // 清理资源
+    }
+}
+```
+
+## 后台处理
+
+- 耗时操作放在 `Dispatchers.IO`
+- UI 更新在 `Dispatchers.Main`
+- 使用 `withContext` 切换调度器

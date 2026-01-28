@@ -1,0 +1,70 @@
+---
+description: Jetpack Compose UI 开发规范 - 适用于 UI 相关代码
+globs: ["app/src/main/java/**/ui/**/*.kt", "app/src/main/java/**/presentation/**/*.kt", "app/src/main/java/**/screens/**/*.kt", "app/src/main/java/**/components/**/*.kt"]
+alwaysApply: false
+---
+
+# Compose UI 开发规范
+
+## 状态管理
+
+- 正确使用 `remember` 和 `derivedStateOf`
+- 使用 `rememberSaveable` 保存跨配置变更的状态
+- 使用 `MutableState` 管理可变状态
+- 避免在 Composable 函数中创建不必要的对象
+
+## Modifier 使用顺序
+
+```kotlin
+// 推荐的 Modifier 顺序
+Modifier
+    .padding()           // 外部间距
+    .size() / .fillMaxWidth()  // 尺寸
+    .background()        // 背景
+    .clip()              // 裁剪
+    .clickable()         // 交互
+    .padding()           // 内部间距
+```
+
+## Composable 函数命名
+
+- 使用 PascalCase 命名（如 `LoginScreen`、`UserCard`）
+- 无返回值的 Composable 使用名词（如 `Button`、`Card`）
+- 返回值的 Composable 使用动词前缀（如 `rememberScrollState`）
+
+## 预览注解
+
+```kotlin
+@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun MyComponentPreview() {
+    MyTheme {
+        MyComponent()
+    }
+}
+```
+
+## 错误和加载状态处理
+
+```kotlin
+sealed interface UiState<out T> {
+    object Loading : UiState<Nothing>
+    data class Success<T>(val data: T) : UiState<T>
+    data class Error(val message: String) : UiState<Nothing>
+}
+```
+
+## 无障碍支持
+
+- 为所有可交互元素添加 `contentDescription`
+- 使用 `semantics` 修饰符提供额外信息
+- 确保足够的触摸目标大小（至少 48dp）
+- 支持 TalkBack 和屏幕阅读器
+
+## 动画最佳实践
+
+- 使用 `animateContentSize()` 处理尺寸变化
+- 使用 `AnimatedVisibility` 处理显示/隐藏
+- 使用 `animateColorAsState` 等状态动画
+- 避免在动画中进行重计算

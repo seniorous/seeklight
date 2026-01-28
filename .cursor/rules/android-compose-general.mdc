@@ -1,0 +1,52 @@
+---
+description: Android Jetpack Compose 通用开发规则 - 适用于所有 Kotlin 源码文件
+globs: ["app/src/main/java/**/*.kt", "app/src/main/kotlin/**/*.kt"]
+alwaysApply: false
+---
+
+# Android Jetpack Compose 开发规范
+
+## 架构原则
+
+- 遵循 Clean Architecture，分离 data、domain、presentation 三层
+- 使用 Kotlin Coroutines 和 Flow 处理异步操作
+- 使用 Hilt 进行依赖注入
+- 遵循单向数据流（UDF）：ViewModel + UI State
+- 使用 Compose Navigation 管理页面导航
+- 正确实现状态提升（State Hoisting）
+
+## Material Design 3
+
+- 遵循 Material Design 3 设计规范
+- 使用 MaterialTheme 进行主题配置
+- 支持深色/浅色主题切换
+- 支持 Android 12+ 动态颜色
+
+## Kotlin 最佳实践
+
+- 使用 data class 定义数据模型
+- 优先使用 sealed class/interface 定义 UI 状态
+- 使用扩展函数提高代码可读性
+- 避免使用 !! 操作符，使用安全调用
+- 使用 const val 定义编译时常量
+
+## 推荐的项目结构
+
+```
+app/src/main/java/com/example/software/
+├── data/
+│   ├── repository/       # 数据仓库实现
+│   ├── datasource/       # 数据源（本地/远程）
+│   └── models/           # 数据层模型
+├── domain/
+│   ├── usecases/         # 业务用例
+│   ├── models/           # 领域模型
+│   └── repository/       # 仓库接口
+├── presentation/
+│   ├── screens/          # 页面 Composable
+│   ├── components/       # 可复用组件
+│   ├── viewmodels/       # ViewModel
+│   └── theme/            # 主题配置
+├── di/                   # Hilt 模块
+└── utils/                # 工具类
+```
