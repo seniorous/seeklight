@@ -1,24 +1,24 @@
 # Tasks: 添加图像记忆存储功能
 
-> **状态**: 🚧 待开始 | **预计任务数**: 18
+> **状态**: ✅ 已完成 | **最后更新**: 2026-01-28
 
 ## 进度摘要
 
 | 阶段 | 状态 | 任务数 |
 |------|------|--------|
-| 1. 数据库设计 | ⬜ 待开始 | 4 |
-| 2. Repository 层 | ⬜ 待开始 | 3 |
-| 3. UI 集成 | ⬜ 待开始 | 6 |
-| 4. 页面导航 | ⬜ 待开始 | 3 |
-| 5. 测试 | ⬜ 待开始 | 2 |
+| 1. 数据库设计 | ✅ 完成 | 4 |
+| 2. Repository 层 | ✅ 完成 | 3 |
+| 3. UI 集成 | ✅ 完成 | 6 |
+| 4. 页面导航 | ✅ 完成 | 4 |
+| 5. 测试 | ⬜ 待补充 | 4 |
 
 ---
 
 ## 1. 数据库设计
 
-- [ ] 1.1 添加 Room 依赖到 build.gradle.kts
-  - room-runtime, room-ktx, room-compiler (kapt)
-- [ ] 1.2 创建 ImageMemory Entity
+- [x] 1.1 添加 Room 依赖到 build.gradle.kts
+  - room-runtime, room-ktx, room-compiler (ksp)
+- [x] 1.2 创建 ImageMemory Entity
   ```kotlin
   @Entity(tableName = "image_memories")
   data class ImageMemory(
@@ -33,40 +33,40 @@
       val updatedAt: Long              // 更新时间戳
   )
   ```
-- [ ] 1.3 创建 ImageMemoryDao
+- [x] 1.3 创建 ImageMemoryDao
   - insert, update, delete
   - getAll (Flow), getById, searchByDescription
-- [ ] 1.4 创建 AppDatabase
+- [x] 1.4 创建 AppDatabase
 
 ## 2. Repository 层
 
-- [ ] 2.1 创建 ImageMemoryRepository 接口
-- [ ] 2.2 创建 ImageMemoryRepositoryImpl
-- [ ] 2.3 更新 ImageDescriptionViewModel
+- [x] 2.1 创建 ImageMemoryRepository 接口
+- [x] 2.2 创建 ImageMemoryRepositoryImpl
+- [x] 2.3 更新 ImageDescriptionViewModel
   - 推理完成后调用 repository.save()
 
 ## 3. UI 集成
 
-- [ ] 3.1 创建 HistoryScreen 历史记录页面
+- [x] 3.1 创建 HistoryScreen 历史记录页面
   - LazyColumn 显示记忆列表
   - 每项显示：缩略图、描述摘要、时间
-- [ ] 3.2 创建 MemoryCard 组件
+- [x] 3.2 创建 MemoryCard 组件
   - 点击查看详情
-  - 长按显示操作菜单
-- [ ] 3.3 创建 MemoryDetailScreen 记忆详情页
+  - 删除按钮
+- [x] 3.3 创建 MemoryDetailScreen 记忆详情页
   - 显示完整描述
   - 显示原图
   - 显示性能指标
-- [ ] 3.4 创建 HistoryViewModel
-- [ ] 3.5 添加空状态提示
-- [ ] 3.6 添加删除确认对话框
+- [x] 3.4 创建 HistoryViewModel
+- [x] 3.5 添加空状态提示
+- [x] 3.6 添加删除确认对话框
 
 ## 4. 页面导航
 
-- [ ] 4.1 添加 Navigation Compose 依赖
-- [ ] 4.2 创建 NavGraph 和 Screen 定义
-- [ ] 4.3 更新 MainActivity 使用 NavHost
-- [ ] 4.4 添加底部导航栏或顶部 Tab
+- [x] 4.1 添加 Navigation Compose 依赖
+- [x] 4.2 创建 NavGraph 和 Screen 定义
+- [x] 4.3 更新 MainActivity 使用 NavHost
+- [x] 4.4 添加历史记录入口按钮（TopAppBar）
 
 ## 5. 测试
 

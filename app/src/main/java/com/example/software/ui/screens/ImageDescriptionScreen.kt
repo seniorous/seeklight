@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
@@ -89,7 +90,8 @@ import com.example.software.ui.viewmodels.ImageDescriptionViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImageDescriptionScreen(
-    viewModel: ImageDescriptionViewModel = viewModel()
+    viewModel: ImageDescriptionViewModel = viewModel(),
+    onNavigateToHistory: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -120,6 +122,14 @@ fun ImageDescriptionScreen(
                             } else {
                                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                             }
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToHistory) {
+                        Icon(
+                            imageVector = Icons.Default.History,
+                            contentDescription = "历史记录"
                         )
                     }
                 },

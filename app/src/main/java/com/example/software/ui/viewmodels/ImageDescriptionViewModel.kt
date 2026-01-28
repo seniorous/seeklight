@@ -4,14 +4,16 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.software.ai.ImageProcessor
 import com.example.software.ai.MnnLlmBridge
 import com.example.software.ai.ModelManager
 import com.example.software.ai.QwenVLInference
+import com.example.software.data.local.entity.ImageMemory
+import com.example.software.data.repository.ImageMemoryRepository
 import com.example.software.util.AppLog
-import android.util.Base64
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +44,12 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     // 推理任务
     private var inferenceJob: Job? = null
     
+    // 数据仓库（用于保存记忆）
+    private var repository: ImageMemoryRepository? = null
+    
+    // 当前使用的提示词
+    private var currentPrompt: String = ""
+    
     // UI 状态
     private val _uiState = MutableStateFlow(ImageDescriptionUiState())
     val uiState: StateFlow<ImageDescriptionUiState> = _uiState.asStateFlow()
@@ -54,6 +62,14 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
         val libraryLoaded = MnnLlmBridge.loadLibrary()
         AppLog.i(logTag, "Native library load result: $libraryLoaded")
         _uiState.update { it.copy(isLibraryLoaded = libraryLoaded) }
+    }
+    
+    /**
+     * 设置数据仓库（用于保存记忆）
+     */
+    fun setRepository(repo: ImageMemoryRepository) {
+        this.repository = repo
+        AppLog.i(logTag, "Repository set")
     }
     
     /**
@@ -183,6 +199,9 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
             AppLog.w(logTag, "describeImage aborted: selectedImageBitmap is null")
             return
         }
+        // 保存当前使用的提示词
+        currentPrompt = prompt
+        
         val inferenceId = inferenceCounter.incrementAndGet()
         activeInferenceId = inferenceId
         AppLog.i(
@@ -307,17 +326,24 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                         "Real inference complete, tokens=${streamToken.totalTokens}, " +
                             "prefillMs=${streamToken.prefillTimeMs}, decodeMs=${streamToken.decodeTimeMs}"
                     )
+                    val metrics = PerformanceMetrics(
+                        prefillTimeMs = streamToken.prefillTimeMs,
+                        decodeTimeMs = streamToken.decodeTimeMs,
+                        totalTokens = streamToken.totalTokens,
+                        tokensPerSecond = streamToken.tokensPerSecond
+                    )
                     _uiState.update {
                         it.copy(
                             isProcessing = false,
-                            performanceMetrics = PerformanceMetrics(
-                                prefillTimeMs = streamToken.prefillTimeMs,
-                                decodeTimeMs = streamToken.decodeTimeMs,
-                                totalTokens = streamToken.totalTokens,
-                                tokensPerSecond = streamToken.tokensPerSecond
-                            )
+                            performanceMetrics = metrics
                         )
                     }
+                    
+                    // 保存记忆到数据库
+                    saveMemoryToDatabase(
+                        description = descriptionBuilder.toString(),
+                        metrics = metrics
+                    )
                 }
                 is MnnLlmBridge.StreamToken.Error -> {
                     AppLog.e(logTag, "Real inference error: ${streamToken.message}")
@@ -379,20 +405,27 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                             "Mock inference complete, tokens=${state.response.tokensGenerated}, " +
                                 "timeMs=${state.response.inferenceTimeMs}"
                         )
+                        val metrics = PerformanceMetrics(
+                            prefillTimeMs = 100,
+                            decodeTimeMs = state.response.inferenceTimeMs,
+                            totalTokens = state.response.tokensGenerated,
+                            tokensPerSecond = if (state.response.inferenceTimeMs > 0) {
+                                state.response.tokensGenerated * 1000.0 / state.response.inferenceTimeMs
+                            } else 0.0
+                        )
                         _uiState.update {
                             it.copy(
                                 isProcessing = false,
                                 description = state.response.text,
-                                performanceMetrics = PerformanceMetrics(
-                                    prefillTimeMs = 100,
-                                    decodeTimeMs = state.response.inferenceTimeMs,
-                                    totalTokens = state.response.tokensGenerated,
-                                    tokensPerSecond = if (state.response.inferenceTimeMs > 0) {
-                                        state.response.tokensGenerated * 1000.0 / state.response.inferenceTimeMs
-                                    } else 0.0
-                                )
+                                performanceMetrics = metrics
                             )
                         }
+                        
+                        // 保存记忆到数据库
+                        saveMemoryToDatabase(
+                            description = state.response.text,
+                            metrics = metrics
+                        )
                     }
                     is QwenVLInference.InferenceState.Error -> {
                         AppLog.e(logTag, "Mock inference error: ${state.message}")
@@ -463,6 +496,58 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 "readable=${tempFile.canRead()}, writable=${tempFile.canWrite()}"
         )
         return tempFile.absolutePath
+    }
+    
+    /**
+     * 保存记忆到数据库
+     */
+    private fun saveMemoryToDatabase(description: String, metrics: PerformanceMetrics) {
+        val repo = repository ?: run {
+            AppLog.w(logTag, "Repository not set, cannot save memory")
+            return
+        }
+        
+        val state = _uiState.value
+        val imageUri = state.selectedImageUri?.toString() ?: return
+        val imagePath = getImagePath() ?: imageUri
+        
+        viewModelScope.launch {
+            try {
+                val memory = ImageMemory(
+                    imagePath = imagePath,
+                    imageUri = imageUri,
+                    description = description,
+                    promptUsed = currentPrompt,
+                    tokensGenerated = metrics.totalTokens,
+                    inferenceTimeMs = metrics.totalTimeMs,
+                    firstTokenLatencyMs = metrics.prefillTimeMs,
+                    decodeSpeed = metrics.tokensPerSecond.toFloat()
+                )
+                
+                val id = repo.saveMemory(memory)
+                AppLog.i(logTag, "Memory saved, id=$id, tokens=${metrics.totalTokens}")
+            } catch (e: Exception) {
+                AppLog.e(logTag, "Failed to save memory: ${e.message}", e)
+            }
+        }
+    }
+    
+    /**
+     * 获取当前图片路径
+     */
+    private fun getImagePath(): String? {
+        val context = getApplication<Application>()
+        val uri = _uiState.value.selectedImageUri ?: return null
+        
+        // 尝试从 content URI 获取真实路径
+        return try {
+            context.contentResolver.openInputStream(uri)?.use {
+                // 返回 URI 字符串作为路径标识
+                uri.toString()
+            }
+        } catch (e: Exception) {
+            uri.toString()
+        }
     }
     
     /**
