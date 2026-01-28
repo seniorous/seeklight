@@ -177,13 +177,67 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     }
     
     /**
-     * 启用演示模式（无需模型）
+     * 自动配置模型
+     * 
+     * 检测模型文件并自动加载，一键完成配置
      */
-    fun enableDemoMode() {
-        _uiState.update {
-            it.copy(
-                isModelLoaded = false,
-                errorMessage = null
+    fun configureModel() {
+        AppLog.i(logTag, "configureModel requested")
+        viewModelScope.launch {
+            _uiState.update { it.copy(isModelLoading = true, errorMessage = null) }
+            
+            // 步骤 1: 检查模型是否存在
+            if (!modelManager.isMnnModelAvailable()) {
+                val modelDir = modelManager.getModelsDirectory().absolutePath
+                AppLog.w(logTag, "Model not available at: $modelDir")
+                _uiState.update { 
+                    it.copy(
+                        isModelLoading = false,
+                        isModelLoaded = false,
+                        errorMessage = "模型文件未找到\n\n请将模型文件放置到:\n$modelDir"
+                    )
+                }
+                return@launch
+            }
+            
+            // 步骤 2: 加载模型
+            val result = modelManager.loadMnnModel()
+            
+            result.fold(
+                onSuccess = { configPath ->
+                    AppLog.i(logTag, "Model loaded, configPath=$configPath")
+                    // 步骤 3: 初始化 MNN 会话
+                    val sessionInitialized = mnnBridge.initSession(configPath)
+                    if (sessionInitialized) {
+                        AppLog.i(logTag, "Model configured successfully")
+                        _uiState.update { 
+                            it.copy(
+                                isModelLoading = false,
+                                isModelLoaded = true,
+                                errorMessage = null
+                            )
+                        }
+                    } else {
+                        AppLog.w(logTag, "MNN session init failed")
+                        _uiState.update { 
+                            it.copy(
+                                isModelLoading = false,
+                                isModelLoaded = false,
+                                errorMessage = "MNN 会话初始化失败\n请检查模型文件是否完整"
+                            )
+                        }
+                    }
+                },
+                onFailure = { error ->
+                    AppLog.e(logTag, "Model load failed: ${error.message}", error)
+                    _uiState.update { 
+                        it.copy(
+                            isModelLoading = false,
+                            isModelLoaded = false,
+                            errorMessage = "模型加载失败: ${error.message}"
+                        )
+                    }
+                }
             )
         }
     }
@@ -232,38 +286,32 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
             
             try {
                 // 检查模型是否已加载且 MNN 会话有效
-                val useRealInference = _uiState.value.isModelLoaded && mnnBridge.isSessionValid()
-                AppLog.i(
-                    logTag,
-                    "Inference start, inferenceId=$inferenceId, useRealInference=$useRealInference"
-                )
-                
-                if (useRealInference) {
-                    // 使用真实 MNN 推理
-                    runRealInference(bitmap, prompt, startTime)
-                } else {
-                    // 使用模拟推理（演示模式）
-                    useMockInference(bitmap, prompt, startTime)
-                }
-            } catch (e: CancellationException) {
-                AppLog.w(logTag, "Inference cancelled, inferenceId=$inferenceId")
-                // 协程被取消，正常退出，不更新错误状态
-                throw e
-            } catch (e: Exception) {
-                AppLog.e(logTag, "Inference failed, fallback to demo, inferenceId=$inferenceId", e)
-                // 其他异常，回退到模拟推理
-                try {
-                    useMockInference(bitmap, prompt, startTime)
-                } catch (e2: CancellationException) {
-                    throw e2
-                } catch (e2: Exception) {
-                    AppLog.e(logTag, "Demo inference failed, inferenceId=$inferenceId", e2)
+                if (!_uiState.value.isModelLoaded || !mnnBridge.isSessionValid()) {
+                    AppLog.w(logTag, "Model not configured, inferenceId=$inferenceId")
                     _uiState.update {
                         it.copy(
                             isProcessing = false,
-                            errorMessage = "推理失败: ${e2.message}"
+                            errorMessage = "请先配置模型"
                         )
                     }
+                    return@launch
+                }
+                
+                AppLog.i(logTag, "Inference start, inferenceId=$inferenceId")
+                
+                // 使用真实 MNN 推理
+                runRealInference(bitmap, prompt, startTime)
+                
+            } catch (e: CancellationException) {
+                AppLog.w(logTag, "Inference cancelled, inferenceId=$inferenceId")
+                throw e
+            } catch (e: Exception) {
+                AppLog.e(logTag, "Inference failed, inferenceId=$inferenceId", e)
+                _uiState.update {
+                    it.copy(
+                        isProcessing = false,
+                        errorMessage = "推理失败: ${e.message}"
+                    )
                 }
             }
         }

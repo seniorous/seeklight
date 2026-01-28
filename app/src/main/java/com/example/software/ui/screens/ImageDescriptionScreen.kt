@@ -83,6 +83,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.software.ui.components.ImagePickerButton
 import com.example.software.ui.components.PerformanceIndicator
+import com.example.software.ui.theme.Error
 import com.example.software.ui.theme.GradientEnd
 import com.example.software.ui.theme.GradientStart
 import com.example.software.ui.theme.Success
@@ -137,6 +138,8 @@ fun ImageDescriptionScreen(
             // 顶部栏
             TopSection(
                 isModelLoaded = uiState.isModelLoaded,
+                isModelLoading = uiState.isModelLoading,
+                onConfigureModel = viewModel::configureModel,
                 onNavigateToHistory = onNavigateToHistory
             )
             
@@ -203,93 +206,170 @@ fun ImageDescriptionScreen(
 @Composable
 private fun TopSection(
     isModelLoaded: Boolean,
+    isModelLoading: Boolean,
+    onConfigureModel: () -> Unit,
     onNavigateToHistory: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 品牌区域
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            // Logo
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(
-                        brush = Brush.linearGradient(
-                            colors = listOf(GradientStart, GradientEnd)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 品牌区域
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                // Logo
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(GradientStart, GradientEnd)
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                
+                Spacer(modifier = Modifier.width(14.dp))
+                
+                Column {
+                    Text(
+                        text = "SeekLight",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 22.sp
+                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(6.dp)
+                                .clip(CircleShape)
+                                .background(if (isModelLoaded) Success else MaterialTheme.colorScheme.error.copy(alpha = 0.7f))
                         )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AutoAwesome,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = if (isModelLoaded) "AI 就绪" else "未配置",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (isModelLoaded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             }
             
-            Spacer(modifier = Modifier.width(14.dp))
-            
-            Column {
-                Text(
-                    text = "SeekLight",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(6.dp)
-                            .clip(CircleShape)
-                            .background(if (isModelLoaded) Success else MaterialTheme.colorScheme.outline)
+            // 记忆库入口
+            Surface(
+                onClick = onNavigateToHistory,
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surface,
+                shadowElevation = 2.dp
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.History,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (isModelLoaded) "AI 就绪" else "演示模式",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = "记忆库",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
         
-        // 记忆库入口
-        Surface(
-            onClick = onNavigateToHistory,
-            shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surface,
-            shadowElevation = 2.dp
+        // 模型配置提示条
+        AnimatedVisibility(
+            visible = !isModelLoaded,
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut()
         ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Surface(
+                onClick = onConfigureModel,
+                enabled = !isModelLoading,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                shape = RoundedCornerShape(14.dp),
+                color = MaterialTheme.colorScheme.primaryContainer
             ) {
-                Icon(
-                    imageVector = Icons.Default.History,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "记忆库",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Medium
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (isModelLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                strokeWidth = 2.dp,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Spacer(Modifier.width(12.dp))
+                        Column {
+                            Text(
+                                text = if (isModelLoading) "正在配置模型..." else "模型未配置",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                            if (!isModelLoading) {
+                                Text(
+                                    text = "点击自动检测并加载模型",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                                )
+                            }
+                        }
+                    }
+                    
+                    if (!isModelLoading) {
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = MaterialTheme.colorScheme.primary
+                        ) {
+                            Text(
+                                text = "配置",
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -517,6 +597,9 @@ private fun ActionSection(
                     Text("停止分析", fontWeight = FontWeight.SemiBold)
                 }
             } else {
+                // 检查是否可以开始分析
+                val canStart = hasImage && isModelLoaded
+                
                 // 渐变主按钮
                 Box(
                     modifier = Modifier
@@ -524,7 +607,7 @@ private fun ActionSection(
                         .height(56.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .background(
-                            brush = if (hasImage) {
+                            brush = if (canStart) {
                                 Brush.horizontalGradient(listOf(GradientStart, GradientEnd))
                             } else {
                                 Brush.horizontalGradient(
@@ -535,50 +618,28 @@ private fun ActionSection(
                                 )
                             }
                         )
-                        .clickable(enabled = hasImage, onClick = onDescribeImage),
+                        .clickable(enabled = canStart, onClick = onDescribeImage),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.AutoAwesome,
                             contentDescription = null,
-                            tint = if (hasImage) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = if (canStart) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            text = if (isModelLoaded) "开始分析" else "开始分析（演示）",
-                            color = if (hasImage) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = when {
+                                !isModelLoaded -> "请先配置模型"
+                                !hasImage -> "请先上传图片"
+                                else -> "开始分析"
+                            },
+                            color = if (canStart) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 16.sp
                         )
                     }
-                }
-            }
-            
-            // 提示信息
-            if (!isModelLoaded && hasImage && !isProcessing) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(10.dp))
-                    Text(
-                        text = "MNN 模型未加载，将使用演示数据",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
                 }
             }
         }
