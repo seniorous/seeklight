@@ -11,7 +11,10 @@ import com.example.software.ai.ImageProcessor
 import com.example.software.ai.MnnLlmBridge
 import com.example.software.ai.ModelManager
 import com.example.software.ai.QwenVLInference
+import com.example.software.ai.TextEmbeddingBridge
 import com.example.software.data.local.entity.ImageMemory
+import com.example.software.data.local.entity.MemoryEmbedding
+import com.example.software.data.repository.EmbeddingRepository
 import com.example.software.data.repository.ImageMemoryRepository
 import com.example.software.util.AppLog
 import kotlinx.coroutines.CancellationException
@@ -46,6 +49,8 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     
     // 数据仓库（用于保存记忆）
     private var repository: ImageMemoryRepository? = null
+    private var embeddingRepository: EmbeddingRepository? = null
+    private val embeddingBridge = TextEmbeddingBridge.getInstance()
     
     // 当前使用的提示词
     private var currentPrompt: String = ""
@@ -70,6 +75,19 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     fun setRepository(repo: ImageMemoryRepository) {
         this.repository = repo
         AppLog.i(logTag, "Repository set")
+    }
+    
+    /**
+     * 设置向量仓库（用于语义搜索）
+     */
+    fun setEmbeddingRepository(repo: EmbeddingRepository) {
+        this.embeddingRepository = repo
+        // 初始化 Embedding Bridge
+        viewModelScope.launch {
+            val context = getApplication<Application>()
+            val initialized = embeddingBridge.initialize(context)
+            AppLog.i(logTag, "EmbeddingRepository set, bridge initialized: $initialized")
+        }
     }
     
     /**
@@ -580,9 +598,41 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 
                 val id = repo.saveMemory(memory)
                 AppLog.i(logTag, "Memory saved, id=$id, tokens=${metrics.totalTokens}, tags=${tags.size}")
+                
+                // 生成向量用于语义搜索
+                generateEmbeddingForMemory(id, parsedDescription)
+                
             } catch (e: Exception) {
                 AppLog.e(logTag, "Failed to save memory: ${e.message}", e)
             }
+        }
+    }
+    
+    /**
+     * 为记忆生成向量
+     */
+    private suspend fun generateEmbeddingForMemory(memoryId: Long, description: String) {
+        val embeddingRepo = embeddingRepository ?: return
+        
+        if (!embeddingBridge.isInitialized()) {
+            AppLog.w(logTag, "Embedding bridge not initialized, skipping vector generation")
+            return
+        }
+        
+        try {
+            val embedding = embeddingBridge.generateEmbedding(description)
+            if (embedding != null) {
+                embeddingRepo.saveEmbedding(
+                    memoryId = memoryId,
+                    embedding = embedding,
+                    modelVersion = MemoryEmbedding.CURRENT_MODEL_VERSION
+                )
+                AppLog.i(logTag, "Embedding generated for memory $memoryId, dim=${embedding.size}")
+            } else {
+                AppLog.w(logTag, "Failed to generate embedding for memory $memoryId")
+            }
+        } catch (e: Exception) {
+            AppLog.e(logTag, "Error generating embedding: ${e.message}", e)
         }
     }
     

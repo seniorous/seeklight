@@ -1,11 +1,21 @@
 package com.example.software.ui.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.software.ai.TextEmbeddingBridge
 import com.example.software.data.local.entity.ImageMemory
+import com.example.software.data.repository.EmbeddingRepository
 import com.example.software.data.repository.ImageMemoryRepository
+import com.example.software.domain.usecase.SearchMode
+import com.example.software.domain.usecase.SearchResult
+import com.example.software.domain.usecase.SearchUseCase
 import com.example.software.domain.usecase.TimeRange
+import com.example.software.util.AppLog
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,22 +27,35 @@ import kotlinx.coroutines.launch
 data class HistoryUiState(
     val memories: List<ImageMemory> = emptyList(),
     val searchQuery: String = "",
+    val searchMode: SearchMode = SearchMode.HYBRID,
     val timeRange: TimeRange = TimeRange.All,
     val selectedTag: String? = null,
     val isLoading: Boolean = true,
+    val isSearching: Boolean = false,
+    val isSemanticAvailable: Boolean = false,
     val selectedMemory: ImageMemory? = null,
     val showDeleteConfirmation: Boolean = false,
     val memoryToDelete: ImageMemory? = null,
     val showTimeFilter: Boolean = false,
+    val searchTimeMs: Long = 0,
     val errorMessage: String? = null
 )
 
 /**
  * 历史记录 ViewModel
+ * 
+ * 支持关键词搜索、语义搜索和混合搜索
  */
 class HistoryViewModel(
-    private val repository: ImageMemoryRepository
-) : ViewModel() {
+    application: Application,
+    private val repository: ImageMemoryRepository,
+    private val embeddingRepository: EmbeddingRepository?
+) : AndroidViewModel(application) {
+    
+    companion object {
+        private const val TAG = "HistoryViewModel"
+        private const val SEARCH_DEBOUNCE_MS = 300L
+    }
     
     // UI 状态
     private val _uiState = MutableStateFlow(HistoryUiState())
@@ -41,7 +64,15 @@ class HistoryViewModel(
     // 所有记忆（原始数据）
     private var allMemories: List<ImageMemory> = emptyList()
     
+    // 搜索相关
+    private val embeddingBridge = TextEmbeddingBridge.getInstance()
+    private var searchUseCase: SearchUseCase? = null
+    private var searchJob: Job? = null
+    
     init {
+        // 初始化语义搜索
+        initializeSemanticSearch()
+        
         // 监听数据库变化
         viewModelScope.launch {
             repository.getAllMemories().collect { memories ->
@@ -53,13 +84,47 @@ class HistoryViewModel(
     }
     
     /**
+     * 初始化语义搜索
+     */
+    private fun initializeSemanticSearch() {
+        viewModelScope.launch {
+            try {
+                val context = getApplication<Application>()
+                val initialized = embeddingBridge.initialize(context)
+                
+                if (initialized && embeddingRepository != null) {
+                    searchUseCase = SearchUseCase(
+                        memoryRepository = repository,
+                        embeddingRepository = embeddingRepository,
+                        embeddingBridge = embeddingBridge
+                    )
+                    _uiState.update { it.copy(isSemanticAvailable = true) }
+                    AppLog.i(TAG, "Semantic search initialized successfully")
+                } else {
+                    AppLog.w(TAG, "Semantic search not available: initialized=$initialized, repo=${embeddingRepository != null}")
+                }
+            } catch (e: Exception) {
+                AppLog.e(TAG, "Failed to initialize semantic search: ${e.message}", e)
+            }
+        }
+    }
+    
+    /**
      * 根据搜索词、时间范围和标签过滤记忆
      */
     private fun updateFilteredMemories() {
         val query = _uiState.value.searchQuery
         val timeRange = _uiState.value.timeRange
         val selectedTag = _uiState.value.selectedTag
+        val searchMode = _uiState.value.searchMode
         
+        // 如果有搜索词且语义搜索可用，使用 SearchUseCase
+        if (query.isNotBlank() && searchUseCase != null && _uiState.value.isSemanticAvailable) {
+            performSemanticSearch(query, timeRange, selectedTag, searchMode)
+            return
+        }
+        
+        // 否则使用简单的本地过滤
         var filtered = allMemories
         
         // 时间筛选
@@ -77,7 +142,7 @@ class HistoryViewModel(
             }
         }
         
-        // 关键词筛选
+        // 关键词筛选（降级模式）
         if (query.isNotBlank()) {
             filtered = filtered.filter { memory ->
                 memory.description.contains(query, ignoreCase = true) ||
@@ -85,22 +150,101 @@ class HistoryViewModel(
             }
         }
         
-        _uiState.update { it.copy(memories = filtered) }
+        _uiState.update { it.copy(memories = filtered, isSearching = false) }
     }
     
     /**
-     * 更新搜索查询
+     * 执行语义搜索
+     */
+    private fun performSemanticSearch(
+        query: String,
+        timeRange: TimeRange,
+        selectedTag: String?,
+        searchMode: SearchMode
+    ) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            _uiState.update { it.copy(isSearching = true) }
+            
+            val startTime = System.currentTimeMillis()
+            
+            try {
+                val tags = if (selectedTag != null) listOf(selectedTag) else emptyList()
+                val results = searchUseCase!!.search(
+                    query = query,
+                    mode = searchMode,
+                    timeRange = timeRange,
+                    tags = tags
+                )
+                
+                val elapsed = System.currentTimeMillis() - startTime
+                val memories = results.map { it.memory }
+                
+                _uiState.update { 
+                    it.copy(
+                        memories = memories,
+                        isSearching = false,
+                        searchTimeMs = elapsed
+                    )
+                }
+                
+                AppLog.d(TAG, "Semantic search: '$query' found ${results.size} results in ${elapsed}ms")
+                
+            } catch (e: Exception) {
+                AppLog.e(TAG, "Search failed: ${e.message}", e)
+                // 降级到简单搜索
+                val filtered = allMemories.filter { memory ->
+                    memory.description.contains(query, ignoreCase = true) ||
+                    memory.tags.any { it.contains(query, ignoreCase = true) }
+                }
+                _uiState.update { 
+                    it.copy(
+                        memories = filtered,
+                        isSearching = false,
+                        errorMessage = "语义搜索失败，已降级到关键词搜索"
+                    )
+                }
+            }
+        }
+    }
+    
+    /**
+     * 更新搜索查询（带防抖）
      */
     fun onSearchQueryChanged(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
-        updateFilteredMemories()
+        
+        // 取消之前的搜索
+        searchJob?.cancel()
+        
+        if (query.isBlank()) {
+            updateFilteredMemories()
+            return
+        }
+        
+        // 防抖搜索
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_MS)
+            updateFilteredMemories()
+        }
+    }
+    
+    /**
+     * 更新搜索模式
+     */
+    fun onSearchModeChanged(mode: SearchMode) {
+        _uiState.update { it.copy(searchMode = mode) }
+        if (_uiState.value.searchQuery.isNotBlank()) {
+            updateFilteredMemories()
+        }
     }
     
     /**
      * 清空搜索
      */
     fun clearSearch() {
-        _uiState.update { it.copy(searchQuery = "") }
+        searchJob?.cancel()
+        _uiState.update { it.copy(searchQuery = "", isSearching = false) }
         updateFilteredMemories()
     }
     
@@ -147,11 +291,13 @@ class HistoryViewModel(
      * 清除所有筛选
      */
     fun clearAllFilters() {
+        searchJob?.cancel()
         _uiState.update { 
             it.copy(
                 searchQuery = "",
                 timeRange = TimeRange.All,
-                selectedTag = null
+                selectedTag = null,
+                isSearching = false
             )
         }
         updateFilteredMemories()
@@ -197,6 +343,9 @@ class HistoryViewModel(
         viewModelScope.launch {
             try {
                 repository.deleteMemory(memory)
+                // 同时删除向量
+                embeddingRepository?.deleteEmbedding(memory.id)
+                
                 _uiState.update { state ->
                     state.copy(
                         showDeleteConfirmation = false,
@@ -234,12 +383,14 @@ class HistoryViewModel(
      * ViewModel 工厂
      */
     class Factory(
-        private val repository: ImageMemoryRepository
+        private val application: Application,
+        private val repository: ImageMemoryRepository,
+        private val embeddingRepository: EmbeddingRepository?
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
-                return HistoryViewModel(repository) as T
+                return HistoryViewModel(application, repository, embeddingRepository) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

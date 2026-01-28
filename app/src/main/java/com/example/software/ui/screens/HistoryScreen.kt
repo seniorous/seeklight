@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.software.data.local.entity.ImageMemory
+import com.example.software.domain.usecase.SearchMode
 import com.example.software.domain.usecase.TimeRange
 import com.example.software.ui.components.SeekLightButton
 import com.example.software.ui.components.TimeFilterSheet
@@ -209,6 +210,19 @@ fun HistoryScreen(
                         }
                     )
                 }
+            }
+            
+            // 搜索模式切换（仅在语义搜索可用且有搜索词时显示）
+            if (uiState.isSemanticAvailable && uiState.searchQuery.isNotBlank()) {
+                SearchModeSelector(
+                    currentMode = uiState.searchMode,
+                    onModeChange = viewModel::onSearchModeChanged,
+                    isSearching = uiState.isSearching,
+                    searchTimeMs = uiState.searchTimeMs,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 4.dp)
+                )
             }
             
             // 筛选标签显示
@@ -752,5 +766,99 @@ private fun formatDate(timestamp: Long): String {
             val sdf = SimpleDateFormat("MM月dd日", Locale.getDefault())
             sdf.format(Date(timestamp))
         }
+    }
+}
+
+/**
+ * 搜索模式选择器
+ */
+@Composable
+private fun SearchModeSelector(
+    currentMode: SearchMode,
+    onModeChange: (SearchMode) -> Unit,
+    isSearching: Boolean,
+    searchTimeMs: Long,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 搜索模式切换
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            SearchModeChip(
+                label = "关键词",
+                selected = currentMode == SearchMode.KEYWORD,
+                onClick = { onModeChange(SearchMode.KEYWORD) }
+            )
+            SearchModeChip(
+                label = "语义",
+                selected = currentMode == SearchMode.SEMANTIC,
+                onClick = { onModeChange(SearchMode.SEMANTIC) }
+            )
+            SearchModeChip(
+                label = "混合",
+                selected = currentMode == SearchMode.HYBRID,
+                onClick = { onModeChange(SearchMode.HYBRID) }
+            )
+        }
+        
+        // 搜索状态
+        if (isSearching) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(14.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "搜索中...",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        } else if (searchTimeMs > 0) {
+            Text(
+                text = "${searchTimeMs}ms",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+/**
+ * 搜索模式芯片
+ */
+@Composable
+private fun SearchModeChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(16.dp),
+        color = if (selected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        }
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = if (selected) {
+                MaterialTheme.colorScheme.onPrimaryContainer
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
+            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+        )
     }
 }

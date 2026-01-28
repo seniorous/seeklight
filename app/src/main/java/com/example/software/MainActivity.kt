@@ -1,20 +1,22 @@
 package com.example.software
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.software.data.local.AppDatabase
+import com.example.software.data.repository.EmbeddingRepositoryImpl
 import com.example.software.data.repository.ImageMemoryRepositoryImpl
 import com.example.software.ui.navigation.NavGraph
 import com.example.software.ui.screens.ImageDescriptionScreen
@@ -54,19 +56,22 @@ fun MainScreen() {
     val navController = rememberNavController()
     
     // 创建数据库和 Repository
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
     val database = remember { AppDatabase.getInstance(context) }
     val repository = remember { ImageMemoryRepositoryImpl(database.imageMemoryDao()) }
+    val embeddingRepository = remember { EmbeddingRepositoryImpl(database.memoryEmbeddingDao()) }
     
     // 创建 ViewModels
     val imageDescriptionViewModel: ImageDescriptionViewModel = viewModel()
     val historyViewModel: HistoryViewModel = viewModel(
-        factory = HistoryViewModel.Factory(repository)
+        factory = HistoryViewModel.Factory(application, repository, embeddingRepository)
     )
     
     // 设置 Repository 到 ImageDescriptionViewModel
-    remember(repository) {
+    remember(repository, embeddingRepository) {
         imageDescriptionViewModel.setRepository(repository)
+        imageDescriptionViewModel.setEmbeddingRepository(embeddingRepository)
         true
     }
     
