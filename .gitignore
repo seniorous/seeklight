@@ -94,3 +94,10 @@ logs/
 # 测试输出
 /test-output/
 /coverage/
+
+# ========================================
+# 大模型文件（需要单独下载）
+# ========================================
+# Embedding 模型（~90MB）
+app/src/main/assets/models/minilm-l6-v2/model.onnx
+# 运行 python scripts/download_embedding_model.py 下载
