@@ -199,8 +199,20 @@ fun ImageDescriptionScreen(
 }
 
 private enum class PromptLanguage(val label: String, val prompt: String) {
-    ENGLISH("English", "Describe the image in detail."),
-    CHINESE("中文", "请详细描述这张图片的内容。")
+    ENGLISH("English", """Analyze this image and provide:
+1. A brief description (1-2 sentences)
+2. Tags: list key objects, scenes, colors, people, food, animals, activities visible in the image
+
+Format your response as:
+Description: [your description]
+Tags: tag1, tag2, tag3, ..."""),
+    CHINESE("中文", """分析这张图片，提供以下信息：
+1. 简短描述（1-2句话）
+2. 标签：列出图片中可见的主要物体、场景、颜色、人物、食物、动物、活动等
+
+请按以下格式输出：
+描述：[你的描述]
+标签：标签1, 标签2, 标签3, ...""")
 }
 
 @Composable

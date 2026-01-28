@@ -511,12 +511,18 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
         val imageUri = state.selectedImageUri?.toString() ?: return
         val imagePath = getImagePath() ?: imageUri
         
+        // 解析描述和标签
+        val (parsedDescription, tags) = parseDescriptionAndTags(description)
+        val tagsString = tags.joinToString(",")
+        
         viewModelScope.launch {
             try {
                 val memory = ImageMemory(
                     imagePath = imagePath,
                     imageUri = imageUri,
-                    description = description,
+                    description = parsedDescription,
+                    tags = tags,
+                    tagsString = tagsString,
                     promptUsed = currentPrompt,
                     tokensGenerated = metrics.totalTokens,
                     inferenceTimeMs = metrics.totalTimeMs,
@@ -525,11 +531,93 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 )
                 
                 val id = repo.saveMemory(memory)
-                AppLog.i(logTag, "Memory saved, id=$id, tokens=${metrics.totalTokens}")
+                AppLog.i(logTag, "Memory saved, id=$id, tokens=${metrics.totalTokens}, tags=${tags.size}")
             } catch (e: Exception) {
                 AppLog.e(logTag, "Failed to save memory: ${e.message}", e)
             }
         }
+    }
+    
+    /**
+     * 解析 VLM 输出，提取描述和标签
+     * 
+     * 支持格式：
+     * - "Description: xxx\nTags: a, b, c"
+     * - "描述：xxx\n标签：a, b, c"
+     * - 或纯文本（从中提取关键词作为标签）
+     */
+    private fun parseDescriptionAndTags(rawOutput: String): Pair<String, List<String>> {
+        val lines = rawOutput.lines()
+        var description = rawOutput
+        var tags = mutableListOf<String>()
+        
+        // 尝试解析结构化输出
+        for (line in lines) {
+            val trimmed = line.trim()
+            when {
+                trimmed.startsWith("Description:", ignoreCase = true) -> {
+                    description = trimmed.substringAfter(":").trim()
+                }
+                trimmed.startsWith("描述：") || trimmed.startsWith("描述:") -> {
+                    description = trimmed.substringAfter("：").substringAfter(":").trim()
+                }
+                trimmed.startsWith("Tags:", ignoreCase = true) -> {
+                    val tagsPart = trimmed.substringAfter(":").trim()
+                    tags.addAll(parseTags(tagsPart))
+                }
+                trimmed.startsWith("标签：") || trimmed.startsWith("标签:") -> {
+                    val tagsPart = trimmed.substringAfter("：").substringAfter(":").trim()
+                    tags.addAll(parseTags(tagsPart))
+                }
+            }
+        }
+        
+        // 如果没有解析到标签，从描述中提取关键词
+        if (tags.isEmpty()) {
+            tags.addAll(extractKeywordsFromDescription(rawOutput))
+        }
+        
+        // 去重并限制数量
+        val uniqueTags = tags.distinct().take(20)
+        
+        return Pair(description, uniqueTags)
+    }
+    
+    /**
+     * 解析标签字符串
+     */
+    private fun parseTags(tagsPart: String): List<String> {
+        return tagsPart
+            .split(",", "，", "、", " ")
+            .map { it.trim() }
+            .filter { it.isNotBlank() && it.length > 1 }
+    }
+    
+    /**
+     * 从描述中提取关键词作为标签
+     */
+    private fun extractKeywordsFromDescription(description: String): List<String> {
+        // 简单的中文关键词提取：提取 2-4 字的词
+        val chinesePattern = Regex("[\\u4e00-\\u9fa5]{2,4}")
+        val chineseWords = chinesePattern.findAll(description)
+            .map { it.value }
+            .filter { word ->
+                // 过滤掉常见的停用词
+                !listOf("这是", "一个", "可以", "看到", "图片", "显示", "包含", "其中", "以及", "还有").contains(word)
+            }
+            .toList()
+        
+        // 英文关键词提取：提取 3 字母以上的单词
+        val englishPattern = Regex("[a-zA-Z]{3,}")
+        val englishWords = englishPattern.findAll(description)
+            .map { it.value.lowercase() }
+            .filter { word ->
+                // 过滤掉常见的停用词
+                !listOf("the", "and", "this", "that", "with", "from", "are", "was", "were", "been", "have", "has", "image", "shows", "picture").contains(word)
+            }
+            .toList()
+        
+        return (chineseWords + englishWords).distinct().take(10)
     }
     
     /**

@@ -8,9 +8,9 @@ import com.example.software.data.repository.ImageMemoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
@@ -33,124 +33,107 @@ class HistoryViewModel(
     private val repository: ImageMemoryRepository
 ) : ViewModel() {
     
-    private val _searchQuery = MutableStateFlow("")
-    private val _isLoading = MutableStateFlow(true)
-    private val _selectedMemory = MutableStateFlow<ImageMemory?>(null)
-    private val _showDeleteConfirmation = MutableStateFlow(false)
-    private val _memoryToDelete = MutableStateFlow<ImageMemory?>(null)
-    private val _errorMessage = MutableStateFlow<String?>(null)
+    // UI 状态
+    private val _uiState = MutableStateFlow(HistoryUiState())
+    val uiState: StateFlow<HistoryUiState> = _uiState
     
-    /**
-     * UI 状态
-     */
-    val uiState: StateFlow<HistoryUiState> = combine(
-        repository.getAllMemories(),
-        _searchQuery,
-        _isLoading,
-        _selectedMemory,
-        _showDeleteConfirmation,
-        _memoryToDelete,
-        _errorMessage
-    ) { values ->
-        @Suppress("UNCHECKED_CAST")
-        val memories = values[0] as List<ImageMemory>
-        val query = values[1] as String
-        val isLoading = values[2] as Boolean
-        val selected = values[3] as ImageMemory?
-        val showDelete = values[4] as Boolean
-        val toDelete = values[5] as ImageMemory?
-        val error = values[6] as String?
-        
-        val filteredMemories = if (query.isBlank()) {
-            memories
-        } else {
-            memories.filter { it.description.contains(query, ignoreCase = true) }
-        }
-        
-        HistoryUiState(
-            memories = filteredMemories,
-            searchQuery = query,
-            isLoading = isLoading,
-            selectedMemory = selected,
-            showDeleteConfirmation = showDelete,
-            memoryToDelete = toDelete,
-            errorMessage = error
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = HistoryUiState()
-    )
+    // 所有记忆（原始数据）
+    private var allMemories: List<ImageMemory> = emptyList()
     
     init {
-        // 标记加载完成
+        // 监听数据库变化
         viewModelScope.launch {
-            repository.getAllMemories().collect {
-                _isLoading.value = false
+            repository.getAllMemories().collect { memories ->
+                allMemories = memories
+                updateFilteredMemories()
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
+    }
+    
+    /**
+     * 根据搜索词过滤记忆
+     */
+    private fun updateFilteredMemories() {
+        val query = _uiState.value.searchQuery
+        val filtered = if (query.isBlank()) {
+            allMemories
+        } else {
+            allMemories.filter { memory ->
+                // 搜索描述和标签
+                memory.description.contains(query, ignoreCase = true) ||
+                memory.tags.any { it.contains(query, ignoreCase = true) }
+            }
+        }
+        _uiState.update { it.copy(memories = filtered) }
     }
     
     /**
      * 更新搜索查询
      */
     fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
+        _uiState.update { it.copy(searchQuery = query) }
+        updateFilteredMemories()
     }
     
     /**
      * 清空搜索
      */
     fun clearSearch() {
-        _searchQuery.value = ""
+        _uiState.update { it.copy(searchQuery = "") }
+        updateFilteredMemories()
     }
     
     /**
      * 选择记忆查看详情
      */
     fun selectMemory(memory: ImageMemory) {
-        _selectedMemory.value = memory
+        _uiState.update { it.copy(selectedMemory = memory) }
     }
     
     /**
      * 清除选中的记忆
      */
     fun clearSelectedMemory() {
-        _selectedMemory.value = null
+        _uiState.update { it.copy(selectedMemory = null) }
     }
     
     /**
      * 请求删除记忆（显示确认对话框）
      */
     fun requestDeleteMemory(memory: ImageMemory) {
-        _memoryToDelete.value = memory
-        _showDeleteConfirmation.value = true
+        _uiState.update { 
+            it.copy(memoryToDelete = memory, showDeleteConfirmation = true) 
+        }
     }
     
     /**
      * 取消删除
      */
     fun cancelDelete() {
-        _showDeleteConfirmation.value = false
-        _memoryToDelete.value = null
+        _uiState.update { 
+            it.copy(showDeleteConfirmation = false, memoryToDelete = null) 
+        }
     }
     
     /**
      * 确认删除
      */
     fun confirmDelete() {
-        val memory = _memoryToDelete.value ?: return
+        val memory = _uiState.value.memoryToDelete ?: return
         viewModelScope.launch {
             try {
                 repository.deleteMemory(memory)
-                _showDeleteConfirmation.value = false
-                _memoryToDelete.value = null
-                // 如果删除的是当前选中的记忆，清除选中状态
-                if (_selectedMemory.value?.id == memory.id) {
-                    _selectedMemory.value = null
+                _uiState.update { state ->
+                    state.copy(
+                        showDeleteConfirmation = false,
+                        memoryToDelete = null,
+                        // 如果删除的是当前选中的记忆，清除选中状态
+                        selectedMemory = if (state.selectedMemory?.id == memory.id) null else state.selectedMemory
+                    )
                 }
             } catch (e: Exception) {
-                _errorMessage.value = "删除失败: ${e.message}"
+                _uiState.update { it.copy(errorMessage = "删除失败: ${e.message}") }
             }
         }
     }
@@ -163,7 +146,7 @@ class HistoryViewModel(
             try {
                 repository.deleteAllMemories()
             } catch (e: Exception) {
-                _errorMessage.value = "删除失败: ${e.message}"
+                _uiState.update { it.copy(errorMessage = "删除失败: ${e.message}") }
             }
         }
     }
@@ -172,7 +155,7 @@ class HistoryViewModel(
      * 清除错误消息
      */
     fun clearError() {
-        _errorMessage.value = null
+        _uiState.update { it.copy(errorMessage = null) }
     }
     
     /**

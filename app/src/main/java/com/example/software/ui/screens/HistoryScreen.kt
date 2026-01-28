@@ -149,7 +149,7 @@ private fun SearchBar(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier,
-        placeholder = { Text("搜索记忆...") },
+        placeholder = { Text("搜索标签或描述...") },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
@@ -318,13 +318,25 @@ private fun MemoryCard(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = memory.getDescriptionSummary(80),
+                    text = memory.getDescriptionSummary(60),
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                // 显示标签
+                if (memory.tags.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = memory.tags.take(5).joinToString(" ") { "#$it" },
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(4.dp))
                 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -338,7 +350,7 @@ private fun MemoryCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     
                     Text(
-                        text = "${memory.tokensGenerated} tokens",
+                        text = "${memory.tokensGenerated} tok",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                     )
