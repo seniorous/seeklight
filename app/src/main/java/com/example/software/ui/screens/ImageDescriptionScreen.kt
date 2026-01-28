@@ -22,8 +22,10 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -33,35 +35,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.outlined.Bolt
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -77,30 +74,22 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.software.ui.components.DescriptionCard
 import com.example.software.ui.components.ImagePickerButton
 import com.example.software.ui.components.PerformanceIndicator
-import com.example.software.ui.components.SeekLightGradientButton
-import com.example.software.ui.components.SeekLightOutlinedButton
-import com.example.software.ui.theme.CardShape
 import com.example.software.ui.theme.GradientEnd
 import com.example.software.ui.theme.GradientStart
 import com.example.software.ui.theme.Success
-import com.example.software.ui.viewmodels.ImageDescriptionUiState
 import com.example.software.ui.viewmodels.ImageDescriptionViewModel
 
 /**
- * SeekLight 图像描述主界面
- * 
- * 商业化设计 - 现代简洁风格
+ * SeekLight 主界面 - 商业化布局
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +101,6 @@ fun ImageDescriptionScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val promptLanguageState = rememberSaveable { mutableStateOf(PromptLanguage.CHINESE) }
     
-    // 显示错误消息
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let { message ->
             snackbarHostState.showSnackbar(message)
@@ -120,170 +108,614 @@ fun ImageDescriptionScreen(
         }
     }
     
-    Scaffold(
-        topBar = {
-            SeekLightTopBar(
-                isModelLoaded = uiState.isModelLoaded,
-                onNavigateToHistory = onNavigateToHistory
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                    shape = RoundedCornerShape(12.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        // 顶部渐变背景
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(280.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            GradientStart.copy(alpha = 0.08f),
+                            MaterialTheme.colorScheme.background
+                        )
+                    )
                 )
-            }
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
+        )
+        
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .statusBarsPadding()
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // 语言选择器
-            PromptLanguageSelector(promptLanguageState)
-
-            // 图片预览区域
-            ImagePreviewSection(
-                imageUri = uiState.selectedImageUri,
-                imageBitmap = uiState.selectedImageBitmap,
-                onImageSelected = viewModel::onImageSelected,
-                onClearImage = viewModel::clearImage,
-                isProcessing = uiState.isProcessing
-            )
-            
-            // 操作按钮区域
-            ActionButtonsSection(
-                hasImage = uiState.selectedImageBitmap != null,
-                isProcessing = uiState.isProcessing,
+            // 顶部栏
+            TopSection(
                 isModelLoaded = uiState.isModelLoaded,
-                isModelLoading = uiState.isModelLoading,
-                onDescribeImage = {
-                    viewModel.describeImage(prompt = promptLanguageState.value.prompt)
-                },
-                onCancelInference = viewModel::cancelInference,
-                onLoadModel = viewModel::loadModel
+                onNavigateToHistory = onNavigateToHistory
             )
             
-            // 性能指标
-            PerformanceIndicator(
-                metrics = uiState.performanceMetrics,
-                isVisible = uiState.performanceMetrics.totalTokens > 0 || uiState.isProcessing
+            // 主内容区
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp)
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // 图片上传卡片（核心区域）
+                ImageUploadCard(
+                    imageBitmap = uiState.selectedImageBitmap,
+                    isProcessing = uiState.isProcessing,
+                    onImageSelected = viewModel::onImageSelected,
+                    onClearImage = viewModel::clearImage
+                )
+                
+                Spacer(modifier = Modifier.height(20.dp))
+                
+                // 操作区域
+                ActionSection(
+                    promptLanguage = promptLanguageState,
+                    hasImage = uiState.selectedImageBitmap != null,
+                    isProcessing = uiState.isProcessing,
+                    isModelLoaded = uiState.isModelLoaded,
+                    onDescribeImage = {
+                        viewModel.describeImage(prompt = promptLanguageState.value.prompt)
+                    },
+                    onCancelInference = viewModel::cancelInference
+                )
+                
+                Spacer(modifier = Modifier.height(20.dp))
+                
+                // 结果区域
+                ResultSection(
+                    description = uiState.description,
+                    isProcessing = uiState.isProcessing,
+                    metrics = uiState.performanceMetrics,
+                    showMetrics = uiState.performanceMetrics.totalTokens > 0
+                )
+                
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+        
+        // Snackbar
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) { data ->
+            Snackbar(
+                snackbarData = data,
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                shape = RoundedCornerShape(12.dp)
             )
-            
-            // 描述结果
-            DescriptionCard(
-                description = uiState.description,
-                isStreaming = uiState.isProcessing
-            )
-            
-            // 底部空间
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
 /**
- * SeekLight 顶部栏
+ * 顶部区域
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SeekLightTopBar(
+private fun TopSection(
     isModelLoaded: Boolean,
     onNavigateToHistory: () -> Unit
 ) {
-    TopAppBar(
-        title = {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 品牌区域
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            // Logo
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(GradientStart, GradientEnd)
+                        )
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AutoAwesome,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            
+            Spacer(modifier = Modifier.width(14.dp))
+            
+            Column {
+                Text(
+                    text = "SeekLight",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(if (isModelLoaded) Success else MaterialTheme.colorScheme.outline)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = if (isModelLoaded) "AI 就绪" else "演示模式",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+        
+        // 记忆库入口
+        Surface(
+            onClick = onNavigateToHistory,
+            shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.surface,
+            shadowElevation = 2.dp
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.History,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "记忆库",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 图片上传卡片
+ */
+@Composable
+private fun ImageUploadCard(
+    imageBitmap: Bitmap?,
+    isProcessing: Boolean,
+    onImageSelected: (Uri) -> Unit,
+    onClearImage: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 12.dp,
+                shape = RoundedCornerShape(24.dp),
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+            ),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            if (imageBitmap != null) {
+                // 已选择图片
+                Image(
+                    bitmap = imageBitmap.asImageBitmap(),
+                    contentDescription = "选中的图片",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(24.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                
+                // 清除按钮
+                if (!isProcessing) {
+                    Surface(
+                        onClick = onClearImage,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(16.dp),
+                        shape = CircleShape,
+                        color = Color.Black.copy(alpha = 0.6f)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "清除",
+                            tint = Color.White,
+                            modifier = Modifier.padding(10.dp).size(20.dp)
+                        )
+                    }
+                }
+                
+                // 处理中遮罩
+                if (isProcessing) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier.size(48.dp),
+                                strokeWidth = 4.dp
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "AI 正在分析...",
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+                }
+            } else {
+                // 空状态 - 上传提示
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.radialGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                                    MaterialTheme.colorScheme.surface
+                                )
+                            )
+                        )
+                        .padding(32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    // 上传图标
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
+                            .border(
+                                width = 3.dp,
+                                brush = Brush.linearGradient(listOf(GradientStart, GradientEnd)),
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    Text(
+                        text = "点击上传图片",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Text(
+                        text = "支持 JPG、PNG、WebP 格式",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    
+                    Spacer(modifier = Modifier.height(28.dp))
+                    
+                    ImagePickerButton(
+                        onImageSelected = onImageSelected,
+                        modifier = Modifier.fillMaxWidth(0.6f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 操作区域
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ActionSection(
+    promptLanguage: MutableState<PromptLanguage>,
+    hasImage: Boolean,
+    isProcessing: Boolean,
+    isModelLoaded: Boolean,
+    onDescribeImage: () -> Unit,
+    onCancelInference: () -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            // 语言选择
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "输出语言",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium
+                )
+                
+                SingleChoiceSegmentedButtonRow {
+                    SegmentedButton(
+                        selected = promptLanguage.value == PromptLanguage.CHINESE,
+                        onClick = { promptLanguage.value = PromptLanguage.CHINESE },
+                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
+                    ) {
+                        Text("中文", style = MaterialTheme.typography.labelMedium)
+                    }
+                    SegmentedButton(
+                        selected = promptLanguage.value == PromptLanguage.ENGLISH,
+                        onClick = { promptLanguage.value = PromptLanguage.ENGLISH },
+                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
+                    ) {
+                        Text("English", style = MaterialTheme.typography.labelMedium)
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(20.dp))
+            
+            // 操作按钮
+            if (isProcessing) {
+                Button(
+                    onClick = onCancelInference,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Icon(Icons.Default.Stop, null, Modifier.size(20.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text("停止分析", fontWeight = FontWeight.SemiBold)
+                }
+            } else {
+                // 渐变主按钮
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(
+                            brush = if (hasImage) {
+                                Brush.horizontalGradient(listOf(GradientStart, GradientEnd))
+                            } else {
+                                Brush.horizontalGradient(
+                                    listOf(
+                                        MaterialTheme.colorScheme.surfaceVariant,
+                                        MaterialTheme.colorScheme.surfaceVariant
+                                    )
+                                )
+                            }
+                        )
+                        .clickable(enabled = hasImage, onClick = onDescribeImage),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.AutoAwesome,
+                            contentDescription = null,
+                            tint = if (hasImage) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(22.dp)
+                        )
+                        Spacer(Modifier.width(10.dp))
+                        Text(
+                            text = if (isModelLoaded) "开始分析" else "开始分析（演示）",
+                            color = if (hasImage) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            }
+            
+            // 提示信息
+            if (!isModelLoaded && hasImage && !isProcessing) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    Text(
+                        text = "MNN 模型未加载，将使用演示数据",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 结果区域
+ */
+@Composable
+private fun ResultSection(
+    description: String,
+    isProcessing: Boolean,
+    metrics: com.example.software.ui.viewmodels.PerformanceMetrics,
+    showMetrics: Boolean
+) {
+    // 性能指标（如果有）
+    AnimatedVisibility(
+        visible = showMetrics,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + slideOutVertically()
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                MetricItem(
+                    label = "Tokens",
+                    value = "${metrics.totalTokens}"
+                )
+                MetricItem(
+                    label = "速度",
+                    value = String.format("%.1f tok/s", metrics.tokensPerSecond)
+                )
+                MetricItem(
+                    label = "耗时",
+                    value = String.format("%.1fs", metrics.totalTimeMs / 1000.0)
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+    
+    // 描述结果
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // 品牌图标
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(
-                            brush = Brush.linearGradient(
-                                colors = listOf(GradientStart, GradientEnd)
-                            )
-                        ),
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.AutoAwesome,
                         contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(20.dp)
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(18.dp)
                     )
                 }
-                
-                Spacer(modifier = Modifier.width(12.dp))
-                
-                Column {
-                    Text(
-                        text = "SeekLight",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(6.dp)
-                                .clip(CircleShape)
-                                .background(
-                                    if (isModelLoaded) Success else MaterialTheme.colorScheme.outline
-                                )
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = if (isModelLoaded) "AI 就绪" else "演示模式",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = "AI 分析结果",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
-        },
-        actions = {
-            // 历史记录按钮
-            Surface(
-                onClick = onNavigateToHistory,
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                modifier = Modifier.padding(end = 4.dp)
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                    .padding(16.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.History,
-                        contentDescription = "历史记录",
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
+                if (description.isBlank() && !isProcessing) {
                     Text(
-                        text = "记忆库",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = "上传图片后点击「开始分析」按钮",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    Text(
+                        text = if (isProcessing && description.isBlank()) "正在生成..." else description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        lineHeight = 24.sp
                     )
                 }
             }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
+        }
+    }
+}
+
+@Composable
+private fun MetricItem(label: String, value: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
         )
-    )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
 }
 
 private enum class PromptLanguage(val label: String, val prompt: String) {
@@ -301,384 +733,4 @@ Tags: tag1, tag2, tag3, ..."""),
 请按以下格式输出：
 描述：[你的描述]
 标签：标签1, 标签2, 标签3, ...""")
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun PromptLanguageSelector(promptLanguage: MutableState<PromptLanguage>) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        val selected = promptLanguage.value
-        
-        FilterChip(
-            selected = selected == PromptLanguage.CHINESE,
-            onClick = { promptLanguage.value = PromptLanguage.CHINESE },
-            label = { Text("中文") },
-            leadingIcon = if (selected == PromptLanguage.CHINESE) {
-                { Icon(Icons.Outlined.Bolt, null, Modifier.size(16.dp)) }
-            } else null,
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ),
-            modifier = Modifier.weight(1f)
-        )
-        
-        FilterChip(
-            selected = selected == PromptLanguage.ENGLISH,
-            onClick = { promptLanguage.value = PromptLanguage.ENGLISH },
-            label = { Text("English") },
-            leadingIcon = if (selected == PromptLanguage.ENGLISH) {
-                { Icon(Icons.Outlined.Bolt, null, Modifier.size(16.dp)) }
-            } else null,
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ),
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-/**
- * 图片预览区域
- */
-@Composable
-private fun ImagePreviewSection(
-    imageUri: Uri?,
-    imageBitmap: Bitmap?,
-    onImageSelected: (Uri) -> Unit,
-    onClearImage: () -> Unit,
-    isProcessing: Boolean
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(4f / 3f)
-            .shadow(
-                elevation = 8.dp,
-                shape = CardShape,
-                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-            ),
-        shape = CardShape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            if (imageBitmap != null) {
-                // 显示选中的图片
-                Image(
-                    bitmap = imageBitmap.asImageBitmap(),
-                    contentDescription = "选中的图片",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CardShape),
-                    contentScale = ContentScale.Fit
-                )
-                
-                // 清除按钮
-                if (!isProcessing) {
-                    Surface(
-                        onClick = onClearImage,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(12.dp),
-                        shape = CircleShape,
-                        color = Color.Black.copy(alpha = 0.6f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "清除图片",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .size(20.dp)
-                        )
-                    }
-                }
-                
-                // 处理中遮罩
-                androidx.compose.animation.AnimatedVisibility(
-                    visible = isProcessing,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Black.copy(alpha = 0.2f),
-                                        Color.Black.copy(alpha = 0.5f)
-                                    )
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            // 脉冲动画加载指示器
-                            Box(
-                                modifier = Modifier
-                                    .size(72.dp)
-                                    .clip(CircleShape)
-                                    .background(Color.White.copy(alpha = 0.2f)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    color = Color.White,
-                                    modifier = Modifier.size(40.dp),
-                                    strokeWidth = 3.dp
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Text(
-                                text = "AI 正在理解图像...",
-                                color = Color.White,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-                    }
-                }
-            } else {
-                // 空状态 - 显示选择提示
-                ImagePlaceholder(onImageSelected = onImageSelected)
-            }
-        }
-    }
-}
-
-/**
- * 图片占位符（空状态）
- */
-@Composable
-private fun ImagePlaceholder(
-    onImageSelected: (Uri) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
-                    )
-                )
-            )
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // 渐变图标容器
-        Box(
-            modifier = Modifier
-                .size(88.dp)
-                .clip(RoundedCornerShape(24.dp))
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            GradientStart.copy(alpha = 0.15f),
-                            GradientEnd.copy(alpha = 0.15f)
-                        )
-                    )
-                )
-                .border(
-                    width = 2.dp,
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            GradientStart.copy(alpha = 0.3f),
-                            GradientEnd.copy(alpha = 0.3f)
-                        )
-                    ),
-                    shape = RoundedCornerShape(24.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Image,
-                contentDescription = null,
-                modifier = Modifier.size(44.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        
-        Text(
-            text = "上传图片开始分析",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        Text(
-            text = "支持 JPG、PNG、WebP 格式",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        
-        Spacer(modifier = Modifier.height(28.dp))
-        
-        // 选择按钮
-        ImagePickerButton(
-            onImageSelected = onImageSelected,
-            modifier = Modifier.fillMaxWidth(0.7f)
-        )
-    }
-}
-
-/**
- * 操作按钮区域
- */
-@Composable
-private fun ActionButtonsSection(
-    hasImage: Boolean,
-    isProcessing: Boolean,
-    isModelLoaded: Boolean,
-    isModelLoading: Boolean,
-    onDescribeImage: () -> Unit,
-    onCancelInference: () -> Unit,
-    onLoadModel: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // 主操作按钮
-        if (isProcessing) {
-            // 取消按钮
-            Button(
-                onClick = onCancelInference,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
-                ),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Stop,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "停止生成",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        } else {
-            // 生成描述按钮（带渐变效果）
-            SeekLightGradientButton(
-                onClick = onDescribeImage,
-                text = if (isModelLoaded) "开始分析" else "开始分析（演示）",
-                enabled = hasImage,
-                icon = Icons.Default.AutoAwesome,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        
-        // 模型状态提示
-        AnimatedVisibility(
-            visible = !isModelLoaded && hasImage && !isProcessing,
-            enter = slideInVertically() + fadeIn(),
-            exit = slideOutVertically() + fadeOut()
-        ) {
-            ModelStatusCard(
-                isModelLoading = isModelLoading,
-                onLoadModel = onLoadModel
-            )
-        }
-    }
-}
-
-/**
- * 模型状态卡片
- */
-@Composable
-private fun ModelStatusCard(
-    isModelLoading: Boolean,
-    onLoadModel: () -> Unit
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // 图标
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
-            ) {
-                if (isModelLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.width(14.dp))
-            
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = if (isModelLoading) "正在检查模型..." else "演示模式",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = if (isModelLoading) {
-                        "请稍候"
-                    } else {
-                        "MNN 模型未加载，可直接体验演示效果"
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            if (!isModelLoading) {
-                SeekLightOutlinedButton(
-                    onClick = onLoadModel,
-                    text = "检查"
-                )
-            }
-        }
-    }
 }
