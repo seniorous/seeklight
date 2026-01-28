@@ -11,6 +11,7 @@ import com.example.software.data.repository.ImageMemoryRepository
 import com.example.software.ui.screens.HistoryScreen
 import com.example.software.ui.screens.ImageDescriptionScreen
 import com.example.software.ui.screens.MemoryDetailScreen
+import com.example.software.ui.screens.SplashScreen
 import com.example.software.ui.viewmodels.HistoryViewModel
 import com.example.software.ui.viewmodels.ImageDescriptionViewModel
 
@@ -18,6 +19,9 @@ import com.example.software.ui.viewmodels.ImageDescriptionViewModel
  * 导航路由定义
  */
 sealed class Screen(val route: String) {
+    /** 启动封面 */
+    data object Splash : Screen("splash")
+    
     /** 主页 - 图像描述 */
     data object Home : Screen("home")
     
@@ -43,9 +47,20 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route,
+        startDestination = Screen.Splash.route,
         modifier = modifier
     ) {
+        // 启动封面
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                onSplashComplete = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
         // 主页
         composable(Screen.Home.route) {
             ImageDescriptionScreen(

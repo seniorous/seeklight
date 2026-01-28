@@ -5,6 +5,18 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+// 版本号管理
+object AppVersion {
+    const val MAJOR = 1        // 主版本号：重大更新
+    const val MINOR = 0        // 次版本号：功能更新
+    const val PATCH = 0        // 补丁版本：Bug 修复
+    const val BUILD = 1        // 构建号：每次构建递增
+    
+    val code: Int get() = MAJOR * 10000 + MINOR * 100 + PATCH
+    val name: String get() = "$MAJOR.$MINOR.$PATCH"
+    val full: String get() = "$MAJOR.$MINOR.$PATCH ($BUILD)"
+}
+
 android {
     namespace = "com.example.software"
     compileSdk {
@@ -15,8 +27,15 @@ android {
         applicationId = "com.example.software"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = AppVersion.code
+        versionName = AppVersion.name
+        
+        // 将版本信息传递到 BuildConfig
+        buildConfigField("String", "VERSION_FULL", "\"${AppVersion.full}\"")
+        buildConfigField("int", "VERSION_MAJOR", "${AppVersion.MAJOR}")
+        buildConfigField("int", "VERSION_MINOR", "${AppVersion.MINOR}")
+        buildConfigField("int", "VERSION_PATCH", "${AppVersion.PATCH}")
+        buildConfigField("int", "VERSION_BUILD", "${AppVersion.BUILD}")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,6 +63,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     
     // JNI 库目录配置

@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">software</string>
+    <string name="app_name">SeekLight</string>
+    <string name="app_slogan">AI 图像记忆库</string>
+    <string name="app_description">智能识别，永久记忆</string>
 </resources>
