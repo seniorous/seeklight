@@ -176,13 +176,13 @@ class SearchUseCase(
         
         // 关键词匹配
         return tagFiltered.mapNotNull { memory ->
-            val descriptionMatch = memory.description.contains(query, ignoreCase = true)
+            val descriptionMatch = memory.getSearchableText().contains(query, ignoreCase = true)
             val tagMatch = memory.tags.any { it.contains(query, ignoreCase = true) }
             
             if (descriptionMatch || tagMatch) {
                 // 简单评分：完全匹配 > 部分匹配
                 val score = when {
-                    memory.description.equals(query, ignoreCase = true) -> 1.0f
+                    memory.getSearchableText().equals(query, ignoreCase = true) -> 1.0f
                     memory.tags.any { it.equals(query, ignoreCase = true) } -> 0.9f
                     descriptionMatch && tagMatch -> 0.8f
                     descriptionMatch -> 0.7f

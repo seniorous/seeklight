@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -81,6 +82,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.software.ui.components.ImagePickerButton
 import com.example.software.ui.components.PerformanceIndicator
 import com.example.software.ui.theme.Error
@@ -96,7 +98,8 @@ import com.example.software.ui.viewmodels.ImageDescriptionViewModel
 @Composable
 fun ImageDescriptionScreen(
     viewModel: ImageDescriptionViewModel = viewModel(),
-    onNavigateToHistory: () -> Unit = {}
+    onNavigateToHistory: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -140,7 +143,8 @@ fun ImageDescriptionScreen(
                 isModelLoaded = uiState.isModelLoaded,
                 isModelLoading = uiState.isModelLoading,
                 onConfigureModel = viewModel::configureModel,
-                onNavigateToHistory = onNavigateToHistory
+                onNavigateToHistory = onNavigateToHistory,
+                onNavigateToSettings = onNavigateToSettings
             )
             
             // 主内容区
@@ -148,6 +152,18 @@ fun ImageDescriptionScreen(
                 modifier = Modifier.padding(horizontal = 20.dp)
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
+
+                HeroSection(
+                    recentImages = uiState.recentMemories.map { it.imageUri },
+                    onPrimaryAction = {
+                        if (uiState.selectedImageBitmap == null) {
+                            // 触发上传按钮逻辑由 ImageUploadCard 内部处理
+                        }
+                    },
+                    onSecondaryAction = onNavigateToHistory
+                )
+                
+                Spacer(modifier = Modifier.height(20.dp))
                 
                 // 图片上传卡片（核心区域）
                 ImageUploadCard(
@@ -175,7 +191,7 @@ fun ImageDescriptionScreen(
                 
                 // 结果区域
                 ResultSection(
-                    description = uiState.description,
+                    summary = uiState.summary,
                     isProcessing = uiState.isProcessing,
                     metrics = uiState.performanceMetrics,
                     showMetrics = uiState.performanceMetrics.totalTokens > 0
@@ -208,17 +224,15 @@ private fun TopSection(
     isModelLoaded: Boolean,
     isModelLoading: Boolean,
     onConfigureModel: () -> Unit,
-    onNavigateToHistory: () -> Unit
+    onNavigateToHistory: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
     Column {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {
-            // 品牌区域
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // Logo
                 Box(
@@ -244,7 +258,7 @@ private fun TopSection(
                 
                 Column {
                     Text(
-                        text = "SeekLight",
+                        text = "SeekLight 记忆馆",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp
@@ -258,7 +272,7 @@ private fun TopSection(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = if (isModelLoaded) "AI 就绪" else "未配置",
+                            text = if (isModelLoaded) "AI 已就绪" else "未配置",
                             style = MaterialTheme.typography.bodySmall,
                             color = if (isModelLoaded) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error
                         )
@@ -266,36 +280,67 @@ private fun TopSection(
                 }
             }
             
-            // 记忆库入口
-            Surface(
-                onClick = onNavigateToHistory,
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surface,
-                shadowElevation = 2.dp
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Surface(
+                    onClick = onNavigateToHistory,
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    shadowElevation = 2.dp,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.History,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "记忆库",
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.History,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "记忆库",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+                
+                Surface(
+                    onClick = onNavigateToSettings,
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = "设置",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "设置",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
@@ -370,6 +415,163 @@ private fun TopSection(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+/**
+ * 主页英雄区
+ */
+@Composable
+private fun HeroSection(
+    recentImages: List<String>,
+    onPrimaryAction: () -> Unit,
+    onSecondaryAction: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(
+            modifier = Modifier.weight(0.58f)
+        ) {
+            Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = MaterialTheme.colorScheme.tertiaryContainer
+            ) {
+                Text(
+                    text = "暖心记忆 · 视觉归档",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = "把生活的香气\n装进你的记忆菜单",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                lineHeight = 34.sp
+            )
+            
+            Spacer(modifier = Modifier.height(10.dp))
+            
+            Text(
+                text = "用温暖色调记录每一张照片的味道与情绪，随时按关键词找回你的故事。",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Row {
+                Button(
+                    onClick = onPrimaryAction,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    shape = RoundedCornerShape(14.dp)
+                ) {
+                    Text("开始记录", fontWeight = FontWeight.SemiBold, color = Color.White)
+                }
+                
+                Spacer(modifier = Modifier.width(10.dp))
+                
+                Surface(
+                    onClick = onSecondaryAction,
+                    shape = RoundedCornerShape(14.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                ) {
+                    Text(
+                        text = "浏览记忆",
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        }
+        
+        Column(
+            modifier = Modifier
+                .weight(0.42f)
+                .padding(start = 14.dp)
+        ) {
+            val images = recentImages.filter { it.isNotBlank() }.take(4)
+            val slots = List(4) { index -> images.getOrNull(index) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                WarmImageTile(
+                    modifier = Modifier.weight(1f),
+                    tint = MaterialTheme.colorScheme.primaryContainer,
+                    imageUri = slots[0]
+                )
+                WarmImageTile(
+                    modifier = Modifier.weight(1f),
+                    tint = MaterialTheme.colorScheme.tertiaryContainer,
+                    imageUri = slots[1]
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                WarmImageTile(
+                    modifier = Modifier.weight(1f),
+                    tint = MaterialTheme.colorScheme.surfaceVariant,
+                    imageUri = slots[2]
+                )
+                WarmImageTile(
+                    modifier = Modifier.weight(1f),
+                    tint = MaterialTheme.colorScheme.secondaryContainer,
+                    imageUri = slots[3]
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WarmImageTile(
+    modifier: Modifier,
+    tint: Color,
+    imageUri: String?
+) {
+    Card(
+        modifier = modifier
+            .aspectRatio(1f)
+            .shadow(6.dp, RoundedCornerShape(16.dp)),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = tint)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (!imageUri.isNullOrBlank()) {
+                AsyncImage(
+                    model = imageUri,
+                    contentDescription = "最近记忆",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.Image,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(22.dp)
+                )
             }
         }
     }
@@ -651,7 +853,7 @@ private fun ActionSection(
  */
 @Composable
 private fun ResultSection(
-    description: String,
+    summary: String,
     isProcessing: Boolean,
     metrics: com.example.software.ui.viewmodels.PerformanceMetrics,
     showMetrics: Boolean
@@ -734,14 +936,23 @@ private fun ResultSection(
             
             Spacer(modifier = Modifier.height(16.dp))
             
-            Box(
+            // 摘要部分
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
                     .padding(16.dp)
             ) {
-                if (description.isBlank() && !isProcessing) {
+                Text(
+                    text = "摘要：",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                
+                if (summary.isBlank() && !isProcessing) {
                     Text(
                         text = "上传图片后点击「开始分析」按钮",
                         style = MaterialTheme.typography.bodyMedium,
@@ -751,13 +962,14 @@ private fun ResultSection(
                     )
                 } else {
                     Text(
-                        text = if (isProcessing && description.isBlank()) "正在生成..." else description,
+                        text = if (isProcessing && summary.isBlank()) "正在生成..." else summary,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         lineHeight = 24.sp
                     )
                 }
             }
+
         }
     }
 }
@@ -780,18 +992,70 @@ private fun MetricItem(label: String, value: String) {
 }
 
 private enum class PromptLanguage(val label: String, val prompt: String) {
-    ENGLISH("English", """Analyze this image and provide:
-1. A brief description (1-2 sentences)
-2. Tags: list key objects, scenes, colors, people, food, animals, activities visible in the image
+    ENGLISH(
+        "English",
+        """# Role
+You are a professional "visual memory archivist". Your task is to transform the input image into deeply structured memory data. You must not only recognize objects, but also capture the mood, unique visual features, and potential narrative.
 
-Format your response as:
-Description: [your description]
-Tags: tag1, tag2, tag3, ..."""),
-    CHINESE("中文", """分析这张图片，提供以下信息：
-1. 简短描述（1-2句话）
-2. 标签：列出图片中可见的主要物体、场景、颜色、人物、食物、动物、活动等
+# Goals
+1. Tagging: Extract multi-dimensional keywords including objects, scenes, actions, time.
+2. Characterization: Analyze lighting, composition, dominant colors, and unique details.
+3. Memory Anchors: Generate natural language hooks for future retrieval.
 
-请按以下格式输出：
-描述：[你的描述]
-标签：标签1, 标签2, 标签3, ...""")
+# Output Format
+Output STRICT JSON only. Do not include any text outside JSON. Schema:
+
+{
+  "summary": "A concise description within 30 Chinese characters",
+  "tags": {
+    "objects": ["object1", "object2"],
+    "scene": ["scene type", "specific place"],
+    "action": ["action"],
+    "time_context": ["time", "season", "festival"]
+  },
+  "visual_features": {
+    "dominant_colors": ["color1", "color2"],
+    "lighting_mood": "lighting mood",
+    "composition": "composition style"
+  },
+  "memory_extraction": {
+    "ocr_text": "extract text if any, otherwise empty",
+    "narrative_caption": "around 100 Chinese characters, with details and interactions",
+    "unique_identifier": "the most unique or eye-catching detail"
+  }
+}"""
+    ),
+    CHINESE(
+        "中文",
+        """# Role
+你是一个专业的“视觉记忆档案员”。你的任务是将输入的图片转化为深度结构化的记忆数据。你需要不仅仅识别物体，还要捕捉图片中的氛围、独特的视觉特征以及潜在的故事性。
+
+# Goals
+1. 标签化 (Tagging): 提取多维度的关键词，包括物体、场景、动作、时间。
+2. 特征化 (Characterization): 分析图片的光影、构图、主要色调以及独特细节。
+3. 记忆锚点 (Memory Anchors): 生成用于未来检索的“记忆钩子”。
+
+# Output Format
+请严格以 JSON 格式输出，不要包含任何 JSON 以外文字。Schema:
+
+{
+  "summary": "一句简短、精准的图片描述（30字以内），用于列表展示",
+  "tags": {
+    "objects": ["物体1", "物体2", "..."],
+    "scene": ["场景类型", "具体的地点特征"],
+    "action": ["正在发生的动作"],
+    "time_context": ["推测的时间", "季节", "节日"]
+  },
+  "visual_features": {
+    "dominant_colors": ["主要颜色1", "主要颜色2"],
+    "lighting_mood": "光影氛围 (e.g., 赛博朋克, 温暖午后, 阴郁)",
+    "composition": "构图风格 (e.g., 特写, 广角, 对称)"
+  },
+  "memory_extraction": {
+    "ocr_text": "如果图中有文字，请在此提取，无则留空",
+    "narrative_caption": "一段详实的描述（100字左右），包含画面细节、人物表情、环境互动，用于生成Embedding向量。",
+    "unique_identifier": "画面中最独特、最反直觉或最显眼的一个细节"
+  }
+}"""
+    )
 }

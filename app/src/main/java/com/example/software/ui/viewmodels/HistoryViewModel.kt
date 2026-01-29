@@ -145,8 +145,8 @@ class HistoryViewModel(
         // 关键词筛选（降级模式）
         if (query.isNotBlank()) {
             filtered = filtered.filter { memory ->
-                memory.description.contains(query, ignoreCase = true) ||
-                memory.tags.any { it.contains(query, ignoreCase = true) }
+                memory.getSearchableText().contains(query, ignoreCase = true) ||
+                    memory.tags.any { it.contains(query, ignoreCase = true) }
             }
         }
         
@@ -194,8 +194,8 @@ class HistoryViewModel(
                 AppLog.e(TAG, "Search failed: ${e.message}", e)
                 // 降级到简单搜索
                 val filtered = allMemories.filter { memory ->
-                    memory.description.contains(query, ignoreCase = true) ||
-                    memory.tags.any { it.contains(query, ignoreCase = true) }
+                    memory.getSearchableText().contains(query, ignoreCase = true) ||
+                        memory.tags.any { it.contains(query, ignoreCase = true) }
                 }
                 _uiState.update { 
                     it.copy(

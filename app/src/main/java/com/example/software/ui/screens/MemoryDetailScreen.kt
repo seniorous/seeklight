@@ -90,8 +90,9 @@ fun MemoryDetailScreen(
                 },
                 actions = {
                     memory?.let {
+                        val copyText = if (it.narrative.isNotBlank()) it.narrative else it.description
                         IconButton(onClick = {
-                            clipboardManager.setText(AnnotatedString(it.description))
+                            clipboardManager.setText(AnnotatedString(copyText))
                         }) {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
@@ -191,34 +192,7 @@ private fun MemoryDetailContent(
         // 性能指标
         PerformanceMetricsCard(memory = memory)
         
-        // 提示词
-        if (memory.promptUsed.isNotBlank()) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(
-                        text = "提示词",
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = memory.promptUsed,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-        }
-        
-        // 描述内容
+        // 结构化描述
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
@@ -230,14 +204,14 @@ private fun MemoryDetailContent(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "AI 描述",
+                    text = "记忆摘要",
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = memory.description,
+                    text = memory.summary.ifBlank { memory.getDescriptionSummary(80) },
                     style = MaterialTheme.typography.bodyMedium,
                     lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.5
                 )

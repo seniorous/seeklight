@@ -6,17 +6,25 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.software.ai.CloudInferenceClient
 import com.example.software.ai.MnnLlmBridge
 import com.example.software.ai.ModelManager
+import com.example.software.data.local.CloudSettingsStore
 import com.example.software.data.local.entity.ImageMemory
 import com.example.software.data.repository.ImageMemoryRepository
 import com.example.software.util.AppLog
+import com.example.software.util.MemoryJsonParser
+import com.example.software.util.StructuredMemory
+import com.example.software.util.TagGroups
+import com.example.software.util.VisualFeatures
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -64,18 +72,43 @@ class BatchImportViewModel(application: Application) : AndroidViewModel(applicat
     private val logTag = "BatchImportVM"
     private val modelManager = ModelManager(application)
     private val mnnBridge = MnnLlmBridge.getInstance()
+    private val cloudClient = CloudInferenceClient()
+    private val cloudSettingsStore = CloudSettingsStore(application)
     
     private var repository: ImageMemoryRepository? = null
     private var importJob: Job? = null
     
-    // 中文提示词
-    private val prompt = """分析这张图片，提供以下信息：
-1. 简短描述（1-2句话）
-2. 标签：列出图片中可见的主要物体、场景、颜色、人物、食物、动物、活动等
+    // 结构化提示词 - 统一 JSON Schema
+    private val prompt = """# Role
+你是一个专业的“视觉记忆档案员”。你的任务是将输入的图片转化为深度结构化的记忆数据。你需要不仅仅识别物体，还要捕捉图片中的氛围、独特的视觉特征以及潜在的故事性。
 
-请按以下格式输出：
-描述：[你的描述]
-标签：标签1, 标签2, 标签3, ..."""
+# Goals
+1. 标签化 (Tagging): 提取多维度的关键词，包括物体、场景、动作、时间。
+2. 特征化 (Characterization): 分析图片的光影、构图、主要色调以及独特细节。
+3. 记忆锚点 (Memory Anchors): 生成用于未来检索的“记忆钩子”。
+
+# Output Format
+请严格以 JSON 格式输出，不要包含任何 JSON 以外文字。Schema:
+
+{
+  "summary": "一句简短、精准的图片描述（30字以内），用于列表展示",
+  "tags": {
+    "objects": ["物体1", "物体2", "..."],
+    "scene": ["场景类型", "具体的地点特征"],
+    "action": ["正在发生的动作"],
+    "time_context": ["推测的时间", "季节", "节日"]
+  },
+  "visual_features": {
+    "dominant_colors": ["主要颜色1", "主要颜色2"],
+    "lighting_mood": "光影氛围 (e.g., 赛博朋克, 温暖午后, 阴郁)",
+    "composition": "构图风格 (e.g., 特写, 广角, 对称)"
+  },
+  "memory_extraction": {
+    "ocr_text": "如果图中有文字，请在此提取，无则留空",
+    "narrative_caption": "一段详实的描述（100字左右），包含画面细节、人物表情、环境互动，用于生成Embedding向量。",
+    "unique_identifier": "画面中最独特、最反直觉或最显眼的一个细节"
+  }
+}"""
     
     private val _uiState = MutableStateFlow(BatchImportUiState())
     val uiState: StateFlow<BatchImportUiState> = _uiState.asStateFlow()
@@ -225,56 +258,92 @@ class BatchImportViewModel(application: Application) : AndroidViewModel(applicat
             state.copy(tasks = newTasks)
         }
         
-        // 4. 执行推理
-        val descriptionBuilder = StringBuilder()
-        var tokenCount = 0
-        
-        mnnBridge.generateStream(
-            prompt = prompt,
-            imagePath = imagePath,
-            maxTokens = 256
-        ) { token ->
-            descriptionBuilder.append(token)
-            tokenCount++
-            
-            // 更新进度
-            val progress = 0.3f + (tokenCount.toFloat() / 256f) * 0.6f
+        val settings = cloudSettingsStore.load()
+        val cloudOutput = if (!settings.privacyMode) {
+            tryCloudInference(imagePath)
+        } else {
+            null
+        }
+
+        if (cloudOutput != null) {
+            val parsed = MemoryJsonParser.parse(cloudOutput)
+            val normalized = normalizeStructured(parsed.structured, parsed.fallbackSummary, parsed.fallbackNarrative)
+            saveMemory(
+                uri = uri,
+                imagePath = imagePath,
+                structured = normalized,
+                tokensGenerated = 0,
+                inferenceTimeMs = 0
+            )
             _uiState.update { state ->
                 val newTasks = state.tasks.toMutableList()
                 newTasks[index] = state.tasks[index].copy(
-                    progress = progress.coerceAtMost(0.9f),
-                    description = descriptionBuilder.toString()
+                    status = ImportStatus.COMPLETED,
+                    progress = 1f,
+                    description = normalized.summary,
+                    tags = normalized.allTags
                 )
-                state.copy(tasks = newTasks)
+                state.copy(
+                    tasks = newTasks,
+                    completedCount = state.completedCount + 1
+                )
             }
-        }.collect { streamToken ->
-            when (streamToken) {
-                is MnnLlmBridge.StreamToken.Complete -> {
-                    // 5. 解析结果
-                    val (description, tags) = parseDescriptionAndTags(descriptionBuilder.toString())
-                    
-                    // 6. 保存到数据库
-                    saveMemory(uri, imagePath, description, tags, streamToken.totalTokens, streamToken.decodeTimeMs)
-                    
-                    // 7. 更新状态
-                    _uiState.update { state ->
-                        val newTasks = state.tasks.toMutableList()
-                        newTasks[index] = state.tasks[index].copy(
-                            status = ImportStatus.COMPLETED,
-                            progress = 1f,
-                            description = description,
-                            tags = tags
+        } else {
+            // 端侧推理
+            val descriptionBuilder = StringBuilder()
+            var tokenCount = 0
+            mnnBridge.generateStream(
+                prompt = prompt,
+                imagePath = imagePath,
+                maxTokens = 256
+            ) { token ->
+                descriptionBuilder.append(token)
+                tokenCount++
+                
+                // 更新进度
+                val progress = 0.3f + (tokenCount.toFloat() / 256f) * 0.6f
+                _uiState.update { state ->
+                    val newTasks = state.tasks.toMutableList()
+                    newTasks[index] = state.tasks[index].copy(
+                        progress = progress.coerceAtMost(0.9f),
+                        description = descriptionBuilder.toString()
+                    )
+                    state.copy(tasks = newTasks)
+                }
+            }.collect { streamToken ->
+                when (streamToken) {
+                    is MnnLlmBridge.StreamToken.Complete -> {
+                        val rawOutput = descriptionBuilder.toString()
+                        val parsed = MemoryJsonParser.parse(rawOutput)
+                        val normalized = normalizeStructured(parsed.structured, parsed.fallbackSummary, parsed.fallbackNarrative)
+                        
+                        saveMemory(
+                            uri = uri,
+                            imagePath = imagePath,
+                            structured = normalized,
+                            tokensGenerated = streamToken.totalTokens,
+                            inferenceTimeMs = streamToken.decodeTimeMs
                         )
-                        state.copy(
-                            tasks = newTasks,
-                            completedCount = state.completedCount + 1
-                        )
+                        
+                        _uiState.update { state ->
+                            val newTasks = state.tasks.toMutableList()
+                            newTasks[index] = state.tasks[index].copy(
+                                status = ImportStatus.COMPLETED,
+                                progress = 1f,
+                                description = normalized.summary,
+                                tags = normalized.allTags
+                            )
+                            state.copy(
+                                tasks = newTasks,
+                                completedCount = state.completedCount + 1
+                            )
+                        }
                     }
+                    is MnnLlmBridge.StreamToken.Error -> {
+                        throw Exception(streamToken.message)
+                    }
+                    else -> {}
                 }
-                is MnnLlmBridge.StreamToken.Error -> {
-                    throw Exception(streamToken.message)
-                }
-                else -> {}
             }
         }
         
@@ -325,8 +394,7 @@ class BatchImportViewModel(application: Application) : AndroidViewModel(applicat
     private suspend fun saveMemory(
         uri: Uri,
         imagePath: String,
-        description: String,
-        tags: List<String>,
+        structured: NormalizedMemory,
         tokensGenerated: Int,
         inferenceTimeMs: Long
     ) {
@@ -335,9 +403,20 @@ class BatchImportViewModel(application: Application) : AndroidViewModel(applicat
         val memory = ImageMemory(
             imagePath = imagePath,
             imageUri = uri.toString(),
-            description = description,
-            tags = tags,
-            tagsString = tags.joinToString(","),
+            description = structured.narrative,
+            summary = structured.summary,
+            narrative = structured.narrative,
+            ocrText = structured.ocrText,
+            uniqueIdentifier = structured.uniqueIdentifier,
+            dominantColors = structured.visualFeatures.dominantColors,
+            lightingMood = structured.visualFeatures.lightingMood,
+            composition = structured.visualFeatures.composition,
+            tags = structured.allTags,
+            tagsString = structured.allTags.joinToString(","),
+            tagObjects = structured.tags.objects,
+            tagScene = structured.tags.scene,
+            tagAction = structured.tags.action,
+            tagTimeContext = structured.tags.timeContext,
             promptUsed = prompt,
             tokensGenerated = tokensGenerated,
             inferenceTimeMs = inferenceTimeMs,
@@ -347,43 +426,46 @@ class BatchImportViewModel(application: Application) : AndroidViewModel(applicat
         
         repo.saveMemory(memory)
     }
-    
-    /**
-     * 解析描述和标签
-     */
-    private fun parseDescriptionAndTags(rawOutput: String): Pair<String, List<String>> {
-        val lines = rawOutput.lines()
-        var description = rawOutput
-        val tags = mutableListOf<String>()
-        
-        for (line in lines) {
-            val trimmed = line.trim()
-            when {
-                trimmed.startsWith("Description:", ignoreCase = true) -> {
-                    description = trimmed.substringAfter(":").trim()
-                }
-                trimmed.startsWith("描述：") || trimmed.startsWith("描述:") -> {
-                    description = trimmed.substringAfter("：").substringAfter(":").trim()
-                }
-                trimmed.startsWith("Tags:", ignoreCase = true) -> {
-                    val tagsPart = trimmed.substringAfter(":").trim()
-                    tags.addAll(parseTags(tagsPart))
-                }
-                trimmed.startsWith("标签：") || trimmed.startsWith("标签:") -> {
-                    val tagsPart = trimmed.substringAfter("：").substringAfter(":").trim()
-                    tags.addAll(parseTags(tagsPart))
-                }
-            }
-        }
-        
-        return Pair(description, tags.distinct().take(15))
+
+    private fun normalizeStructured(
+        structured: StructuredMemory?,
+        fallbackSummary: String,
+        fallbackNarrative: String
+    ): NormalizedMemory {
+        val summary = structured?.summary?.ifBlank { fallbackSummary } ?: fallbackSummary
+        val narrative = structured?.memoryExtraction?.narrativeCaption?.ifBlank { fallbackNarrative } ?: fallbackNarrative
+        val tags = structured?.tags ?: TagGroups(emptyList(), emptyList(), emptyList(), emptyList())
+        val visual = structured?.visualFeatures ?: VisualFeatures(emptyList(), "", "")
+        val ocrText = structured?.memoryExtraction?.ocrText ?: ""
+        val uniqueIdentifier = structured?.memoryExtraction?.uniqueIdentifier ?: ""
+        val allTags = structured?.allTags() ?: emptyList()
+
+        return NormalizedMemory(
+            summary = summary,
+            narrative = narrative,
+            tags = tags,
+            visualFeatures = visual,
+            ocrText = ocrText,
+            uniqueIdentifier = uniqueIdentifier,
+            allTags = allTags
+        )
     }
-    
-    private fun parseTags(tagsPart: String): List<String> {
-        return tagsPart
-            .split(",", "，", "、", " ")
-            .map { it.trim() }
-            .filter { it.isNotBlank() && it.length > 1 }
+
+    private suspend fun tryCloudInference(imagePath: String): String? {
+        val settings = cloudSettingsStore.load()
+        // 测试阶段：跳过连通性预检查，直接尝试云端请求
+        var attempt = 0
+        while (attempt < 3) {
+            attempt += 1
+            val result = withContext(Dispatchers.IO) {
+                cloudClient.requestCompletion(settings, prompt, imagePath)
+            }
+            if (result.isSuccess) {
+                return result.getOrNull()
+            }
+            AppLog.w(logTag, "Cloud attempt $attempt failed: ${result.exceptionOrNull()?.message}")
+        }
+        return null
     }
     
     /**

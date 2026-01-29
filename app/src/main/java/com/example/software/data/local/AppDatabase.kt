@@ -20,7 +20,7 @@ import com.example.software.data.local.entity.TagsConverter
  */
 @Database(
     entities = [ImageMemory::class, MemoryEmbedding::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(TagsConverter::class)
@@ -66,6 +66,26 @@ abstract class AppDatabase : RoomDatabase() {
         }
         
         /**
+         * 数据库迁移：版本 3 → 4
+         * 为结构化记忆输出新增字段
+         */
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN summary TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN narrative TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN ocrText TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN uniqueIdentifier TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN dominantColors TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN lightingMood TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN composition TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN tagObjects TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN tagScene TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN tagAction TEXT NOT NULL DEFAULT ''")
+                database.execSQL("ALTER TABLE image_memories ADD COLUMN tagTimeContext TEXT NOT NULL DEFAULT ''")
+            }
+        }
+        
+        /**
          * 获取数据库单例
          */
         fun getInstance(context: Context): AppDatabase {
@@ -80,7 +100,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_2_3)
+                .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
                 .fallbackToDestructiveMigration() // 开发阶段简化迁移
                 .build()
         }

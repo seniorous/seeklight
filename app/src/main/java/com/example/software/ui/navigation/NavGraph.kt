@@ -14,6 +14,7 @@ import com.example.software.ui.screens.BatchImportScreen
 import com.example.software.ui.screens.HistoryScreen
 import com.example.software.ui.screens.ImageDescriptionScreen
 import com.example.software.ui.screens.MemoryDetailScreen
+import com.example.software.ui.screens.SettingsScreen
 import com.example.software.ui.screens.SplashScreen
 import com.example.software.ui.screens.TagManagementScreen
 import com.example.software.ui.viewmodels.BatchImportViewModel
@@ -39,6 +40,9 @@ sealed class Screen(val route: String) {
     
     /** 标签管理 */
     data object TagManagement : Screen("tag_management")
+    
+    /** 设置 */
+    data object Settings : Screen("settings")
     
     /** 记忆详情 */
     data object MemoryDetail : Screen("memory/{memoryId}") {
@@ -79,6 +83,9 @@ fun NavGraph(
                 viewModel = imageDescriptionViewModel,
                 onNavigateToHistory = {
                     navController.navigate(Screen.History.route)
+                },
+                onNavigateToSettings = {
+                    navController.navigate(Screen.Settings.route)
                 }
             )
         }
@@ -139,6 +146,13 @@ fun NavGraph(
                     historyViewModel.selectTag(tag)
                     navController.popBackStack()
                 }
+            )
+        }
+        
+        // 设置
+        composable(Screen.Settings.route) {
+            SettingsScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
         

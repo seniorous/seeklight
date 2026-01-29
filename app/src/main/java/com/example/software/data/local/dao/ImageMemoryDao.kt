@@ -81,13 +81,27 @@ interface ImageMemoryDao {
      * 搜索描述中包含关键词的记忆
      * @param keyword 搜索关键词
      */
-    @Query("SELECT * FROM image_memories WHERE description LIKE '%' || :keyword || '%' ORDER BY createdAt DESC")
+    @Query("""
+        SELECT * FROM image_memories
+        WHERE summary LIKE '%' || :keyword || '%'
+           OR narrative LIKE '%' || :keyword || '%'
+           OR description LIKE '%' || :keyword || '%'
+           OR tagsString LIKE '%' || :keyword || '%'
+        ORDER BY createdAt DESC
+    """)
     fun searchByDescription(keyword: String): Flow<List<ImageMemory>>
     
     /**
      * 搜索描述中包含关键词的记忆（一次性查询）
      */
-    @Query("SELECT * FROM image_memories WHERE description LIKE '%' || :keyword || '%' ORDER BY createdAt DESC")
+    @Query("""
+        SELECT * FROM image_memories
+        WHERE summary LIKE '%' || :keyword || '%'
+           OR narrative LIKE '%' || :keyword || '%'
+           OR description LIKE '%' || :keyword || '%'
+           OR tagsString LIKE '%' || :keyword || '%'
+        ORDER BY createdAt DESC
+    """)
     suspend fun searchByDescriptionOnce(keyword: String): List<ImageMemory>
     
     /**

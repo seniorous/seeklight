@@ -7,23 +7,32 @@ import android.net.Uri
 import android.util.Base64
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.software.ai.CloudInferenceClient
 import com.example.software.ai.ImageProcessor
 import com.example.software.ai.MnnLlmBridge
 import com.example.software.ai.ModelManager
 import com.example.software.ai.QwenVLInference
 import com.example.software.ai.TextEmbeddingBridge
+import com.example.software.data.local.CloudSettingsStore
 import com.example.software.data.local.entity.ImageMemory
 import com.example.software.data.local.entity.MemoryEmbedding
 import com.example.software.data.repository.EmbeddingRepository
 import com.example.software.data.repository.ImageMemoryRepository
 import com.example.software.util.AppLog
+import com.example.software.util.MemoryJsonParser
+import com.example.software.util.StructuredMemory
+import com.example.software.util.TagGroups
+import com.example.software.util.VisualFeatures
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.atomic.AtomicInteger
@@ -43,6 +52,8 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     private val inferenceCounter = AtomicInteger(0)
     private var activeInferenceId: Int? = null
     private val logTag = "ImageDescriptionVM"
+    private val cloudClient = CloudInferenceClient()
+    private val cloudSettingsStore = CloudSettingsStore(application)
     
     // 推理任务
     private var inferenceJob: Job? = null
@@ -51,6 +62,7 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     private var repository: ImageMemoryRepository? = null
     private var embeddingRepository: EmbeddingRepository? = null
     private val embeddingBridge = TextEmbeddingBridge.getInstance()
+    private var recentMemoriesJob: Job? = null
     
     // 当前使用的提示词
     private var currentPrompt: String = ""
@@ -75,6 +87,14 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     fun setRepository(repo: ImageMemoryRepository) {
         this.repository = repo
         AppLog.i(logTag, "Repository set")
+        recentMemoriesJob?.cancel()
+        recentMemoriesJob = viewModelScope.launch {
+            repo.getAllMemories().collect { memories ->
+                _uiState.update { state ->
+                    state.copy(recentMemories = memories.take(4))
+                }
+            }
+        }
     }
     
     /**
@@ -110,10 +130,15 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                     _uiState.update { 
                         it.copy(
                             selectedImageUri = uri,
-                            selectedImageBitmap = bitmap,
-                            description = "",
-                            errorMessage = null,
-                            performanceMetrics = PerformanceMetrics()
+                    selectedImageBitmap = bitmap,
+                    description = "",
+                    summary = "",
+                    narrative = "",
+                    visualFeatures = VisualFeatures(emptyList(), "", ""),
+                    uniqueIdentifier = "",
+                    ocrText = "",
+                    errorMessage = null,
+                    performanceMetrics = PerformanceMetrics()
                         )
                     }
                 } else {
@@ -291,10 +316,15 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
         AppLog.d(logTag, "Previous inference cancelled, inferenceId=$inferenceId")
         
         inferenceJob = viewModelScope.launch {
-            _uiState.update { 
+            _uiState.update {
                 it.copy(
                     isProcessing = true,
                     description = "",
+                    summary = "",
+                    narrative = "",
+                    visualFeatures = VisualFeatures(emptyList(), "", ""),
+                    uniqueIdentifier = "",
+                    ocrText = "",
                     errorMessage = null,
                     performanceMetrics = PerformanceMetrics()
                 )
@@ -317,8 +347,8 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 
                 AppLog.i(logTag, "Inference start, inferenceId=$inferenceId")
                 
-                // 使用真实 MNN 推理
-                runRealInference(bitmap, prompt, startTime)
+                // 端云协同推理
+                runHybridInference(bitmap, prompt, startTime)
                 
             } catch (e: CancellationException) {
                 AppLog.w(logTag, "Inference cancelled, inferenceId=$inferenceId")
@@ -352,11 +382,11 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 "size=${imageFile.length()} bytes, readable=${imageFile.canRead()}"
         )
         
-        // 使用流式推理
+        // 使用流式推理 - 减少 maxTokens 以避免过长输出
         mnnBridge.generateStream(
             prompt = prompt,
             imagePath = imagePath,
-            maxTokens = 512
+            maxTokens = 256  // 降低 token 数，减少幻觉和无关输出
         ) { token ->
             // 首 token 时间
             if (firstTokenTime == null) {
@@ -375,7 +405,6 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
             
             _uiState.update {
                 it.copy(
-                    description = descriptionBuilder.toString(),
                     performanceMetrics = PerformanceMetrics(
                         prefillTimeMs = firstTokenTime ?: 0,
                         decodeTimeMs = decodeTime,
@@ -398,16 +427,32 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                         totalTokens = streamToken.totalTokens,
                         tokensPerSecond = streamToken.tokensPerSecond
                     )
+                    
+                    val rawOutput = descriptionBuilder.toString()
+                    val parsed = MemoryJsonParser.parse(rawOutput)
+                    val normalized = normalizeStructured(parsed.structured, parsed.fallbackSummary, parsed.fallbackNarrative)
+                    AppLog.i(
+                        logTag,
+                        "Parsed output: summaryLen=${normalized.summary.length}, " +
+                            "narrativeLen=${normalized.narrative.length}, tags=${normalized.allTags.size}"
+                    )
+
                     _uiState.update {
                         it.copy(
                             isProcessing = false,
+                            summary = normalized.summary,
+                            narrative = normalized.narrative,
+                            visualFeatures = normalized.visualFeatures,
+                            uniqueIdentifier = normalized.uniqueIdentifier,
+                            ocrText = normalized.ocrText,
+                            description = normalized.summary,
+                            parsedTags = emptyList(),
                             performanceMetrics = metrics
                         )
                     }
-                    
-                    // 保存记忆到数据库
+
                     saveMemoryToDatabase(
-                        description = descriptionBuilder.toString(),
+                        structured = normalized,
                         metrics = metrics
                     )
                 }
@@ -425,6 +470,71 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 }
             }
         }
+    }
+
+    /**
+     * 端云协同推理：隐私模式优先端侧，云端失败回退
+     */
+    private suspend fun runHybridInference(bitmap: Bitmap, prompt: String, startTime: Long) {
+        val settings = cloudSettingsStore.load()
+        if (settings.privacyMode) {
+            AppLog.i(logTag, "Privacy mode enabled, using on-device inference")
+            runRealInference(bitmap, prompt, startTime)
+            return
+        }
+
+        val imagePath = saveBitmapToTemp(bitmap)
+        val cloudOutput = tryCloudInference(prompt, imagePath)
+        if (cloudOutput != null) {
+            val metrics = PerformanceMetrics(
+                prefillTimeMs = 0,
+                decodeTimeMs = System.currentTimeMillis() - startTime,
+                totalTokens = 0,
+                tokensPerSecond = 0.0
+            )
+            val parsed = MemoryJsonParser.parse(cloudOutput)
+            val normalized = normalizeStructured(parsed.structured, parsed.fallbackSummary, parsed.fallbackNarrative)
+            AppLog.i(
+                logTag,
+                "Cloud inference success: summaryLen=${normalized.summary.length}, " +
+                    "narrativeLen=${normalized.narrative.length}"
+            )
+            _uiState.update {
+                it.copy(
+                    isProcessing = false,
+                    summary = normalized.summary,
+                    narrative = normalized.narrative,
+                    visualFeatures = normalized.visualFeatures,
+                    uniqueIdentifier = normalized.uniqueIdentifier,
+                    ocrText = normalized.ocrText,
+                    description = normalized.summary,
+                    parsedTags = emptyList(),
+                    performanceMetrics = metrics
+                )
+            }
+            saveMemoryToDatabase(structured = normalized, metrics = metrics)
+            return
+        }
+
+        _uiState.update { it.copy(errorMessage = "云端不可用，已切换端侧") }
+        runRealInference(bitmap, prompt, startTime)
+    }
+
+    private suspend fun tryCloudInference(prompt: String, imagePath: String): String? {
+        val settings = cloudSettingsStore.load()
+        // 测试阶段：跳过连通性预检查，直接尝试云端请求
+        var attempt = 0
+        while (attempt < 3) {
+            attempt += 1
+            val result = withContext(Dispatchers.IO) {
+                cloudClient.requestCompletion(settings, prompt, imagePath)
+            }
+            if (result.isSuccess) {
+                return result.getOrNull()
+            }
+            AppLog.w(logTag, "Cloud attempt $attempt failed: ${result.exceptionOrNull()?.message}")
+        }
+        return null
     }
     
     /**
@@ -453,7 +563,6 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                         
                         _uiState.update {
                             it.copy(
-                                description = state.partialText,
                                 performanceMetrics = PerformanceMetrics(
                                     prefillTimeMs = 100, // 模拟首 token 时间
                                     decodeTimeMs = totalTime,
@@ -479,17 +588,26 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                                 state.response.tokensGenerated * 1000.0 / state.response.inferenceTimeMs
                             } else 0.0
                         )
+                        val rawOutput = state.response.text
+                        val parsed = MemoryJsonParser.parse(rawOutput)
+                        val normalized = normalizeStructured(parsed.structured, parsed.fallbackSummary, parsed.fallbackNarrative)
+
                         _uiState.update {
                             it.copy(
                                 isProcessing = false,
-                                description = state.response.text,
+                                summary = normalized.summary,
+                                narrative = normalized.narrative,
+                                visualFeatures = normalized.visualFeatures,
+                                uniqueIdentifier = normalized.uniqueIdentifier,
+                                ocrText = normalized.ocrText,
+                                description = normalized.summary,
+                                parsedTags = emptyList(),
                                 performanceMetrics = metrics
                             )
                         }
-                        
-                        // 保存记忆到数据库
+
                         saveMemoryToDatabase(
-                            description = state.response.text,
+                            structured = normalized,
                             metrics = metrics
                         )
                     }
@@ -567,7 +685,7 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
     /**
      * 保存记忆到数据库
      */
-    private fun saveMemoryToDatabase(description: String, metrics: PerformanceMetrics) {
+    private fun saveMemoryToDatabase(structured: NormalizedMemory, metrics: PerformanceMetrics) {
         val repo = repository ?: run {
             AppLog.w(logTag, "Repository not set, cannot save memory")
             return
@@ -577,18 +695,25 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
         val imageUri = state.selectedImageUri?.toString() ?: return
         val imagePath = getImagePath() ?: imageUri
         
-        // 解析描述和标签
-        val (parsedDescription, tags) = parseDescriptionAndTags(description)
-        val tagsString = tags.joinToString(",")
-        
         viewModelScope.launch {
             try {
                 val memory = ImageMemory(
                     imagePath = imagePath,
                     imageUri = imageUri,
-                    description = parsedDescription,
-                    tags = tags,
-                    tagsString = tagsString,
+                    description = structured.narrative,
+                    summary = structured.summary,
+                    narrative = structured.narrative,
+                    ocrText = structured.ocrText,
+                    uniqueIdentifier = structured.uniqueIdentifier,
+                    dominantColors = structured.visualFeatures.dominantColors,
+                    lightingMood = structured.visualFeatures.lightingMood,
+                    composition = structured.visualFeatures.composition,
+                    tags = structured.allTags,
+                    tagsString = structured.allTags.joinToString(","),
+                    tagObjects = structured.tags.objects,
+                    tagScene = structured.tags.scene,
+                    tagAction = structured.tags.action,
+                    tagTimeContext = structured.tags.timeContext,
                     promptUsed = currentPrompt,
                     tokensGenerated = metrics.totalTokens,
                     inferenceTimeMs = metrics.totalTimeMs,
@@ -597,10 +722,13 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 )
                 
                 val id = repo.saveMemory(memory)
-                AppLog.i(logTag, "Memory saved, id=$id, tokens=${metrics.totalTokens}, tags=${tags.size}")
+                AppLog.i(
+                    logTag,
+                    "Memory saved, id=$id, tokens=${metrics.totalTokens}, tags=${structured.allTags.size}"
+                )
                 
                 // 生成向量用于语义搜索
-                generateEmbeddingForMemory(id, parsedDescription)
+                generateEmbeddingForMemory(id, structured.narrative)
                 
             } catch (e: Exception) {
                 AppLog.e(logTag, "Failed to save memory: ${e.message}", e)
@@ -636,86 +764,61 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
         }
     }
     
-    /**
-     * 解析 VLM 输出，提取描述和标签
-     * 
-     * 支持格式：
-     * - "Description: xxx\nTags: a, b, c"
-     * - "描述：xxx\n标签：a, b, c"
-     * - 或纯文本（从中提取关键词作为标签）
-     */
-    private fun parseDescriptionAndTags(rawOutput: String): Pair<String, List<String>> {
-        val lines = rawOutput.lines()
-        var description = rawOutput
-        var tags = mutableListOf<String>()
-        
-        // 尝试解析结构化输出
-        for (line in lines) {
-            val trimmed = line.trim()
-            when {
-                trimmed.startsWith("Description:", ignoreCase = true) -> {
-                    description = trimmed.substringAfter(":").trim()
-                }
-                trimmed.startsWith("描述：") || trimmed.startsWith("描述:") -> {
-                    description = trimmed.substringAfter("：").substringAfter(":").trim()
-                }
-                trimmed.startsWith("Tags:", ignoreCase = true) -> {
-                    val tagsPart = trimmed.substringAfter(":").trim()
-                    tags.addAll(parseTags(tagsPart))
-                }
-                trimmed.startsWith("标签：") || trimmed.startsWith("标签:") -> {
-                    val tagsPart = trimmed.substringAfter("：").substringAfter(":").trim()
-                    tags.addAll(parseTags(tagsPart))
-                }
-            }
-        }
-        
-        // 如果没有解析到标签，从描述中提取关键词
-        if (tags.isEmpty()) {
-            tags.addAll(extractKeywordsFromDescription(rawOutput))
-        }
-        
-        // 去重并限制数量
-        val uniqueTags = tags.distinct().take(20)
-        
-        return Pair(description, uniqueTags)
+    private fun normalizeStructured(
+        structured: StructuredMemory?,
+        fallbackSummary: String,
+        fallbackNarrative: String
+    ): NormalizedMemory {
+        val rawSummary = structured?.summary?.ifBlank { fallbackSummary } ?: fallbackSummary
+        val narrative = structured?.memoryExtraction?.narrativeCaption?.ifBlank { fallbackNarrative } ?: fallbackNarrative
+        val cleanedSummary = cleanSummary(rawSummary)
+        val summary = ensureSummaryLength(cleanedSummary, narrative, fallbackNarrative)
+        val tags = structured?.tags ?: TagGroups(emptyList(), emptyList(), emptyList(), emptyList())
+        val visual = structured?.visualFeatures ?: VisualFeatures(emptyList(), "", "")
+        val ocrText = structured?.memoryExtraction?.ocrText ?: ""
+        val uniqueIdentifier = structured?.memoryExtraction?.uniqueIdentifier ?: ""
+        val allTags = structured?.allTags() ?: emptyList()
+
+        return NormalizedMemory(
+            summary = summary,
+            narrative = narrative,
+            tags = tags,
+            visualFeatures = visual,
+            ocrText = ocrText,
+            uniqueIdentifier = uniqueIdentifier,
+            allTags = allTags
+        )
     }
-    
-    /**
-     * 解析标签字符串
-     */
-    private fun parseTags(tagsPart: String): List<String> {
-        return tagsPart
-            .split(",", "，", "、", " ")
-            .map { it.trim() }
-            .filter { it.isNotBlank() && it.length > 1 }
+
+    private fun ensureSummaryLength(summary: String, narrative: String, fallbackNarrative: String): String {
+        val minLen = 50
+        val maxLen = 100
+        val candidate = when {
+            summary.length >= minLen -> summary
+            narrative.length >= minLen -> narrative
+            fallbackNarrative.length >= minLen -> fallbackNarrative
+            else -> summary.ifBlank { narrative }.ifBlank { fallbackNarrative }
+        }
+        return cleanSummary(candidate).take(maxLen)
     }
-    
-    /**
-     * 从描述中提取关键词作为标签
-     */
-    private fun extractKeywordsFromDescription(description: String): List<String> {
-        // 简单的中文关键词提取：提取 2-4 字的词
-        val chinesePattern = Regex("[\\u4e00-\\u9fa5]{2,4}")
-        val chineseWords = chinesePattern.findAll(description)
-            .map { it.value }
-            .filter { word ->
-                // 过滤掉常见的停用词
-                !listOf("这是", "一个", "可以", "看到", "图片", "显示", "包含", "其中", "以及", "还有").contains(word)
-            }
-            .toList()
-        
-        // 英文关键词提取：提取 3 字母以上的单词
-        val englishPattern = Regex("[a-zA-Z]{3,}")
-        val englishWords = englishPattern.findAll(description)
-            .map { it.value.lowercase() }
-            .filter { word ->
-                // 过滤掉常见的停用词
-                !listOf("the", "and", "this", "that", "with", "from", "are", "was", "were", "been", "have", "has", "image", "shows", "picture").contains(word)
-            }
-            .toList()
-        
-        return (chineseWords + englishWords).distinct().take(10)
+
+    private fun cleanSummary(summary: String): String {
+        val normalized = summary
+            .replace(Regex("(?i)\\bjson\\b"), "")
+            .replace(Regex("(?i)\\bsummary\\b"), "")
+            .replace(Regex("(?i)\\btags\\b"), "")
+            .replace(Regex("(?i)objects\\b|scene\\b|action\\b|time_context\\b"), "")
+            .replace(Regex("(?i)dominant_colors\\b|lighting_mood\\b|composition\\b"), "")
+            .replace(Regex("[:：]+"), " ")
+            .replace(Regex("[,，]+"), " ")
+            .replace(Regex("[\\{\\}\\[\\]`]+"), " ")
+            .replace(Regex("\\s+"), " ")
+            .trim()
+
+        // 如果仍然含有大量分隔符或标签痕迹，改用叙事兜底
+        val hasNoise = normalized.contains(Regex("(?i)\\b(objects|scene|action|time_context)\\b")) ||
+            normalized.count { it == ':' } > 0
+        return if (hasNoise) "" else normalized
     }
     
     /**
@@ -756,6 +859,12 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
                 selectedImageUri = null,
                 selectedImageBitmap = null,
                 description = "",
+                summary = "",
+                narrative = "",
+                visualFeatures = VisualFeatures(emptyList(), "", ""),
+                uniqueIdentifier = "",
+                ocrText = "",
+                parsedTags = emptyList(),
                 errorMessage = null,
                 performanceMetrics = PerformanceMetrics()
             )
@@ -794,10 +903,24 @@ class ImageDescriptionViewModel(application: Application) : AndroidViewModel(app
         super.onCleared()
         AppLog.i(logTag, "ViewModel cleared, releasing session")
         inferenceJob?.cancel()
+        recentMemoriesJob?.cancel()
         mnnBridge.releaseSession()
         _uiState.value.selectedImageBitmap?.recycle()
     }
 }
+
+/**
+ * 结构化解析后的内存记录
+ */
+data class NormalizedMemory(
+    val summary: String,
+    val narrative: String,
+    val tags: TagGroups,
+    val visualFeatures: VisualFeatures,
+    val ocrText: String,
+    val uniqueIdentifier: String,
+    val allTags: List<String>
+)
 
 /**
  * UI 状态数据类
@@ -806,6 +929,13 @@ data class ImageDescriptionUiState(
     val selectedImageUri: Uri? = null,
     val selectedImageBitmap: Bitmap? = null,
     val description: String = "",
+    val summary: String = "",
+    val narrative: String = "",
+    val visualFeatures: VisualFeatures = VisualFeatures(emptyList(), "", ""),
+    val uniqueIdentifier: String = "",
+    val ocrText: String = "",
+    val parsedTags: List<String> = emptyList(),
+    val recentMemories: List<ImageMemory> = emptyList(),
     val isProcessing: Boolean = false,
     val isModelLoading: Boolean = false,
     val isModelLoaded: Boolean = false,

@@ -25,10 +25,10 @@ class QwenVLInference(
     companion object {
         private const val TAG = "QwenVLInference"
         
-        // 默认生成参数
-        const val DEFAULT_MAX_TOKENS = 512
-        const val DEFAULT_TEMPERATURE = 0.7f
-        const val DEFAULT_TOP_P = 0.9f
+        // 默认生成参数 - 降低随机性以减少幻觉
+        const val DEFAULT_MAX_TOKENS = 256      // 减少输出长度，避免过多无关内容
+        const val DEFAULT_TEMPERATURE = 0.3f    // 降低温度，使输出更确定、更准确
+        const val DEFAULT_TOP_P = 0.85f         // 轻微降低，减少低概率词的出现
     }
     
     /**
