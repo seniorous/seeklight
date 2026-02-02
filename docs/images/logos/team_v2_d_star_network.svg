@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <defs>
+    <filter id="starGlow">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#F4A261" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <rect width="320" height="120" fill="#FDFCF0"/>
+  
+  <!-- 星链网络 -->
+  <g transform="translate(10, 10)">
+    <!-- 连接线网络 -->
+    <line x1="50" y1="50" x2="20" y2="25" stroke="#E9C46A" stroke-width="2" opacity="0.5"/>
+    <line x1="50" y1="50" x2="80" y2="25" stroke="#E9C46A" stroke-width="2" opacity="0.5"/>
+    <line x1="50" y1="50" x2="20" y2="75" stroke="#E9C46A" stroke-width="2" opacity="0.5"/>
+    <line x1="50" y1="50" x2="80" y2="75" stroke="#E9C46A" stroke-width="2" opacity="0.5"/>
+    <line x1="20" y1="25" x2="80" y2="25" stroke="#E9C46A" stroke-width="1.5" opacity="0.3"/>
+    <line x1="20" y1="75" x2="80" y2="75" stroke="#E9C46A" stroke-width="1.5" opacity="0.3"/>
+    <line x1="20" y1="25" x2="20" y2="75" stroke="#E9C46A" stroke-width="1.5" opacity="0.3"/>
+    <line x1="80" y1="25" x2="80" y2="75" stroke="#E9C46A" stroke-width="1.5" opacity="0.3"/>
+    
+    <!-- 中心节点 -->
+    <circle cx="50" cy="50" r="14" fill="#F4A261" filter="url(#starGlow)"/>
+    <circle cx="50" cy="50" r="6" fill="#FDFCF0" opacity="0.6"/>
+    
+    <!-- 四角节点 -->
+    <circle cx="20" cy="25" r="10" fill="#2A9D8F" filter="url(#starGlow)"/>
+    <circle cx="80" cy="25" r="10" fill="#E9C46A" filter="url(#starGlow)"/>
+    <circle cx="20" cy="75" r="10" fill="#E76F51" filter="url(#starGlow)"/>
+    <circle cx="80" cy="75" r="10" fill="#2A9D8F" filter="url(#starGlow)"/>
+  </g>
+  
+  <text x="115" y="50" font-family="-apple-system, sans-serif" font-size="26" font-weight="700" fill="#353535">拾光团队</text>
+  <text x="115" y="78" font-family="-apple-system, sans-serif" font-size="13" font-weight="500" fill="#2A9D8F" letter-spacing="0.5">Seeklight Team</text>
+</svg>

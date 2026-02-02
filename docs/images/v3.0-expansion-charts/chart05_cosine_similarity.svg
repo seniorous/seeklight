@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2c5282"/>
+    </marker>
+  </defs>
+  
+  <rect width="900" height="500" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1a365d">语义向量余弦相似度计算</text>
+  <text x="450" y="58" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#4a5568">Cosine Similarity - 语义搜索的核心算法</text>
+  
+  <!-- 公式展示区 -->
+  <rect x="50" y="80" width="800" height="100" fill="#edf2f7" rx="10"/>
+  <text x="450" y="120" text-anchor="middle" font-family="Times New Roman, SimSun" font-size="22" fill="#1a365d">
+    sim(v, q) = 
+  </text>
+  <text x="560" y="105" text-anchor="middle" font-family="Times New Roman" font-size="18" fill="#1a365d">v · q</text>
+  <line x1="520" y1="115" x2="680" y2="115" stroke="#1a365d" stroke-width="2"/>
+  <text x="600" y="145" text-anchor="middle" font-family="Times New Roman" font-size="18" fill="#1a365d">||v|| × ||q||</text>
+  
+  <text x="750" y="120" text-anchor="middle" font-family="Times New Roman" font-size="18" fill="#1a365d">∈ [-1, 1]</text>
+  
+  <!-- 向量图示 -->
+  <g transform="translate(100, 220)">
+    <text x="150" y="-20" text-anchor="middle" font-family="SimHei" font-size="16" font-weight="bold" fill="#1a365d">向量空间示意图</text>
+    
+    <!-- 坐标系 -->
+    <line x1="0" y1="200" x2="300" y2="200" stroke="#cbd5e0" stroke-width="2"/>
+    <line x1="0" y1="200" x2="0" y2="0" stroke="#cbd5e0" stroke-width="2"/>
+    <text x="310" y="205" font-family="Arial" font-size="12" fill="#4a5568">维度1</text>
+    <text x="-5" y="-10" font-family="Arial" font-size="12" fill="#4a5568">维度2</text>
+    
+    <!-- 向量v (图片向量) -->
+    <line x1="0" y1="200" x2="250" y2="80" stroke="#2c5282" stroke-width="3" marker-end="url(#arrowhead)"/>
+    <text x="260" y="75" font-family="Times New Roman" font-size="18" font-weight="bold" fill="#2c5282">v</text>
+    <text x="270" y="95" font-family="SimSun" font-size="11" fill="#2c5282">(图片向量)</text>
+    
+    <!-- 向量q (查询向量) -->
+    <line x1="0" y1="200" x2="200" y2="40" stroke="#e07c4a" stroke-width="3" marker-end="url(#arrowhead)"/>
+    <text x="210" y="35" font-family="Times New Roman" font-size="18" font-weight="bold" fill="#e07c4a">q</text>
+    <text x="220" y="55" font-family="SimSun" font-size="11" fill="#e07c4a">(查询向量)</text>
+    
+    <!-- 夹角θ -->
+    <path d="M 60 170 A 50 50 0 0 1 45 155" fill="none" stroke="#6b8cae" stroke-width="2"/>
+    <text x="75" y="150" font-family="Times New Roman" font-size="14" fill="#6b8cae">θ</text>
+    
+    <!-- 说明 -->
+    <text x="150" y="250" text-anchor="middle" font-family="SimSun" font-size="12" fill="#2d3748">sim = cos(θ)，夹角越小相似度越高</text>
+  </g>
+  
+  <!-- 计算示例 -->
+  <g transform="translate(480, 200)">
+    <rect x="0" y="0" width="370" height="250" fill="#edf2f7" rx="10"/>
+    <text x="185" y="30" text-anchor="middle" font-family="SimHei" font-size="15" font-weight="bold" fill="#1a365d">计算示例</text>
+    
+    <text x="20" y="65" font-family="SimSun" font-size="13" fill="#2d3748">图片向量 v = [0.8, 0.3, 0.5, ...]</text>
+    <text x="20" y="90" font-family="SimSun" font-size="13" fill="#2d3748">查询向量 q = [0.7, 0.4, 0.6, ...]</text>
+    
+    <line x1="20" y1="105" x2="350" y2="105" stroke="#cbd5e0" stroke-width="1"/>
+    
+    <text x="20" y="130" font-family="SimSun" font-size="13" fill="#2d3748">点积: v·q = 0.8×0.7 + 0.3×0.4 + ...</text>
+    <text x="20" y="155" font-family="SimSun" font-size="13" fill="#2d3748">模长: ||v|| = √(0.8² + 0.3² + ...)</text>
+    
+    <line x1="20" y1="175" x2="350" y2="175" stroke="#cbd5e0" stroke-width="1"/>
+    
+    <text x="20" y="200" font-family="SimHei" font-size="14" fill="#1a365d">结果解读:</text>
+    <rect x="20" y="210" width="100" height="25" fill="#dcfce7" rx="5"/>
+    <text x="70" y="228" text-anchor="middle" font-family="Arial" font-size="12" fill="#16a34a">sim ≈ 0.95</text>
+    <text x="130" y="228" font-family="SimSun" font-size="12" fill="#2d3748">→ 高度相关，优先返回</text>
+  </g>
+</svg>

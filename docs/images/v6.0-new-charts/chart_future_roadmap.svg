@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="380" viewBox="0 0 900 380">
+  <defs>
+    <linearGradient id="phase1Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2A9D8F"/><stop offset="100%" style="stop-color:#52B788"/>
+    </linearGradient>
+    <linearGradient id="phase2Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A6FA5"/><stop offset="100%" style="stop-color:#6090C0"/>
+    </linearGradient>
+    <linearGradient id="phase3Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#9B59B6"/><stop offset="100%" style="stop-color:#BB8FCE"/>
+    </linearGradient>
+    <filter id="shadowFR"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  
+  <rect width="900" height="380" fill="#FAFBFC"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="20" font-weight="bold" fill="#2C3E50">拾光未来发展路线图</text>
+  
+  <!-- 时间线轴 -->
+  <line x1="50" y1="200" x2="850" y2="200" stroke="#E0E0E0" stroke-width="3"/>
+  
+  <!-- 时间节点 -->
+  <circle cx="150" cy="200" r="12" fill="#2A9D8F"/>
+  <circle cx="450" cy="200" r="12" fill="#4A6FA5"/>
+  <circle cx="750" cy="200" r="12" fill="#9B59B6"/>
+  
+  <!-- 阶段1：短期迭代 -->
+  <g transform="translate(50, 70)">
+    <rect x="0" y="0" width="200" height="110" rx="10" fill="url(#phase1Grad)" filter="url(#shadowFR)"/>
+    <text x="100" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="12" fill="white" font-weight="bold">短期迭代 (1-3个月)</text>
+    <line x1="15" y1="35" x2="185" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="15" y="55" font-family="SimSun, serif" font-size="9" fill="white">• MobileCLIP以图搜图</text>
+    <text x="15" y="72" font-family="SimSun, serif" font-size="9" fill="white">• 智能清理建议</text>
+    <text x="15" y="89" font-family="SimSun, serif" font-size="9" fill="white">• 过期二维码识别</text>
+    <text x="15" y="106" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">→ 完善MVP核心体验</text>
+  </g>
+  <line x1="150" y1="180" x2="150" y2="188" stroke="#2A9D8F" stroke-width="2"/>
+  <text x="150" y="230" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="#2A9D8F">赛后</text>
+  
+  <!-- 阶段2：中期规划 -->
+  <g transform="translate(350, 70)">
+    <rect x="0" y="0" width="200" height="110" rx="10" fill="url(#phase2Grad)" filter="url(#shadowFR)"/>
+    <text x="100" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="12" fill="white" font-weight="bold">中期规划 (3-6个月)</text>
+    <line x1="15" y1="35" x2="185" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="15" y="55" font-family="SimSun, serif" font-size="9" fill="white">• 视频流理解</text>
+    <text x="15" y="72" font-family="SimSun, serif" font-size="9" fill="white">• 多端加密同步(WebDAV)</text>
+    <text x="15" y="89" font-family="SimSun, serif" font-size="9" fill="white">• 关键帧提取与检索</text>
+    <text x="15" y="106" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">→ 拓展媒体类型支持</text>
+  </g>
+  <line x1="450" y1="180" x2="450" y2="188" stroke="#4A6FA5" stroke-width="2"/>
+  <text x="450" y="230" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="#4A6FA5">6个月</text>
+  
+  <!-- 阶段3：长期愿景 -->
+  <g transform="translate(650, 70)">
+    <rect x="0" y="0" width="200" height="110" rx="10" fill="url(#phase3Grad)" filter="url(#shadowFR)"/>
+    <text x="100" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="12" fill="white" font-weight="bold">长期愿景 (6个月+)</text>
+    <line x1="15" y1="35" x2="185" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="15" y="55" font-family="SimSun, serif" font-size="9" fill="white">• 个性化LoRA微调</text>
+    <text x="15" y="72" font-family="SimSun, serif" font-size="9" fill="white">• Agentic OS融合</text>
+    <text x="15" y="89" font-family="SimSun, serif" font-size="9" fill="white">• 老年防诈应用</text>
+    <text x="15" y="106" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">→ 生态整合与社会价值</text>
+  </g>
+  <line x1="750" y1="180" x2="750" y2="188" stroke="#9B59B6" stroke-width="2"/>
+  <text x="750" y="230" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="#9B59B6">1年+</text>
+  
+  <!-- 底部说明 -->
+  <g transform="translate(150, 270)">
+    <rect x="0" y="0" width="600" height="80" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" filter="url(#shadowFR)"/>
+    <text x="300" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="12" fill="#2C3E50" font-weight="bold">技术演进方向</text>
+    <text x="20" y="50" font-family="SimSun, serif" font-size="10" fill="#455A64">端侧能力: 2B模型 → 4B模型 → 端侧收集+云侧LoRA训练 → 个性化专属模型</text>
+    <text x="20" y="70" font-family="SimSun, serif" font-size="10" fill="#455A64">生态整合: 独立App → 厂商预装 → Agentic OS Agent → 跨设备记忆同步</text>
+  </g>
+</svg>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <defs>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="triggerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F97316;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="executeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="confGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14B8A6;stop-opacity:1" />
+    </linearGradient>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="900" height="520" fill="#F9FAFB"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" font-family="SimHei, Microsoft YaHei" font-size="20" font-weight="bold" fill="#1F2937" text-anchor="middle">Reflection机制执行流程 (ReflectionEngine)</text>
+  
+  <!-- 第一部分：触发条件判断 -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="260" height="180" rx="10" fill="#FFFFFF" filter="url(#shadow2)" stroke="#F59E0B" stroke-width="2"/>
+    <rect x="0" y="0" width="260" height="40" rx="10" fill="url(#triggerGrad)"/>
+    <rect x="0" y="30" width="260" height="10" fill="url(#triggerGrad)"/>
+    <text x="130" y="28" font-family="SimHei" font-size="14" fill="#FFFFFF" text-anchor="middle" font-weight="bold">触发条件判断</text>
+    
+    <!-- 条件列表 -->
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="230" height="35" rx="5" fill="#F59E0B" opacity="0.15"/>
+      <text x="115" y="15" font-family="SimHei" font-size="12" fill="#1F2937" text-anchor="middle" font-weight="bold">条件1: 批量导入</text>
+      <text x="115" y="30" font-family="SimSun" font-size="11" fill="#6B7280" text-anchor="middle">单次导入图片 ≥ 50张</text>
+    </g>
+    <g transform="translate(15, 95)">
+      <rect x="0" y="0" width="230" height="35" rx="5" fill="#F59E0B" opacity="0.15"/>
+      <text x="115" y="15" font-family="SimHei" font-size="12" fill="#1F2937" text-anchor="middle" font-weight="bold">条件2: 位置变化</text>
+      <text x="115" y="30" font-family="SimSun" font-size="11" fill="#6B7280" text-anchor="middle">GPS位移距离 &gt; 50km</text>
+    </g>
+    <g transform="translate(15, 135)">
+      <rect x="0" y="0" width="230" height="35" rx="5" fill="#F59E0B" opacity="0.15"/>
+      <text x="115" y="15" font-family="SimHei" font-size="12" fill="#1F2937" text-anchor="middle" font-weight="bold">条件3: 场景聚集</text>
+      <text x="115" y="30" font-family="SimSun" font-size="11" fill="#6B7280" text-anchor="middle">场景信息熵 &lt; 0.5</text>
+    </g>
+  </g>
+  
+  <!-- 箭头1 -->
+  <path d="M295,150 L330,150" stroke="#6B7280" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="312" y="140" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">OR</text>
+  
+  <!-- 第二部分：执行推理 -->
+  <g transform="translate(335, 60)">
+    <rect x="0" y="0" width="240" height="180" rx="10" fill="#FFFFFF" filter="url(#shadow2)" stroke="#2563EB" stroke-width="2"/>
+    <rect x="0" y="0" width="240" height="40" rx="10" fill="url(#executeGrad)"/>
+    <rect x="0" y="30" width="240" height="10" fill="url(#executeGrad)"/>
+    <text x="120" y="28" font-family="SimHei" font-size="14" fill="#FFFFFF" text-anchor="middle" font-weight="bold">执行Reflection推理</text>
+    
+    <!-- 步骤 -->
+    <g transform="translate(15, 55)">
+      <circle cx="12" cy="12" r="12" fill="#2563EB"/>
+      <text x="12" y="17" font-family="Consolas" font-size="12" fill="#FFFFFF" text-anchor="middle">1</text>
+      <text x="35" y="17" font-family="SimSun" font-size="12" fill="#1F2937">构建Reflection提示词</text>
+    </g>
+    <g transform="translate(15, 85)">
+      <circle cx="12" cy="12" r="12" fill="#2563EB"/>
+      <text x="12" y="17" font-family="Consolas" font-size="12" fill="#FFFFFF" text-anchor="middle">2</text>
+      <text x="35" y="17" font-family="SimSun" font-size="12" fill="#1F2937">调用VLM生成响应</text>
+    </g>
+    <g transform="translate(15, 115)">
+      <circle cx="12" cy="12" r="12" fill="#2563EB"/>
+      <text x="12" y="17" font-family="Consolas" font-size="12" fill="#FFFFFF" text-anchor="middle">3</text>
+      <text x="35" y="17" font-family="SimSun" font-size="12" fill="#1F2937">解析高级事实</text>
+    </g>
+    <g transform="translate(15, 145)">
+      <circle cx="12" cy="12" r="12" fill="#2563EB"/>
+      <text x="12" y="17" font-family="Consolas" font-size="12" fill="#FFFFFF" text-anchor="middle">4</text>
+      <text x="35" y="17" font-family="SimSun" font-size="12" fill="#1F2937">计算置信度分数</text>
+    </g>
+  </g>
+  
+  <!-- 箭头2 -->
+  <path d="M580,150 L615,150" stroke="#2563EB" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  
+  <!-- 第三部分：置信度计算 -->
+  <g transform="translate(620, 60)">
+    <rect x="0" y="0" width="250" height="180" rx="10" fill="#FFFFFF" filter="url(#shadow2)" stroke="#10B981" stroke-width="2"/>
+    <rect x="0" y="0" width="250" height="40" rx="10" fill="url(#confGrad)"/>
+    <rect x="0" y="30" width="250" height="10" fill="url(#confGrad)"/>
+    <text x="125" y="28" font-family="SimHei" font-size="14" fill="#FFFFFF" text-anchor="middle" font-weight="bold">置信度计算公式</text>
+    
+    <!-- 公式 -->
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="220" height="70" rx="6" fill="#10B981" opacity="0.1"/>
+      <text x="110" y="25" font-family="Consolas" font-size="13" fill="#1F2937" text-anchor="middle" font-weight="bold">Confidence =</text>
+      <text x="110" y="48" font-family="Consolas" font-size="11" fill="#6B7280" text-anchor="middle">Evidence×0.4 + Temporal×0.3</text>
+      <text x="110" y="63" font-family="Consolas" font-size="11" fill="#6B7280" text-anchor="middle">+ Spatial×0.3</text>
+    </g>
+    
+    <!-- 阈值判断 -->
+    <g transform="translate(15, 135)">
+      <rect x="0" y="0" width="105" height="35" rx="5" fill="#10B981" opacity="0.2"/>
+      <text x="52" y="15" font-family="SimSun" font-size="11" fill="#10B981" text-anchor="middle" font-weight="bold">≥ 0.6</text>
+      <text x="52" y="30" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">保存入库</text>
+      
+      <rect x="115" y="0" width="105" height="35" rx="5" fill="#EF4444" opacity="0.2"/>
+      <text x="167" y="15" font-family="SimSun" font-size="11" fill="#EF4444" text-anchor="middle" font-weight="bold">&lt; 0.6</text>
+      <text x="167" y="30" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">标记待验证</text>
+    </g>
+  </g>
+  
+  <!-- 执行时机说明 -->
+  <g transform="translate(30, 270)">
+    <rect x="0" y="0" width="840" height="100" rx="10" fill="#FFFFFF" filter="url(#shadow2)"/>
+    <text x="420" y="30" font-family="SimHei" font-size="14" fill="#1F2937" text-anchor="middle" font-weight="bold">执行时机与资源约束</text>
+    
+    <!-- 时机 -->
+    <g transform="translate(30, 45)">
+      <rect x="0" y="0" width="180" height="45" rx="6" fill="#8B5CF6" opacity="0.15"/>
+      <text x="90" y="18" font-family="SimHei" font-size="12" fill="#8B5CF6" text-anchor="middle" font-weight="bold">WorkManager约束</text>
+      <text x="90" y="38" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">充电中 + 息屏空闲</text>
+    </g>
+    <g transform="translate(230, 45)">
+      <rect x="0" y="0" width="180" height="45" rx="6" fill="#14B8A6" opacity="0.15"/>
+      <text x="90" y="18" font-family="SimHei" font-size="12" fill="#14B8A6" text-anchor="middle" font-weight="bold">预计耗时</text>
+      <text x="90" y="38" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">45-60秒/次 (30条记忆)</text>
+    </g>
+    <g transform="translate(430, 45)">
+      <rect x="0" y="0" width="180" height="45" rx="6" fill="#3B82F6" opacity="0.15"/>
+      <text x="90" y="18" font-family="SimHei" font-size="12" fill="#3B82F6" text-anchor="middle" font-weight="bold">推理引擎</text>
+      <text x="90" y="38" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">Qwen3-VL-2B (q4f32)</text>
+    </g>
+    <g transform="translate(630, 45)">
+      <rect x="0" y="0" width="180" height="45" rx="6" fill="#6B7280" opacity="0.15"/>
+      <text x="90" y="18" font-family="SimHei" font-size="12" fill="#6B7280" text-anchor="middle" font-weight="bold">成熟度</text>
+      <text x="90" y="38" font-family="SimSun" font-size="10" fill="#6B7280" text-anchor="middle">TRL 4 (需原型验证)</text>
+    </g>
+  </g>
+  
+  <!-- 输出示例 -->
+  <g transform="translate(30, 395)">
+    <rect x="0" y="0" width="840" height="110" rx="10" fill="#FFFFFF" filter="url(#shadow2)"/>
+    <text x="420" y="30" font-family="SimHei" font-size="14" fill="#1F2937" text-anchor="middle" font-weight="bold">高级事实推断示例 (HighLevelFact)</text>
+    
+    <g transform="translate(30, 45)">
+      <rect x="0" y="0" width="380" height="55" rx="6" fill="#2563EB" opacity="0.1"/>
+      <text x="15" y="20" font-family="SimHei" font-size="12" fill="#2563EB" font-weight="bold">输入: 短期记忆序列</text>
+      <text x="15" y="40" font-family="SimSun" font-size="11" fill="#6B7280">海滩×5, 酒店×3, 美食×8, 景点×6 (GPS: 三亚)</text>
+    </g>
+    <g transform="translate(430, 45)">
+      <rect x="0" y="0" width="380" height="55" rx="6" fill="#10B981" opacity="0.1"/>
+      <text x="15" y="20" font-family="SimHei" font-size="12" fill="#10B981" font-weight="bold">输出: 高级事实</text>
+      <text x="15" y="40" font-family="SimSun" font-size="11" fill="#6B7280">"用户正在三亚旅行" (置信度: 0.87)</text>
+    </g>
+  </g>
+</svg>

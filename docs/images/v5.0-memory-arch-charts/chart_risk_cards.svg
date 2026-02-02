@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340">
+  <defs>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="dangerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="warningGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="successGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="900" height="340" fill="#F9FAFB"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="32" font-family="SimHei, Microsoft YaHei" font-size="18" font-weight="bold" fill="#1F2937" text-anchor="middle">技术风险识别与应对策略</text>
+  
+  <!-- 风险等级图例 -->
+  <g transform="translate(650, 18)">
+    <rect x="0" y="0" width="12" height="12" rx="2" fill="#EF4444"/>
+    <text x="18" y="10" font-family="SimSun" font-size="10" fill="#6B7280">高风险</text>
+    <rect x="60" y="0" width="12" height="12" rx="2" fill="#F59E0B"/>
+    <text x="78" y="10" font-family="SimSun" font-size="10" fill="#6B7280">中风险</text>
+    <rect x="120" y="0" width="12" height="12" rx="2" fill="#10B981"/>
+    <text x="138" y="10" font-family="SimSun" font-size="10" fill="#6B7280">低风险</text>
+  </g>
+  
+  <!-- 第一行：中/高风险 -->
+  <g transform="translate(25, 55)">
+    <!-- 卡片1: Reflection计算开销 (中风险) -->
+    <g>
+      <rect x="0" y="0" width="275" height="120" rx="8" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="275" height="32" rx="8" fill="url(#warningGrad)"/>
+      <rect x="0" y="24" width="275" height="8" fill="url(#warningGrad)"/>
+      <text x="137" y="22" font-family="SimHei" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="bold">Reflection计算开销</text>
+      <text x="15" y="52" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">风险表现</text>
+      <text x="15" y="68" font-family="SimSun" font-size="10" fill="#6B7280">单次推理耗时可能超过60秒</text>
+      <text x="15" y="88" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">应对策略</text>
+      <text x="15" y="104" font-family="SimSun" font-size="10" fill="#14B8A6">动态调整触发阈值 + 分批处理</text>
+    </g>
+    
+    <!-- 卡片2: 高级事实准确率 (中风险) -->
+    <g transform="translate(290, 0)">
+      <rect x="0" y="0" width="275" height="120" rx="8" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="275" height="32" rx="8" fill="url(#warningGrad)"/>
+      <rect x="0" y="24" width="275" height="8" fill="url(#warningGrad)"/>
+      <text x="137" y="22" font-family="SimHei" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="bold">高级事实推断准确率</text>
+      <text x="15" y="52" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">风险表现</text>
+      <text x="15" y="68" font-family="SimSun" font-size="10" fill="#6B7280">误判率可能超过20%</text>
+      <text x="15" y="88" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">应对策略</text>
+      <text x="15" y="104" font-family="SimSun" font-size="10" fill="#14B8A6">置信度阈值过滤(&lt;0.6) + 用户可编辑</text>
+    </g>
+    
+    <!-- 卡片3: VLM准确率 (中风险) -->
+    <g transform="translate(580, 0)">
+      <rect x="0" y="0" width="275" height="120" rx="8" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="275" height="32" rx="8" fill="url(#warningGrad)"/>
+      <rect x="0" y="24" width="275" height="8" fill="url(#warningGrad)"/>
+      <text x="137" y="22" font-family="SimHei" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="bold">VLM语义理解准确率</text>
+      <text x="15" y="52" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">风险表现</text>
+      <text x="15" y="68" font-family="SimSun" font-size="10" fill="#6B7280">端侧模型描述可能不够精确</text>
+      <text x="15" y="88" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">应对策略</text>
+      <text x="15" y="104" font-family="SimSun" font-size="10" fill="#14B8A6">云端增强模式 + 用户反馈优化</text>
+    </g>
+  </g>
+  
+  <!-- 第二行：低风险 -->
+  <g transform="translate(25, 190)">
+    <!-- 卡片4: ML Kit依赖 (低风险) -->
+    <g>
+      <rect x="0" y="0" width="275" height="120" rx="8" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="275" height="32" rx="8" fill="url(#successGrad)"/>
+      <rect x="0" y="24" width="275" height="8" fill="url(#successGrad)"/>
+      <text x="137" y="22" font-family="SimHei" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="bold">ML Kit服务依赖</text>
+      <text x="15" y="52" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">风险表现</text>
+      <text x="15" y="68" font-family="SimSun" font-size="10" fill="#6B7280">国产手机无Google Play服务</text>
+      <text x="15" y="88" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">应对策略</text>
+      <text x="15" y="104" font-family="SimSun" font-size="10" fill="#14B8A6">自动降级到VLM OCR模式</text>
+    </g>
+    
+    <!-- 卡片5: 偏好学习冷启动 (低风险) -->
+    <g transform="translate(290, 0)">
+      <rect x="0" y="0" width="275" height="120" rx="8" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="275" height="32" rx="8" fill="url(#successGrad)"/>
+      <rect x="0" y="24" width="275" height="8" fill="url(#successGrad)"/>
+      <text x="137" y="22" font-family="SimHei" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="bold">偏好学习冷启动</text>
+      <text x="15" y="52" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">风险表现</text>
+      <text x="15" y="68" font-family="SimSun" font-size="10" fill="#6B7280">新用户无历史数据时无建议</text>
+      <text x="15" y="88" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">应对策略</text>
+      <text x="15" y="104" font-family="SimSun" font-size="10" fill="#14B8A6">提供场景化默认偏好预设</text>
+    </g>
+    
+    <!-- 卡片6: EncryptedFile弃用 (低风险) -->
+    <g transform="translate(580, 0)">
+      <rect x="0" y="0" width="275" height="120" rx="8" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect x="0" y="0" width="275" height="32" rx="8" fill="url(#successGrad)"/>
+      <rect x="0" y="24" width="275" height="8" fill="url(#successGrad)"/>
+      <text x="137" y="22" font-family="SimHei" font-size="13" fill="#FFFFFF" text-anchor="middle" font-weight="bold">EncryptedFile API弃用</text>
+      <text x="15" y="52" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">风险表现</text>
+      <text x="15" y="68" font-family="SimSun" font-size="10" fill="#6B7280">Jetpack Security标记deprecated</text>
+      <text x="15" y="88" font-family="SimHei" font-size="11" fill="#1F2937" font-weight="bold">应对策略</text>
+      <text x="15" y="104" font-family="SimSun" font-size="10" fill="#14B8A6">使用Keystore+自实现加密替代</text>
+    </g>
+  </g>
+</svg>

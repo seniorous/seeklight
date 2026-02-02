@@ -1,0 +1,151 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# 向量语义检索流程",
+      "x": 250,
+      "y": 0,
+      "width": 240,
+      "height": 50,
+      "color": "6"
+    },
+    {
+      "id": "query-input",
+      "type": "text",
+      "text": "## 用户查询\n『找外卖订单』\n『那个优惠券呢』",
+      "x": 0,
+      "y": 80,
+      "width": 180,
+      "height": 90,
+      "color": "5"
+    },
+    {
+      "id": "embedding",
+      "type": "text",
+      "text": "### 查询向量化\n**MiniLM-L6-v2**\n输出: 384维向量",
+      "x": 220,
+      "y": 80,
+      "width": 180,
+      "height": 90,
+      "color": "1"
+    },
+    {
+      "id": "search",
+      "type": "text",
+      "text": "### 向量检索\n**余弦相似度**\ncos(q, d) = q·d / |q||d|",
+      "x": 440,
+      "y": 80,
+      "width": 180,
+      "height": 90,
+      "color": "4"
+    },
+    {
+      "id": "ranking",
+      "type": "text",
+      "text": "### 结果排序\n**Top-K返回**\n相似度阈值: 0.6",
+      "x": 660,
+      "y": 80,
+      "width": 180,
+      "height": 90,
+      "color": "2"
+    },
+    {
+      "id": "index-title",
+      "type": "text",
+      "text": "## 向量索引库",
+      "x": 330,
+      "y": 220,
+      "width": 160,
+      "height": 40,
+      "color": "3"
+    },
+    {
+      "id": "index-item1",
+      "type": "text",
+      "text": "**美团外卖订单**\nvec: [0.23, -0.15, ...]\nsim: 0.92",
+      "x": 100,
+      "y": 280,
+      "width": 160,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "index-item2",
+      "type": "text",
+      "text": "**饿了么红包**\nvec: [0.18, -0.22, ...]\nsim: 0.78",
+      "x": 300,
+      "y": 280,
+      "width": 160,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "index-item3",
+      "type": "text",
+      "text": "**京东购物清单**\nvec: [0.11, 0.08, ...]\nsim: 0.45",
+      "x": 500,
+      "y": 280,
+      "width": 160,
+      "height": 80,
+      "color": "5"
+    },
+    {
+      "id": "result",
+      "type": "text",
+      "text": "## 检索结果\n1. 美团外卖订单 (92%)\n2. 饿了么红包 (78%)\n3. 京东购物清单 (45%) ✗",
+      "x": 280,
+      "y": 400,
+      "width": 260,
+      "height": 100,
+      "color": "6"
+    },
+    {
+      "id": "perf-note",
+      "type": "text",
+      "text": "**性能指标**\n- Top-5召回率 > 85%\n- 检索延迟 < 50ms\n- 支持10万+截图",
+      "x": 600,
+      "y": 400,
+      "width": 180,
+      "height": 100,
+      "color": "1"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "query-input",
+      "fromSide": "right",
+      "toNode": "embedding",
+      "toSide": "left"
+    },
+    {
+      "id": "e2",
+      "fromNode": "embedding",
+      "fromSide": "right",
+      "toNode": "search",
+      "toSide": "left"
+    },
+    {
+      "id": "e3",
+      "fromNode": "search",
+      "fromSide": "right",
+      "toNode": "ranking",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "search",
+      "fromSide": "bottom",
+      "toNode": "index-title",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "ranking",
+      "fromSide": "bottom",
+      "toNode": "result",
+      "toSide": "top"
+    }
+  ]
+}

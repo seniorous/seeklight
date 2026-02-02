@@ -1,0 +1,168 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "x": 350,
+      "y": 0,
+      "width": 300,
+      "height": 50,
+      "color": "6",
+      "text": "# 用户旅程图\n从截图到智能检索"
+    },
+    {
+      "id": "step1",
+      "type": "text",
+      "x": 50,
+      "y": 100,
+      "width": 160,
+      "height": 100,
+      "color": "5",
+      "text": "## 1️⃣ 截图\n\n用户在小红书\n发现心仪商品\n截图保存"
+    },
+    {
+      "id": "step2",
+      "type": "text",
+      "x": 260,
+      "y": 100,
+      "width": 160,
+      "height": 100,
+      "color": "4",
+      "text": "## 2️⃣ 感知\n\n拾光监听截图\n500ms内完成\n快速预处理"
+    },
+    {
+      "id": "step3",
+      "type": "text",
+      "x": 470,
+      "y": 100,
+      "width": 160,
+      "height": 100,
+      "color": "2",
+      "text": "## 3️⃣ 理解\n\nVLM深度分析\n生成语义描述\n存入记忆库"
+    },
+    {
+      "id": "step4",
+      "type": "text",
+      "x": 680,
+      "y": 100,
+      "width": 160,
+      "height": 100,
+      "color": "1",
+      "text": "## 4️⃣ 检索\n\n用户搜索\n『红色裙子』\n精准定位"
+    },
+    {
+      "id": "step5",
+      "type": "text",
+      "x": 890,
+      "y": 100,
+      "width": 160,
+      "height": 100,
+      "color": "6",
+      "text": "## 5️⃣ 跳转\n\nDeep Link\n一键跳转淘宝\n完成购买"
+    },
+    {
+      "id": "pain1",
+      "type": "text",
+      "x": 50,
+      "y": 250,
+      "width": 160,
+      "height": 80,
+      "text": "**痛点**\n平台间无法\n直接跳转"
+    },
+    {
+      "id": "pain2",
+      "type": "text",
+      "x": 260,
+      "y": 250,
+      "width": 160,
+      "height": 80,
+      "text": "**传统方案**\n截图后需要\n手动整理"
+    },
+    {
+      "id": "pain3",
+      "type": "text",
+      "x": 470,
+      "y": 250,
+      "width": 160,
+      "height": 80,
+      "text": "**传统方案**\n缺乏语义理解\n仅按时间排序"
+    },
+    {
+      "id": "pain4",
+      "type": "text",
+      "x": 680,
+      "y": 250,
+      "width": 160,
+      "height": 80,
+      "text": "**传统方案**\n数千张照片\n逐一翻找"
+    },
+    {
+      "id": "value",
+      "type": "text",
+      "x": 350,
+      "y": 380,
+      "width": 400,
+      "height": 80,
+      "color": "4",
+      "text": "## 拾光价值主张\n\n**用一句话，找到任何截图**\n从『存储容易检索难』→『存储容易检索更容易』"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "step1",
+      "fromSide": "right",
+      "toNode": "step2",
+      "toSide": "left"
+    },
+    {
+      "id": "e2",
+      "fromNode": "step2",
+      "fromSide": "right",
+      "toNode": "step3",
+      "toSide": "left"
+    },
+    {
+      "id": "e3",
+      "fromNode": "step3",
+      "fromSide": "right",
+      "toNode": "step4",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "step4",
+      "fromSide": "right",
+      "toNode": "step5",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "step1",
+      "fromSide": "bottom",
+      "toNode": "pain1",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "step2",
+      "fromSide": "bottom",
+      "toNode": "pain2",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "step3",
+      "fromSide": "bottom",
+      "toNode": "pain3",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "step4",
+      "fromSide": "bottom",
+      "toNode": "pain4",
+      "toSide": "top"
+    }
+  ]
+}

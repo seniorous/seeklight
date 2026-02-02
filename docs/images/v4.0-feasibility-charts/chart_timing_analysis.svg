@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="timeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F1F5F9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E2E8F0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="900" height="500" fill="#FFFFFF"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1E293B">快速内容识别时序分析</text>
+  <text x="450" y="58" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#475569">500ms 约束下的组件时间分配</text>
+  
+  <!-- 时间轴背景 -->
+  <rect x="80" y="90" width="740" height="280" rx="8" fill="url(#timeGrad)"/>
+  
+  <!-- 时间刻度（0-500ms） -->
+  <line x1="100" y1="350" x2="800" y2="350" stroke="#1E293B" stroke-width="2"/>
+  <text x="100" y="375" text-anchor="middle" font-family="Arial" font-size="12" fill="#1E293B">0ms</text>
+  <text x="240" y="375" text-anchor="middle" font-family="Arial" font-size="12" fill="#1E293B">100ms</text>
+  <text x="380" y="375" text-anchor="middle" font-family="Arial" font-size="12" fill="#1E293B">200ms</text>
+  <text x="520" y="375" text-anchor="middle" font-family="Arial" font-size="12" fill="#1E293B">300ms</text>
+  <text x="660" y="375" text-anchor="middle" font-family="Arial" font-size="12" fill="#1E293B">400ms</text>
+  <text x="800" y="375" text-anchor="middle" font-family="Arial" font-size="12" fill="#1E293B">500ms</text>
+  
+  <!-- 刻度线 -->
+  <line x1="100" y1="345" x2="100" y2="355" stroke="#1E293B" stroke-width="2"/>
+  <line x1="240" y1="345" x2="240" y2="355" stroke="#1E293B" stroke-width="2"/>
+  <line x1="380" y1="345" x2="380" y2="355" stroke="#1E293B" stroke-width="2"/>
+  <line x1="520" y1="345" x2="520" y2="355" stroke="#1E293B" stroke-width="2"/>
+  <line x1="660" y1="345" x2="660" y2="355" stroke="#1E293B" stroke-width="2"/>
+  <line x1="800" y1="345" x2="800" y2="355" stroke="#1E293B" stroke-width="2"/>
+  
+  <!-- 组件1: ZXing二维码识别 (0-75ms) -->
+  <rect x="100" y="110" width="105" height="50" rx="6" fill="#10B981"/>
+  <text x="152" y="130" text-anchor="middle" font-family="SimHei, Arial" font-size="12" font-weight="bold" fill="#FFFFFF">ZXing</text>
+  <text x="152" y="148" text-anchor="middle" font-family="Arial" font-size="11" fill="#FFFFFF">~75ms</text>
+  
+  <!-- 组件2: 场景分类规则引擎 (75-125ms) -->
+  <rect x="205" y="110" width="70" height="50" rx="6" fill="#F59E0B"/>
+  <text x="240" y="130" text-anchor="middle" font-family="SimHei, Arial" font-size="11" font-weight="bold" fill="#FFFFFF">规则引擎</text>
+  <text x="240" y="148" text-anchor="middle" font-family="Arial" font-size="11" fill="#FFFFFF">~50ms</text>
+  
+  <!-- 组件3: Google ML Kit OCR (并行, 0-200ms) -->
+  <rect x="100" y="180" width="280" height="50" rx="6" fill="#2563EB"/>
+  <text x="240" y="200" text-anchor="middle" font-family="SimHei, Arial" font-size="12" font-weight="bold" fill="#FFFFFF">Google ML Kit Text Recognition</text>
+  <text x="240" y="218" text-anchor="middle" font-family="Arial" font-size="11" fill="#FFFFFF">~200ms (并行执行)</text>
+  
+  <!-- 组件4: 结构化提取 (200-325ms) -->
+  <rect x="380" y="180" width="175" height="50" rx="6" fill="#3B82F6"/>
+  <text x="467" y="200" text-anchor="middle" font-family="SimHei, Arial" font-size="12" font-weight="bold" fill="#FFFFFF">正则表达式提取</text>
+  <text x="467" y="218" text-anchor="middle" font-family="Arial" font-size="11" fill="#FFFFFF">~125ms</text>
+  
+  <!-- 总耗时标记 -->
+  <rect x="100" y="260" width="455" height="40" rx="6" fill="#E2E8F0" stroke="#22C55E" stroke-width="3"/>
+  <text x="327" y="285" text-anchor="middle" font-family="SimHei, Arial" font-size="14" font-weight="bold" fill="#22C55E">实际总耗时 ≈ 325ms（满足500ms约束）</text>
+  
+  <!-- 500ms红线 -->
+  <line x1="800" y1="100" x2="800" y2="320" stroke="#EF4444" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="815" y="210" font-family="SimHei, Arial" font-size="12" font-weight="bold" fill="#EF4444" transform="rotate(90,815,210)">约束边界</text>
+  
+  <!-- 性能余量标注 -->
+  <rect x="555" y="260" width="245" height="40" rx="6" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="677" y="285" text-anchor="middle" font-family="SimHei, Arial" font-size="13" fill="#10B981">性能余量: 175ms (35%)</text>
+  
+  <!-- 底部说明 -->
+  <rect x="100" y="400" width="700" height="80" rx="8" fill="#F1F5F9"/>
+  <text x="450" y="425" text-anchor="middle" font-family="SimHei, Arial" font-size="13" font-weight="bold" fill="#1E293B">关键设计要点</text>
+  <text x="120" y="450" font-family="SimSun, Arial" font-size="12" fill="#475569">• ZXing与ML Kit并行执行，取最长耗时(200ms)作为Layer 1总耗时</text>
+  <text x="120" y="470" font-family="SimSun, Arial" font-size="12" fill="#475569">• 35%性能余量确保在低端设备上仍能满足约束，避免极端情况下的用户等待</text>
+</svg>

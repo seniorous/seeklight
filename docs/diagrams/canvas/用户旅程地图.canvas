@@ -1,0 +1,224 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# SeekLight 用户旅程地图",
+      "x": 350,
+      "y": 0,
+      "width": 260,
+      "height": 50,
+      "color": "6"
+    },
+    {
+      "id": "stage1-title",
+      "type": "text",
+      "text": "## 1. 截图触发",
+      "x": 0,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "stage1-action",
+      "type": "text",
+      "text": "**用户行为**\n日常截图\n保存重要信息",
+      "x": 0,
+      "y": 140,
+      "width": 140,
+      "height": 80,
+      "color": "5"
+    },
+    {
+      "id": "stage1-system",
+      "type": "text",
+      "text": "**系统响应**\n截图监听服务\n后台自动处理",
+      "x": 0,
+      "y": 240,
+      "width": 140,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "stage2-title",
+      "type": "text",
+      "text": "## 2. 智能处理",
+      "x": 180,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "stage2-action",
+      "type": "text",
+      "text": "**等待**\n无需操作\n静默处理",
+      "x": 180,
+      "y": 140,
+      "width": 140,
+      "height": 80,
+      "color": "5"
+    },
+    {
+      "id": "stage2-system",
+      "type": "text",
+      "text": "**系统响应**\n场景识别\nOCR提取\nVLM理解",
+      "x": 180,
+      "y": 240,
+      "width": 140,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "stage3-title",
+      "type": "text",
+      "text": "## 3. 智能建议",
+      "x": 360,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "stage3-action",
+      "type": "text",
+      "text": "**收到通知**\n智能卡片推送\n一键操作",
+      "x": 360,
+      "y": 140,
+      "width": 140,
+      "height": 80,
+      "color": "5"
+    },
+    {
+      "id": "stage3-system",
+      "type": "text",
+      "text": "**系统响应**\n推送建议\n快捷入口\nDeep Link",
+      "x": 360,
+      "y": 240,
+      "width": 140,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "stage4-title",
+      "type": "text",
+      "text": "## 4. 语义搜索",
+      "x": 540,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "stage4-action",
+      "type": "text",
+      "text": "**主动查找**\n自然语言搜索\n『找外卖订单』",
+      "x": 540,
+      "y": 140,
+      "width": 140,
+      "height": 80,
+      "color": "5"
+    },
+    {
+      "id": "stage4-system",
+      "type": "text",
+      "text": "**系统响应**\n向量检索\n相似度排序\n结果展示",
+      "x": 540,
+      "y": 240,
+      "width": 140,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "stage5-title",
+      "type": "text",
+      "text": "## 5. 快速响应",
+      "x": 720,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "stage5-action",
+      "type": "text",
+      "text": "**找到目标**\n点击截图\n一键跳转",
+      "x": 720,
+      "y": 140,
+      "width": 140,
+      "height": 80,
+      "color": "5"
+    },
+    {
+      "id": "stage5-system",
+      "type": "text",
+      "text": "**系统响应**\n打开原图\n跳转App\n拨打电话",
+      "x": 720,
+      "y": 240,
+      "width": 140,
+      "height": 80,
+      "color": "4"
+    },
+    {
+      "id": "emotion-line",
+      "type": "text",
+      "text": "### 用户情绪曲线\n😐 → 😊 → 😄 → 🤔 → 😃\n「烦躁」→「省心」→「惊喜」→「需求」→「满足」",
+      "x": 200,
+      "y": 360,
+      "width": 500,
+      "height": 80,
+      "color": "3"
+    },
+    {
+      "id": "touchpoints",
+      "type": "text",
+      "text": "### 关键触点\n- 截图后2秒内开始处理\n- 智能通知在3-5秒后推送\n- 搜索响应小于1秒",
+      "x": 0,
+      "y": 360,
+      "width": 180,
+      "height": 100,
+      "color": "2"
+    },
+    {
+      "id": "pain-solve",
+      "type": "text",
+      "text": "### 解决的痛点\n✓ 不再翻找相册\n✓ 不再遗忘重要信息\n✓ 不再手动整理",
+      "x": 720,
+      "y": 360,
+      "width": 180,
+      "height": 100,
+      "color": "6"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "stage1-title",
+      "fromSide": "right",
+      "toNode": "stage2-title",
+      "toSide": "left"
+    },
+    {
+      "id": "e2",
+      "fromNode": "stage2-title",
+      "fromSide": "right",
+      "toNode": "stage3-title",
+      "toSide": "left"
+    },
+    {
+      "id": "e3",
+      "fromNode": "stage3-title",
+      "fromSide": "right",
+      "toNode": "stage4-title",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "stage4-title",
+      "fromSide": "right",
+      "toNode": "stage5-title",
+      "toSide": "left"
+    }
+  ]
+}

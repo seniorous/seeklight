@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "x": 250,
+      "y": -80,
+      "width": 350,
+      "height": 60,
+      "color": "6",
+      "text": "# 市场定位与商业模式"
+    },
+    {
+      "id": "market-gap",
+      "type": "text",
+      "x": 200,
+      "y": 20,
+      "width": 300,
+      "height": 80,
+      "color": "1",
+      "text": "## 市场空白\n\n**端云协同 + 跨品牌 = 唯一方案**"
+    },
+    {
+      "id": "comp1",
+      "type": "text",
+      "x": -100,
+      "y": 140,
+      "width": 180,
+      "height": 100,
+      "color": "3",
+      "text": "### 厂商方案\n\n荣耀/OPPO\n纯端侧、能力弱\n**仅限单品牌**"
+    },
+    {
+      "id": "comp2",
+      "type": "text",
+      "x": 150,
+      "y": 140,
+      "width": 180,
+      "height": 100,
+      "color": "3",
+      "text": "### 云端方案\n\nGoogle Photos\n百度网盘\n能力强但**隐私风险**"
+    },
+    {
+      "id": "seeklight",
+      "type": "text",
+      "x": 400,
+      "y": 140,
+      "width": 200,
+      "height": 100,
+      "color": "4",
+      "text": "### 拾光方案\n\n**端云协同**\n隐私优先+能力可选\n**跨品牌通用**"
+    },
+    {
+      "id": "freemium",
+      "type": "text",
+      "x": -50,
+      "y": 300,
+      "width": 260,
+      "height": 140,
+      "color": "5",
+      "text": "## Freemium模式\n\n**免费版**\n端侧搜索+智能分类\n隐私保险箱\n\n**专业版 ¥68/年**\n云端增强+多端同步"
+    },
+    {
+      "id": "opportunity",
+      "type": "text",
+      "x": 280,
+      "y": 300,
+      "width": 260,
+      "height": 140,
+      "color": "2",
+      "text": "## 市场机会\n\n- 2027年AI手机占比超50%\n- PIPL数据本地化趋势\n- 厂商Agent生态合作\n\n**硬件红利期**"
+    },
+    {
+      "id": "target",
+      "type": "text",
+      "x": 100,
+      "y": 480,
+      "width": 340,
+      "height": 80,
+      "color": "6",
+      "text": "## 目标用户\n\n大学生 · 职场人士 · 隐私敏感用户\n**截图囤积症候群**"
+    }
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "market-gap", "toNode": "comp1", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e2", "fromNode": "market-gap", "toNode": "comp2", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e3", "fromNode": "market-gap", "toNode": "seeklight", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e4", "fromNode": "seeklight", "toNode": "freemium", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e5", "fromNode": "seeklight", "toNode": "opportunity", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e6", "fromNode": "freemium", "toNode": "target", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e7", "fromNode": "opportunity", "toNode": "target", "fromSide": "bottom", "toSide": "top"}
+  ]
+}

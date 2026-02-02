@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
+  <defs>
+    <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4A261"/>
+      <stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <filter id="paperTexture">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
+      <feDiffuseLighting in="noise" lighting-color="#FDFCF0" surfaceScale="2">
+        <feDistantLight azimuth="45" elevation="60"/>
+      </feDiffuseLighting>
+    </filter>
+  </defs>
+  
+  <!-- Paper-like Background -->
+  <rect width="400" height="180" fill="#FDFCF0"/>
+  <rect width="400" height="180" fill="#F5F0E1" opacity="0.3"/>
+  
+  <!-- Polaroid Frame Icon -->
+  <g transform="translate(35, 25)">
+    <!-- Outer frame with shadow -->
+    <rect x="0" y="0" width="100" height="120" rx="3" fill="#FFFFFF" filter="drop-shadow(2px 3px 4px rgba(53,53,53,0.15))"/>
+    <!-- Photo area -->
+    <rect x="8" y="8" width="84" height="84" fill="#E8E4DA"/>
+    <!-- Sun/Light element inside -->
+    <circle cx="50" cy="45" r="25" fill="url(#sunsetGrad)"/>
+    <circle cx="50" cy="45" r="15" fill="#FDFCF0" opacity="0.4"/>
+    <!-- Mountain silhouette -->
+    <path d="M8 75 L30 55 L50 70 L75 45 L92 75 L92 92 L8 92 Z" fill="#353535" opacity="0.2"/>
+    <!-- Polaroid bottom space -->
+    <rect x="8" y="92" width="84" height="20" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Typography - Editorial Style -->
+  <g transform="translate(155, 55)">
+    <text x="0" y="0" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="400" fill="#353535" letter-spacing="2">拾光</text>
+    <text x="0" y="35" font-family="Georgia, serif" font-size="16" font-style="italic" fill="#2A9D8F" letter-spacing="3">Shi Guang</text>
+    <line x1="0" y1="50" x2="120" y2="50" stroke="#F4A261" stroke-width="2"/>
+    <text x="0" y="72" font-family="Georgia, serif" font-size="11" fill="#353535" opacity="0.6" letter-spacing="1">Pick Up Light · 拾起时光</text>
+  </g>
+</svg>

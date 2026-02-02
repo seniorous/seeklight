@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480">
+  <defs>
+    <linearGradient id="layerGrad0" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A6FA5"/><stop offset="100%" style="stop-color:#3A5F95"/>
+    </linearGradient>
+    <linearGradient id="layerGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#5580B0"/><stop offset="100%" style="stop-color:#4570A0"/>
+    </linearGradient>
+    <linearGradient id="layerGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6090C0"/><stop offset="100%" style="stop-color:#5080B0"/>
+    </linearGradient>
+    <filter id="shadowH"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  
+  <rect width="800" height="480" fill="#FAFBFC"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="30" text-anchor="middle" font-family="SimHei, sans-serif" font-size="18" font-weight="bold" fill="#2C3E50">HNSW分层可导航小世界图索引结构</text>
+  
+  <!-- 左侧：层次结构示意 -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="350" height="380" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" filter="url(#shadowH)"/>
+    <text x="175" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="#2C3E50" font-weight="bold">多层图结构</text>
+    
+    <!-- Layer 2（最高层）-->
+    <g transform="translate(30, 50)">
+      <rect x="0" y="0" width="290" height="70" rx="6" fill="url(#layerGrad0)"/>
+      <text x="145" y="20" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">Layer 2（入口层）</text>
+      <!-- 节点 -->
+      <circle cx="70" cy="48" r="12" fill="#F4A261" stroke="white" stroke-width="2"/>
+      <circle cx="220" cy="48" r="12" fill="#E9ECEF" stroke="white" stroke-width="2"/>
+      <line x1="82" y1="48" x2="208" y2="48" stroke="white" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="145" y="68" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">少量节点，长跨度连接</text>
+    </g>
+    
+    <!-- Layer 1（中间层）-->
+    <g transform="translate(30, 135)">
+      <rect x="0" y="0" width="290" height="90" rx="6" fill="url(#layerGrad1)"/>
+      <text x="145" y="20" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">Layer 1（中间层）</text>
+      <!-- 节点 -->
+      <circle cx="50" cy="55" r="10" fill="#F4A261" stroke="white" stroke-width="2"/>
+      <circle cx="110" cy="55" r="10" fill="#E9ECEF" stroke="white" stroke-width="2"/>
+      <circle cx="170" cy="55" r="10" fill="#E9ECEF" stroke="white" stroke-width="2"/>
+      <circle cx="240" cy="55" r="10" fill="#E9ECEF" stroke="white" stroke-width="2"/>
+      <line x1="60" y1="55" x2="100" y2="55" stroke="white" stroke-width="1.5"/>
+      <line x1="120" y1="55" x2="160" y2="55" stroke="white" stroke-width="1.5"/>
+      <line x1="180" y1="55" x2="230" y2="55" stroke="white" stroke-width="1.5"/>
+      <text x="145" y="80" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">中等数量节点，中等跨度</text>
+    </g>
+    
+    <!-- Layer 0（底层）-->
+    <g transform="translate(30, 240)">
+      <rect x="0" y="0" width="290" height="120" rx="6" fill="url(#layerGrad2)"/>
+      <text x="145" y="20" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">Layer 0（底层 - 全部数据）</text>
+      <!-- 节点网格 -->
+      <g transform="translate(25, 35)">
+        <circle cx="0" cy="0" r="8" fill="#F4A261" stroke="white" stroke-width="1.5"/>
+        <circle cx="40" cy="0" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="80" cy="0" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="120" cy="0" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="160" cy="0" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="200" cy="0" r="8" fill="#2A9D8F" stroke="white" stroke-width="1.5"/>
+        <circle cx="240" cy="0" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        
+        <circle cx="20" cy="35" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="60" cy="35" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="100" cy="35" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="140" cy="35" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="180" cy="35" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        <circle cx="220" cy="35" r="8" fill="#E9ECEF" stroke="white" stroke-width="1.5"/>
+        
+        <!-- 连接线 -->
+        <line x1="8" y1="0" x2="32" y2="0" stroke="white" stroke-width="1"/>
+        <line x1="48" y1="0" x2="72" y2="0" stroke="white" stroke-width="1"/>
+        <line x1="88" y1="0" x2="112" y2="0" stroke="white" stroke-width="1"/>
+        <line x1="128" y1="0" x2="152" y2="0" stroke="white" stroke-width="1"/>
+        <line x1="168" y1="0" x2="192" y2="0" stroke="white" stroke-width="1"/>
+      </g>
+      <text x="145" y="105" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">所有节点，短距离邻近连接</text>
+    </g>
+    
+    <!-- 图例 -->
+    <g transform="translate(100, 365)">
+      <circle cx="0" cy="0" r="6" fill="#F4A261"/>
+      <text x="15" y="4" font-family="SimSun, serif" font-size="9" fill="#455A64">搜索路径</text>
+      <circle cx="80" cy="0" r="6" fill="#2A9D8F"/>
+      <text x="95" y="4" font-family="SimSun, serif" font-size="9" fill="#455A64">目标节点</text>
+    </g>
+  </g>
+  
+  <!-- 右侧：检索流程与参数 -->
+  <g transform="translate(410, 60)">
+    <rect x="0" y="0" width="360" height="200" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" filter="url(#shadowH)"/>
+    <text x="180" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="#2C3E50" font-weight="bold">检索流程</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="320" height="35" rx="4" fill="#E3F2FD"/>
+      <text x="160" y="15" text-anchor="middle" font-family="SimHei, sans-serif" font-size="10" fill="#1565C0">1. 从Layer 2入口点开始</text>
+      <text x="160" y="30" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#455A64">贪婪搜索当前层最近节点</text>
+    </g>
+    <text x="180" y="98" text-anchor="middle" font-family="Arial" font-size="14" fill="#7F8C8D">↓</text>
+    <g transform="translate(20, 105)">
+      <rect x="0" y="0" width="320" height="35" rx="4" fill="#FFF3E0"/>
+      <text x="160" y="15" text-anchor="middle" font-family="SimHei, sans-serif" font-size="10" fill="#E65100">2. 逐层下降搜索</text>
+      <text x="160" y="30" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#455A64">每层找到的最近点作为下层入口</text>
+    </g>
+    <text x="180" y="158" text-anchor="middle" font-family="Arial" font-size="14" fill="#7F8C8D">↓</text>
+    <g transform="translate(20, 165)">
+      <rect x="0" y="0" width="320" height="28" rx="4" fill="#E8F5E9"/>
+      <text x="160" y="18" text-anchor="middle" font-family="SimHei, sans-serif" font-size="10" fill="#2E7D32">3. 在Layer 0精细搜索返回结果</text>
+    </g>
+  </g>
+  
+  <!-- 配置参数 -->
+  <g transform="translate(410, 275)">
+    <rect x="0" y="0" width="360" height="165" rx="8" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1" filter="url(#shadowH)"/>
+    <text x="180" y="25" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="#2C3E50" font-weight="bold">拾光配置参数</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="155" height="50" rx="4" fill="#F5F5F5"/>
+      <text x="78" y="20" text-anchor="middle" font-family="SimHei, sans-serif" font-size="10" fill="#455A64">M (最大连接数)</text>
+      <text x="78" y="40" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#4A6FA5">16</text>
+    </g>
+    <g transform="translate(185, 45)">
+      <rect x="0" y="0" width="155" height="50" rx="4" fill="#F5F5F5"/>
+      <text x="78" y="20" text-anchor="middle" font-family="SimHei, sans-serif" font-size="10" fill="#455A64">ef_search</text>
+      <text x="78" y="40" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#4A6FA5">50</text>
+    </g>
+    <g transform="translate(20, 105)">
+      <rect x="0" y="0" width="320" height="45" rx="4" fill="#E8F5E9"/>
+      <text x="160" y="18" text-anchor="middle" font-family="SimHei, sans-serif" font-size="10" fill="#2E7D32">性能表现</text>
+      <text x="160" y="36" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="#455A64">10万向量 · 8ms检索 · 95%+召回率 · 50倍提升</text>
+    </g>
+  </g>
+</svg>

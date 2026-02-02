@@ -1,0 +1,325 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# SeekLight 竞品对比分析",
+      "x": 300,
+      "y": 0,
+      "width": 300,
+      "height": 50,
+      "color": "6"
+    },
+    {
+      "id": "header-feature",
+      "type": "text",
+      "text": "**功能特性**",
+      "x": 0,
+      "y": 80,
+      "width": 120,
+      "height": 40,
+      "color": "5"
+    },
+    {
+      "id": "header-seeklight",
+      "type": "text",
+      "text": "**SeekLight**\n寻光",
+      "x": 140,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "4"
+    },
+    {
+      "id": "header-honor",
+      "type": "text",
+      "text": "**荣耀**\nMagicOS",
+      "x": 300,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "header-huawei",
+      "type": "text",
+      "text": "**华为**\nHarmony",
+      "x": 460,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "header-cubox",
+      "type": "text",
+      "text": "**Cubox**\n收藏夹",
+      "x": 620,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "2"
+    },
+    {
+      "id": "row1-label",
+      "type": "text",
+      "text": "**跨品牌**",
+      "x": 0,
+      "y": 140,
+      "width": 120,
+      "height": 35,
+      "color": "5"
+    },
+    {
+      "id": "row1-sl",
+      "type": "text",
+      "text": "✓ 全Android",
+      "x": 140,
+      "y": 140,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row1-honor",
+      "type": "text",
+      "text": "✗ 仅荣耀",
+      "x": 300,
+      "y": 140,
+      "width": 140,
+      "height": 35,
+      "color": "1"
+    },
+    {
+      "id": "row1-huawei",
+      "type": "text",
+      "text": "✗ 仅华为",
+      "x": 460,
+      "y": 140,
+      "width": 140,
+      "height": 35,
+      "color": "1"
+    },
+    {
+      "id": "row1-cubox",
+      "type": "text",
+      "text": "✓ 全平台",
+      "x": 620,
+      "y": 140,
+      "width": 140,
+      "height": 35,
+      "color": "2"
+    },
+    {
+      "id": "row2-label",
+      "type": "text",
+      "text": "**端侧AI**",
+      "x": 0,
+      "y": 195,
+      "width": 120,
+      "height": 35,
+      "color": "5"
+    },
+    {
+      "id": "row2-sl",
+      "type": "text",
+      "text": "✓ VLM",
+      "x": 140,
+      "y": 195,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row2-honor",
+      "type": "text",
+      "text": "✓ 自研AI",
+      "x": 300,
+      "y": 195,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row2-huawei",
+      "type": "text",
+      "text": "✓ 盘古",
+      "x": 460,
+      "y": 195,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row2-cubox",
+      "type": "text",
+      "text": "✗ 云端",
+      "x": 620,
+      "y": 195,
+      "width": 140,
+      "height": 35,
+      "color": "1"
+    },
+    {
+      "id": "row3-label",
+      "type": "text",
+      "text": "**隐私保护**",
+      "x": 0,
+      "y": 250,
+      "width": 120,
+      "height": 35,
+      "color": "5"
+    },
+    {
+      "id": "row3-sl",
+      "type": "text",
+      "text": "✓ 本地优先",
+      "x": 140,
+      "y": 250,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row3-honor",
+      "type": "text",
+      "text": "✓ 本地",
+      "x": 300,
+      "y": 250,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row3-huawei",
+      "type": "text",
+      "text": "✓ 本地",
+      "x": 460,
+      "y": 250,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row3-cubox",
+      "type": "text",
+      "text": "✗ 需上传",
+      "x": 620,
+      "y": 250,
+      "width": 140,
+      "height": 35,
+      "color": "1"
+    },
+    {
+      "id": "row4-label",
+      "type": "text",
+      "text": "**语义搜索**",
+      "x": 0,
+      "y": 305,
+      "width": 120,
+      "height": 35,
+      "color": "5"
+    },
+    {
+      "id": "row4-sl",
+      "type": "text",
+      "text": "✓ 向量检索",
+      "x": 140,
+      "y": 305,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row4-honor",
+      "type": "text",
+      "text": "△ 部分",
+      "x": 300,
+      "y": 305,
+      "width": 140,
+      "height": 35,
+      "color": "2"
+    },
+    {
+      "id": "row4-huawei",
+      "type": "text",
+      "text": "△ 部分",
+      "x": 460,
+      "y": 305,
+      "width": 140,
+      "height": 35,
+      "color": "2"
+    },
+    {
+      "id": "row4-cubox",
+      "type": "text",
+      "text": "✓ 全文",
+      "x": 620,
+      "y": 305,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row5-label",
+      "type": "text",
+      "text": "**免费使用**",
+      "x": 0,
+      "y": 360,
+      "width": 120,
+      "height": 35,
+      "color": "5"
+    },
+    {
+      "id": "row5-sl",
+      "type": "text",
+      "text": "✓ 基础免费",
+      "x": 140,
+      "y": 360,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row5-honor",
+      "type": "text",
+      "text": "✓ 内置",
+      "x": 300,
+      "y": 360,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row5-huawei",
+      "type": "text",
+      "text": "✓ 内置",
+      "x": 460,
+      "y": 360,
+      "width": 140,
+      "height": 35,
+      "color": "4"
+    },
+    {
+      "id": "row5-cubox",
+      "type": "text",
+      "text": "△ 限额",
+      "x": 620,
+      "y": 360,
+      "width": 140,
+      "height": 35,
+      "color": "2"
+    },
+    {
+      "id": "conclusion",
+      "type": "text",
+      "text": "## 核心优势总结\n\nSeekLight 是唯一同时满足以下条件的方案:\n- 跨品牌通用\n- 端侧AI隐私保护\n- 语义级检索能力\n- 免费基础功能",
+      "x": 200,
+      "y": 430,
+      "width": 400,
+      "height": 130,
+      "color": "6"
+    }
+  ],
+  "edges": []
+}

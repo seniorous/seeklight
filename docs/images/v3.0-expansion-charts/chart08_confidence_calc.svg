@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2c5282"/>
+    </marker>
+  </defs>
+  
+  <rect width="900" height="500" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1a365d">高级事实置信度计算机制</text>
+  <text x="450" y="58" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#4a5568">Reflection机制推断结果验证</text>
+  
+  <!-- 公式 -->
+  <rect x="150" y="75" width="600" height="70" fill="#edf2f7" rx="10"/>
+  <text x="450" y="115" text-anchor="middle" font-family="Times New Roman, SimSun" font-size="20" fill="#1a365d">Confidence(f) = 1 - ∏(1 - wᵢ · sᵢ)</text>
+  <text x="450" y="138" text-anchor="middle" font-family="SimSun" font-size="12" fill="#4a5568">wᵢ = 证据权重（时间衰减+来源可靠性）  sᵢ = 支持强度（VLM语义相关性分数）</text>
+  
+  <!-- 计算示例流程 -->
+  <g transform="translate(50, 170)">
+    <text x="400" y="0" text-anchor="middle" font-family="SimHei" font-size="16" font-weight="bold" fill="#1a365d">示例：推断「用户正在旅游」</text>
+    
+    <!-- 证据1 -->
+    <rect x="0" y="30" width="180" height="90" fill="#ffffff" rx="8" stroke="#2c5282" stroke-width="2"/>
+    <text x="90" y="55" text-anchor="middle" font-family="SimHei" font-size="13" font-weight="bold" fill="#1a365d">证据1: 景点照片</text>
+    <text x="90" y="80" text-anchor="middle" font-family="SimSun" font-size="11" fill="#2d3748">w₁ = 0.9 (今天拍摄)</text>
+    <text x="90" y="100" text-anchor="middle" font-family="SimSun" font-size="11" fill="#2d3748">s₁ = 0.85 (高相关)</text>
+    <text x="90" y="115" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#2c5282">贡献: 0.765</text>
+    
+    <!-- 证据2 -->
+    <rect x="220" y="30" width="180" height="90" fill="#ffffff" rx="8" stroke="#4a6fa5" stroke-width="2"/>
+    <text x="310" y="55" text-anchor="middle" font-family="SimHei" font-size="13" font-weight="bold" fill="#1a365d">证据2: 机票截图</text>
+    <text x="310" y="80" text-anchor="middle" font-family="SimSun" font-size="11" fill="#2d3748">w₂ = 0.7 (3天前)</text>
+    <text x="310" y="100" text-anchor="middle" font-family="SimSun" font-size="11" fill="#2d3748">s₂ = 0.95 (高相关)</text>
+    <text x="310" y="115" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#4a6fa5">贡献: 0.665</text>
+    
+    <!-- 证据3 -->
+    <rect x="440" y="30" width="180" height="90" fill="#ffffff" rx="8" stroke="#6b8cae" stroke-width="2"/>
+    <text x="530" y="55" text-anchor="middle" font-family="SimHei" font-size="13" font-weight="bold" fill="#1a365d">证据3: 酒店照片</text>
+    <text x="530" y="80" text-anchor="middle" font-family="SimSun" font-size="11" fill="#2d3748">w₃ = 0.8 (昨天拍)</text>
+    <text x="530" y="100" text-anchor="middle" font-family="SimSun" font-size="11" fill="#2d3748">s₃ = 0.75 (中相关)</text>
+    <text x="530" y="115" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#6b8cae">贡献: 0.6</text>
+    
+    <!-- 箭头汇聚 -->
+    <line x1="90" y1="125" x2="400" y2="180" stroke="#cbd5e0" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="310" y1="125" x2="400" y2="180" stroke="#cbd5e0" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="530" y1="125" x2="400" y2="180" stroke="#cbd5e0" stroke-width="2" marker-end="url(#arrow2)"/>
+    
+    <!-- 计算结果 -->
+    <rect x="280" y="190" width="240" height="100" fill="#dcfce7" rx="10" stroke="#22c55e" stroke-width="2"/>
+    <text x="400" y="220" text-anchor="middle" font-family="SimHei" font-size="14" font-weight="bold" fill="#16a34a">计算过程</text>
+    <text x="400" y="245" text-anchor="middle" font-family="Times New Roman" font-size="13" fill="#2d3748">1-(1-0.765)(1-0.665)(1-0.6)</text>
+    <text x="400" y="270" text-anchor="middle" font-family="Times New Roman" font-size="13" fill="#2d3748">= 1 - 0.235×0.335×0.4 = 0.969</text>
+    <text x="400" y="285" text-anchor="middle" font-family="Arial" font-size="12" fill="#16a34a">Confidence = 96.9% ✓ 高置信</text>
+  </g>
+  
+  <!-- 阈值说明 -->
+  <g transform="translate(680, 200)">
+    <rect x="0" y="0" width="180" height="150" fill="#edf2f7" rx="8"/>
+    <text x="90" y="25" text-anchor="middle" font-family="SimHei" font-size="13" font-weight="bold" fill="#1a365d">置信度阈值</text>
+    
+    <rect x="15" y="40" width="150" height="30" fill="#dcfce7" rx="4"/>
+    <text x="90" y="60" text-anchor="middle" font-family="SimSun" font-size="12" fill="#16a34a">≥ 0.6 → 确认事实</text>
+    
+    <rect x="15" y="80" width="150" height="30" fill="#fef3c7" rx="4"/>
+    <text x="90" y="100" text-anchor="middle" font-family="SimSun" font-size="12" fill="#d97706">0.4-0.6 → 待验证</text>
+    
+    <rect x="15" y="120" width="150" height="25" fill="#fee2e2" rx="4"/>
+    <text x="90" y="138" text-anchor="middle" font-family="SimSun" font-size="12" fill="#dc2626">&lt; 0.4 → 丢弃</text>
+  </g>
+</svg>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="480" viewBox="0 0 900 480">
+  <defs>
+    <linearGradient id="compressGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <linearGradient id="pqGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#4ade80"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="900" height="480" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1a365d">乘积量化(PQ)存储压缩效果</text>
+  <text x="450" y="58" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#4a5568">Product Quantization - 向量索引压缩技术</text>
+  
+  <!-- 公式区域 -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="380" height="120" fill="#edf2f7" rx="8"/>
+    <text x="190" y="25" text-anchor="middle" font-family="SimHei" font-size="14" font-weight="bold" fill="#1a365d">原始存储公式</text>
+    <text x="190" y="55" text-anchor="middle" font-family="Times New Roman" font-size="16" fill="#2d3748">S = n × d × sizeof(float32)</text>
+    <text x="190" y="80" text-anchor="middle" font-family="Times New Roman" font-size="16" fill="#2d3748">= n × 384 × 4 bytes</text>
+    <text x="190" y="105" text-anchor="middle" font-family="SimSun" font-size="12" fill="#4a5568">n=图片数, d=384维向量</text>
+    
+    <rect x="420" y="0" width="380" height="120" fill="#dcfce7" rx="8"/>
+    <text x="610" y="25" text-anchor="middle" font-family="SimHei" font-size="14" font-weight="bold" fill="#16a34a">PQ压缩公式</text>
+    <text x="610" y="55" text-anchor="middle" font-family="Times New Roman" font-size="16" fill="#2d3748">S_PQ = n × m × ⌈log₂(k)⌉ bits</text>
+    <text x="610" y="80" text-anchor="middle" font-family="Times New Roman" font-size="16" fill="#2d3748">= n × 48 × 8 bits = n × 48 bytes</text>
+    <text x="610" y="105" text-anchor="middle" font-family="SimSun" font-size="12" fill="#4a5568">m=48子空间, k=256聚类中心</text>
+  </g>
+  
+  <!-- 对比柱状图 -->
+  <g transform="translate(100, 230)">
+    <text x="350" y="-15" text-anchor="middle" font-family="SimHei" font-size="16" font-weight="bold" fill="#1a365d">10,000张图片索引存储对比</text>
+    
+    <!-- 原始 -->
+    <rect x="100" y="20" width="200" height="60" fill="url(#compressGrad)" rx="6"/>
+    <text x="200" y="58" text-anchor="middle" font-family="SimHei" font-size="16" font-weight="bold" fill="white">15.36 MB</text>
+    <text x="50" y="55" text-anchor="end" font-family="SimHei" font-size="14" fill="#2d3748">原始存储</text>
+    
+    <!-- 压缩后 -->
+    <rect x="100" y="100" width="6.25" height="60" fill="url(#pqGrad)" rx="6"/>
+    <text x="121.25" y="138" font-family="SimHei" font-size="16" font-weight="bold" fill="#16a34a">0.48 MB</text>
+    <text x="50" y="135" text-anchor="end" font-family="SimHei" font-size="14" fill="#2d3748">PQ压缩后</text>
+    
+    <!-- 压缩率标注 -->
+    <g transform="translate(400, 50)">
+      <rect x="0" y="0" width="280" height="120" fill="#edf2f7" rx="10"/>
+      <text x="140" y="35" text-anchor="middle" font-family="SimHei" font-size="15" font-weight="bold" fill="#1a365d">压缩效果</text>
+      
+      <text x="140" y="70" text-anchor="middle" font-family="Arial" font-size="32" font-weight="bold" fill="#e07c4a">32×</text>
+      <text x="140" y="95" text-anchor="middle" font-family="SimSun" font-size="13" fill="#2d3748">压缩比 (3.125%)</text>
+      <text x="140" y="115" text-anchor="middle" font-family="SimSun" font-size="12" fill="#16a34a">检索精度保持 &gt;95%</text>
+    </g>
+  </g>
+  
+  <!-- 底部规模说明 -->
+  <g transform="translate(50, 400)">
+    <rect x="0" y="0" width="800" height="60" fill="#edf2f7" rx="8"/>
+    <text x="400" y="25" text-anchor="middle" font-family="SimHei" font-size="14" font-weight="bold" fill="#1a365d">大规模相册场景计算</text>
+    <text x="200" y="48" text-anchor="middle" font-family="SimSun" font-size="13" fill="#2d3748">100,000张图片 → 原始: 153.6 MB</text>
+    <text x="600" y="48" text-anchor="middle" font-family="SimSun" font-size="13" fill="#16a34a">PQ压缩后: 仅 4.8 MB ✓</text>
+  </g>
+</svg>

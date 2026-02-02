@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
+  <!-- Gallery Grey Background -->
+  <rect width="400" height="180" fill="#F5F5F7"/>
+  
+  <!-- Strict Grid Icon -->
+  <g transform="translate(30, 25)">
+    <!-- Mathematical grid frame -->
+    <rect x="0" y="0" width="110" height="130" fill="none" stroke="#000000" stroke-width="2"/>
+    <!-- Inner divisions -->
+    <line x1="55" y1="0" x2="55" y2="130" stroke="#000000" stroke-width="1"/>
+    <line x1="0" y1="43" x2="110" y2="43" stroke="#000000" stroke-width="1"/>
+    <line x1="0" y1="86" x2="110" y2="86" stroke="#000000" stroke-width="1"/>
+    <!-- Red accent dot (sparingly) -->
+    <circle cx="82" cy="22" r="8" fill="#FF3B30"/>
+    <!-- Abstract light symbol -->
+    <g fill="#000000">
+      <rect x="15" y="55" width="25" height="25"/>
+      <rect x="70" y="55" width="25" height="3"/>
+      <rect x="70" y="63" width="25" height="3"/>
+      <rect x="70" y="71" width="25" height="3"/>
+      <rect x="15" y="98" width="80" height="20" fill="none" stroke="#000000" stroke-width="1"/>
+    </g>
+  </g>
+  
+  <!-- Massive Typography -->
+  <g transform="translate(160, 40)">
+    <text x="0" y="0" font-family="Helvetica Neue, Arial, sans-serif" font-size="56" font-weight="700" fill="#000000" letter-spacing="-2">拾光</text>
+    <text x="0" y="45" font-family="Helvetica Neue, Arial, sans-serif" font-size="14" font-weight="400" fill="#000000" letter-spacing="8">SEEKLIGHT</text>
+    <line x1="0" y1="60" x2="180" y2="60" stroke="#000000" stroke-width="1"/>
+    <text x="0" y="82" font-family="Helvetica Neue, Arial, sans-serif" font-size="10" font-weight="300" fill="#666666" letter-spacing="2">SMART PHOTO ALBUM</text>
+  </g>
+</svg>

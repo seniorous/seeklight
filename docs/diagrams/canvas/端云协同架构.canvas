@@ -1,0 +1,139 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# 端云协同推理架构",
+      "x": 300,
+      "y": 0,
+      "width": 240,
+      "height": 50,
+      "color": "6"
+    },
+    {
+      "id": "device-zone",
+      "type": "text",
+      "text": "## 端侧「设备端」",
+      "x": 50,
+      "y": 70,
+      "width": 160,
+      "height": 40,
+      "color": "4"
+    },
+    {
+      "id": "device-vlm",
+      "type": "text",
+      "text": "**Qwen3-VL-2B**\n- MNN推理框架\n- W4A16量化\n- 14 tok/s\n- 内存 <300MB",
+      "x": 50,
+      "y": 120,
+      "width": 180,
+      "height": 120,
+      "color": "4"
+    },
+    {
+      "id": "device-advantage",
+      "type": "text",
+      "text": "**优势**\n✓ 离线可用\n✓ 隐私保护\n✓ 零延迟\n✓ 免费无限",
+      "x": 50,
+      "y": 260,
+      "width": 140,
+      "height": 110,
+      "color": "4"
+    },
+    {
+      "id": "device-limit",
+      "type": "text",
+      "text": "**限制**\n- 复杂场景理解弱\n- 长文本处理受限\n- 部分机型不支持",
+      "x": 50,
+      "y": 390,
+      "width": 180,
+      "height": 90,
+      "color": "1"
+    },
+    {
+      "id": "cloud-zone",
+      "type": "text",
+      "text": "## 云端「API服务」",
+      "x": 600,
+      "y": 70,
+      "width": 180,
+      "height": 40,
+      "color": "6"
+    },
+    {
+      "id": "cloud-vlm",
+      "type": "text",
+      "text": "**Qwen3-VL-235B**\n- DashScope API\n- 2350亿参数\n- 复杂推理\n- 多轮对话",
+      "x": 580,
+      "y": 120,
+      "width": 180,
+      "height": 120,
+      "color": "6"
+    },
+    {
+      "id": "cloud-advantage",
+      "type": "text",
+      "text": "**优势**\n✓ 高精度理解\n✓ 复杂场景\n✓ 持续更新\n✓ 无资源占用",
+      "x": 620,
+      "y": 260,
+      "width": 140,
+      "height": 110,
+      "color": "4"
+    },
+    {
+      "id": "cloud-limit",
+      "type": "text",
+      "text": "**限制**\n- 需网络连接\n- 数据上传\n- 按量计费",
+      "x": 580,
+      "y": 390,
+      "width": 180,
+      "height": 90,
+      "color": "1"
+    },
+    {
+      "id": "router",
+      "type": "text",
+      "text": "## 智能路由器\n**自动决策引擎**\n\n复杂度评估:\n- 文本长度\n- 场景类型\n- 用户偏好\n- 网络状态",
+      "x": 300,
+      "y": 160,
+      "width": 200,
+      "height": 160,
+      "color": "2"
+    },
+    {
+      "id": "result",
+      "type": "text",
+      "text": "## 统一输出\n**结构化JSON**\n\n- 场景类型\n- 提取实体\n- 语义摘要\n- 建议操作",
+      "x": 300,
+      "y": 380,
+      "width": 200,
+      "height": 120,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "device-vlm",
+      "fromSide": "right",
+      "toNode": "router",
+      "toSide": "left",
+      "label": "简单任务"
+    },
+    {
+      "id": "e2",
+      "fromNode": "cloud-vlm",
+      "fromSide": "left",
+      "toNode": "router",
+      "toSide": "right",
+      "label": "复杂任务"
+    },
+    {
+      "id": "e3",
+      "fromNode": "router",
+      "fromSide": "bottom",
+      "toNode": "result",
+      "toSide": "top"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="720" viewBox="0 0 800 720">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3498db"/>
+      <stop offset="100%" style="stop-color:#2980b9"/>
+    </linearGradient>
+    <linearGradient id="layer1Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e74c3c"/>
+      <stop offset="100%" style="stop-color:#c0392b"/>
+    </linearGradient>
+    <linearGradient id="layer2Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f39c12"/>
+      <stop offset="100%" style="stop-color:#e67e22"/>
+    </linearGradient>
+    <linearGradient id="layer3Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#27ae60"/>
+      <stop offset="100%" style="stop-color:#229954"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="800" height="720" fill="#f8f9fa"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="35" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="22" font-weight="bold" fill="#2c3e50">SeekLight 多层处理管道架构</text>
+  
+  <!-- 输入层 -->
+  <rect x="50" y="60" width="700" height="55" rx="8" fill="url(#headerGrad)" filter="url(#shadow)"/>
+  <text x="400" y="93" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="16" fill="white" font-weight="bold">图像输入（截图/相册）</text>
+  
+  <!-- 箭头1 -->
+  <path d="M400,115 L400,140" stroke="#7f8c8d" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <polygon points="400,150 395,140 405,140" fill="#7f8c8d"/>
+  
+  <!-- Layer 1: 快速预处理 -->
+  <rect x="50" y="155" width="700" height="120" rx="8" fill="#fff" stroke="#e74c3c" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="50" y="155" width="700" height="32" rx="8" ry="0" fill="url(#layer1Grad)"/>
+  <text x="400" y="177" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" fill="white" font-weight="bold">Layer 1: 快速预处理（&lt;100ms）</text>
+  
+  <!-- Layer 1 组件 -->
+  <rect x="70" y="200" width="150" height="55" rx="5" fill="#ffeaa7"/>
+  <text x="145" y="223" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">二维码识别</text>
+  <text x="145" y="243" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">(ZXing)</text>
+  
+  <rect x="235" y="200" width="150" height="55" rx="5" fill="#ffeaa7"/>
+  <text x="310" y="223" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">场景分类</text>
+  <text x="310" y="243" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">(规则引擎)</text>
+  
+  <rect x="400" y="200" width="150" height="55" rx="5" fill="#ffeaa7"/>
+  <text x="475" y="223" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">快速OCR</text>
+  <text x="475" y="243" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">(ML Kit)</text>
+  
+  <rect x="565" y="200" width="165" height="55" rx="5" fill="#ffeaa7"/>
+  <text x="647" y="223" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">文本向量化</text>
+  <text x="647" y="243" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">(MiniLM)</text>
+  
+  <!-- 箭头2 -->
+  <polygon points="400,290 395,280 405,280" fill="#7f8c8d"/>
+  
+  <!-- Layer 2: 结构化提取 -->
+  <rect x="50" y="295" width="700" height="120" rx="8" fill="#fff" stroke="#f39c12" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="50" y="295" width="700" height="32" rx="8" ry="0" fill="url(#layer2Grad)"/>
+  <text x="400" y="317" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" fill="white" font-weight="bold">Layer 2: 结构化提取（~200ms）</text>
+  
+  <!-- Layer 2 组件 -->
+  <rect x="70" y="340" width="150" height="55" rx="5" fill="#dfe6e9"/>
+  <text x="145" y="363" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">价格提取</text>
+  <text x="145" y="383" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">¥299.00</text>
+  
+  <rect x="235" y="340" width="150" height="55" rx="5" fill="#dfe6e9"/>
+  <text x="310" y="363" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">日期提取</text>
+  <text x="310" y="383" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">2026-01-28</text>
+  
+  <rect x="400" y="340" width="150" height="55" rx="5" fill="#dfe6e9"/>
+  <text x="475" y="363" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">单号提取</text>
+  <text x="475" y="383" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">SF123456</text>
+  
+  <rect x="565" y="340" width="165" height="55" rx="5" fill="#dfe6e9"/>
+  <text x="647" y="363" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">联系方式</text>
+  <text x="647" y="383" text-anchor="middle" font-family="Arial" font-size="11" fill="#636e72">电话/邮箱</text>
+  
+  <!-- 箭头3 -->
+  <polygon points="400,430 395,420 405,420" fill="#7f8c8d"/>
+  
+  <!-- Layer 3: 深度语义理解 -->
+  <rect x="50" y="435" width="700" height="100" rx="8" fill="#fff" stroke="#27ae60" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="50" y="435" width="700" height="32" rx="8" ry="0" fill="url(#layer3Grad)"/>
+  <text x="400" y="457" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" fill="white" font-weight="bold">Layer 3: 深度语义理解（3-5s，可选）</text>
+  
+  <!-- Layer 3 组件 -->
+  <rect x="100" y="480" width="280" height="40" rx="5" fill="#a8e6cf"/>
+  <text x="240" y="505" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">端侧VLM (Qwen3-VL-2B) - 本地推理</text>
+  
+  <rect x="420" y="480" width="280" height="40" rx="5" fill="#88d8b0"/>
+  <text x="560" y="505" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#2c3e50">云端VLM (Qwen3-VL-235B) - 高精度</text>
+  
+  <!-- 箭头4 -->
+  <polygon points="400,550 395,540 405,540" fill="#7f8c8d"/>
+  
+  <!-- 存储层 -->
+  <rect x="150" y="555" width="500" height="45" rx="8" fill="#9b59b6" filter="url(#shadow)"/>
+  <text x="400" y="583" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" fill="white" font-weight="bold">本地存储（Room + 向量数据库）</text>
+  
+  <!-- 箭头5 -->
+  <polygon points="400,615 395,605 405,605" fill="#7f8c8d"/>
+  
+  <!-- 用户交互层 -->
+  <rect x="100" y="620" width="600" height="45" rx="8" fill="#34495e" filter="url(#shadow)"/>
+  <text x="400" y="648" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" fill="white" font-weight="bold">用户交互：语义搜索 / 智能建议 / Deep Link跳转</text>
+  
+  <!-- 时间标注 -->
+  <text x="780" y="205" text-anchor="end" font-family="Arial" font-size="10" fill="#e74c3c">&lt;100ms</text>
+  <text x="780" y="345" text-anchor="end" font-family="Arial" font-size="10" fill="#f39c12">~200ms</text>
+  <text x="780" y="475" text-anchor="end" font-family="Arial" font-size="10" fill="#27ae60">3-5s</text>
+</svg>

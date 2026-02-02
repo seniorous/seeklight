@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "x": 400,
+      "y": -100,
+      "width": 400,
+      "height": 80,
+      "color": "6",
+      "text": "# 拾光 - 系统整体架构\n**隐私优先、云端增强的AI智能相册**"
+    },
+    {
+      "id": "user-layer",
+      "type": "text",
+      "x": -200,
+      "y": 50,
+      "width": 200,
+      "height": 120,
+      "color": "5",
+      "text": "## 用户交互层\n\n- 自然语言搜索\n- 截图即时感知\n- 智能建议气泡\n- 隐私模式切换"
+    },
+    {
+      "id": "ai-layer",
+      "type": "text",
+      "x": 100,
+      "y": 50,
+      "width": 280,
+      "height": 200,
+      "color": "4",
+      "text": "## AI推理层\n\n**端侧推理**\n- Qwen3-VL-2B (MNN)\n- MiniLM-L6-v2 向量化\n- ML Kit OCR\n\n**云端增强**\n- Qwen3-VL-235B (117倍)\n- 复杂推理/批量处理"
+    },
+    {
+      "id": "process-layer",
+      "type": "text",
+      "x": 450,
+      "y": 50,
+      "width": 260,
+      "height": 200,
+      "color": "3",
+      "text": "## 多层处理管道\n\n**Layer 1** (<100ms)\n二维码检测 + 场景分类\n\n**Layer 2** (~200ms)\n结构化信息提取\n\n**Layer 3** (3-5s, 按需)\nVLM深度语义理解"
+    },
+    {
+      "id": "data-layer",
+      "type": "text",
+      "x": 780,
+      "y": 50,
+      "width": 240,
+      "height": 200,
+      "color": "2",
+      "text": "## 数据存储层\n\n**向量数据库**\n- 384维语义向量\n- 混合检索引擎\n\n**本地存储**\n- Room数据库\n- EncryptedFile加密"
+    },
+    {
+      "id": "privacy-box",
+      "type": "text",
+      "x": 100,
+      "y": 320,
+      "width": 320,
+      "height": 100,
+      "color": "1",
+      "text": "## 隐私保护体系\n\n端侧推理 + 隐私保险箱 = 完整隐私闭环\n**数据主权完全在用户手中**"
+    },
+    {
+      "id": "cross-app",
+      "type": "text",
+      "x": 500,
+      "y": 320,
+      "width": 280,
+      "height": 100,
+      "color": "5",
+      "text": "## 跨应用能力\n\nDeep Link智能跳转\n淘宝/京东/高德/有道..."
+    }
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "user-layer", "toNode": "ai-layer", "fromSide": "right", "toSide": "left"},
+    {"id": "e2", "fromNode": "ai-layer", "toNode": "process-layer", "fromSide": "right", "toSide": "left"},
+    {"id": "e3", "fromNode": "process-layer", "toNode": "data-layer", "fromSide": "right", "toSide": "left"},
+    {"id": "e4", "fromNode": "ai-layer", "toNode": "privacy-box", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e5", "fromNode": "process-layer", "toNode": "cross-app", "fromSide": "bottom", "toSide": "top"}
+  ]
+}

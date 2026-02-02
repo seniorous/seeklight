@@ -1,82 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
     
-    <!-- 主星星 - 四角星形状 (居中于 54,54，安全区域内) -->
+    <!-- 
+        拾光 Logo - 记忆泡设计
+        基于 logo_v4_c_memory_bubble.png 风格
+        暖橙色调 + 圆形泡泡 + 装饰点
+    -->
+    
+    <!-- 外圈白色底座 -->
     <path
-        android:pathData="
-            M54,24
-            L58,46
-            L80,54
-            L58,62
-            L54,84
-            L50,62
-            L28,54
-            L50,46
-            Z"
+        android:pathData="M54,54m-26,0a26,26 0,1 1,52 0a26,26 0,1 1,-52 0"
         android:fillColor="#FFFFFF" />
     
-    <!-- 小闪光点 - 右上 -->
-    <path
-        android:pathData="
-            M72,32
-            L74,38
-            L80,40
-            L74,42
-            L72,48
-            L70,42
-            L64,40
-            L70,38
-            Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.85" />
+    <!-- 内圈暖橙渐变 - 主记忆泡 -->
+    <path android:pathData="M54,54m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="48"
+                android:centerY="48"
+                android:gradientRadius="24"
+                android:startColor="#F97316"
+                android:endColor="#FB923C" />
+        </aapt:attr>
+    </path>
     
-    <!-- 小闪光点 - 左下 -->
+    <!-- 内部深橙圆心 -->
+    <path android:pathData="M54,54m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="50"
+                android:centerY="50"
+                android:gradientRadius="14"
+                android:startColor="#EA580C"
+                android:endColor="#F97316" />
+        </aapt:attr>
+    </path>
+    
+    <!-- 高光点 - 左上 -->
     <path
-        android:pathData="
-            M36,60
-            L38,66
-            L44,68
-            L38,70
-            L36,76
-            L34,70
-            L28,68
-            L34,66
-            Z"
+        android:pathData="M45,45m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
         android:fillColor="#FFFFFF"
         android:fillAlpha="0.7" />
     
-    <!-- 微小闪光点 - 右下 -->
+    <!-- 装饰小泡 - 右上 (青绿) -->
     <path
-        android:pathData="
-            M70,70
-            L71,73
-            L74,74
-            L71,75
-            L70,78
-            L69,75
-            L66,74
-            L69,73
-            Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.5" />
+        android:pathData="M76,38m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
+        android:fillColor="#2DD4BF"
+        android:fillAlpha="0.9" />
     
-    <!-- 微小闪光点 - 左上 -->
+    <!-- 装饰小泡 - 左侧 (粉) -->
     <path
-        android:pathData="
-            M38,34
-            L39,37
-            L42,38
-            L39,39
-            L38,42
-            L37,39
-            L34,38
-            L37,37
-            Z"
-        android:fillColor="#FFFFFF"
+        android:pathData="M32,48m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+        android:fillColor="#FDA4AF"
+        android:fillAlpha="0.8" />
+    
+    <!-- 装饰微小泡 - 左下 -->
+    <path
+        android:pathData="M38,72m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
+        android:fillColor="#FCD34D"
+        android:fillAlpha="0.7" />
+    
+    <!-- 装饰微小泡 - 右下 -->
+    <path
+        android:pathData="M70,68m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0"
+        android:fillColor="#FDA4AF"
         android:fillAlpha="0.6" />
     
 </vector>

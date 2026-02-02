@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="400" viewBox="0 0 850 400">
+  <defs>
+    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4A261"/><stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <linearGradient id="techGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A6FA5"/><stop offset="100%" style="stop-color:#6090C0"/>
+    </linearGradient>
+    <linearGradient id="privGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2A9D8F"/><stop offset="100%" style="stop-color:#52B788"/>
+    </linearGradient>
+    <linearGradient id="memGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#9B59B6"/><stop offset="100%" style="stop-color:#BB8FCE"/>
+    </linearGradient>
+    <filter id="shadowCV"><feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.15"/></filter>
+  </defs>
+  
+  <rect width="850" height="400" fill="#FAFBFC"/>
+  
+  <!-- 标题 -->
+  <text x="425" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="20" font-weight="bold" fill="#2C3E50">拾光核心价值主张</text>
+  
+  <!-- 中心核心主张 -->
+  <g transform="translate(425, 200)">
+    <ellipse cx="0" cy="0" rx="130" ry="70" fill="url(#coreGrad)" filter="url(#shadowCV)"/>
+    <text x="0" y="-15" text-anchor="middle" font-family="SimHei, sans-serif" font-size="14" fill="white" font-weight="bold">用一句话</text>
+    <text x="0" y="10" text-anchor="middle" font-family="SimHei, sans-serif" font-size="14" fill="white" font-weight="bold">找到任何截图</text>
+    <text x="0" y="35" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="rgba(255,255,255,0.9)">自然语言 × 语义理解 × 本地AI</text>
+  </g>
+  
+  <!-- 左侧：技术基石 -->
+  <g transform="translate(80, 120)">
+    <rect x="0" y="0" width="200" height="160" rx="12" fill="url(#techGrad)" filter="url(#shadowCV)"/>
+    <text x="100" y="30" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">技术基石</text>
+    <line x1="20" y1="45" x2="180" y2="45" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="20" y="70" font-family="SimSun, serif" font-size="10" fill="white">• 端侧VLM语义理解</text>
+    <text x="20" y="90" font-family="SimSun, serif" font-size="10" fill="white">• HNSW向量检索</text>
+    <text x="20" y="110" font-family="SimSun, serif" font-size="10" fill="white">• 多层处理管道</text>
+    <text x="20" y="130" font-family="SimSun, serif" font-size="10" fill="white">• INT4量化部署</text>
+    <text x="20" y="150" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">TRL 7级验证</text>
+  </g>
+  
+  <!-- 右侧：隐私保护 -->
+  <g transform="translate(570, 120)">
+    <rect x="0" y="0" width="200" height="160" rx="12" fill="url(#privGrad)" filter="url(#shadowCV)"/>
+    <text x="100" y="30" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">隐私保护</text>
+    <line x1="20" y1="45" x2="180" y2="45" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="20" y="70" font-family="SimSun, serif" font-size="10" fill="white">• 数据不出设备</text>
+    <text x="20" y="90" font-family="SimSun, serif" font-size="10" fill="white">• 端云协同可选</text>
+    <text x="20" y="110" font-family="SimSun, serif" font-size="10" fill="white">• AES-256加密</text>
+    <text x="20" y="130" font-family="SimSun, serif" font-size="10" fill="white">• 生物识别解锁</text>
+    <text x="20" y="150" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">PIPL合规架构</text>
+  </g>
+  
+  <!-- 底部：记忆认知 -->
+  <g transform="translate(325, 300)">
+    <rect x="0" y="0" width="200" height="80" rx="12" fill="url(#memGrad)" filter="url(#shadowCV)"/>
+    <text x="100" y="28" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">记忆认知</text>
+    <text x="100" y="50" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">短期 → 长期 → 隐式</text>
+    <text x="100" y="70" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="rgba(255,255,255,0.8)">理解用户经历而非仅理解图片</text>
+  </g>
+  
+  <!-- 连接线 -->
+  <line x1="280" y1="200" x2="295" y2="200" stroke="#4A6FA5" stroke-width="2"/>
+  <line x1="555" y1="200" x2="570" y2="200" stroke="#2A9D8F" stroke-width="2"/>
+  <line x1="425" y1="270" x2="425" y2="300" stroke="#9B59B6" stroke-width="2"/>
+</svg>

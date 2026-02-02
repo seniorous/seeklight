@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="340" viewBox="0 0 800 340">
+  <defs>
+    <linearGradient id="googleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4285F4"/><stop offset="100%" style="stop-color:#34A853"/>
+    </linearGradient>
+    <linearGradient id="appleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#A3AAAE"/><stop offset="100%" style="stop-color:#555555"/>
+    </linearGradient>
+    <linearGradient id="meituGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B9D"/><stop offset="100%" style="stop-color:#FF9A8B"/>
+    </linearGradient>
+    <linearGradient id="seekGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F4A261"/><stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <filter id="shadowP"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  
+  <rect width="800" height="340" fill="#FAFBFC"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="30" text-anchor="middle" font-family="SimHei, sans-serif" font-size="18" font-weight="bold" fill="#2C3E50">竞品定价对比与拾光定价策略</text>
+  
+  <!-- 表格式对比 -->
+  <g transform="translate(50, 60)">
+    <!-- 表头 -->
+    <rect x="0" y="0" width="700" height="40" rx="6 6 0 0" fill="#2C3E50"/>
+    <text x="80" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">服务商</text>
+    <text x="220" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">免费额度</text>
+    <text x="380" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">基础套餐</text>
+    <text x="540" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">高级套餐</text>
+    <text x="660" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">特点</text>
+    
+    <!-- Google One -->
+    <rect x="0" y="45" width="700" height="50" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+    <rect x="5" y="50" width="150" height="40" rx="4" fill="url(#googleGrad)"/>
+    <text x="80" y="75" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">Google One</text>
+    <text x="220" y="75" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">15GB</text>
+    <text x="380" y="75" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">$1.99/月 (100GB)</text>
+    <text x="540" y="75" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">$9.99/月 (2TB)</text>
+    <text x="660" y="75" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">云端AI</text>
+    
+    <!-- iCloud+ -->
+    <rect x="0" y="100" width="700" height="50" fill="#F5F5F5" stroke="#E0E0E0" stroke-width="1"/>
+    <rect x="5" y="105" width="150" height="40" rx="4" fill="url(#appleGrad)"/>
+    <text x="80" y="130" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">iCloud+</text>
+    <text x="220" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">5GB</text>
+    <text x="380" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">$0.99/月 (50GB)</text>
+    <text x="540" y="130" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">$9.99/月 (2TB)</text>
+    <text x="660" y="130" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">生态闭环</text>
+    
+    <!-- 美图VIP -->
+    <rect x="0" y="155" width="700" height="50" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1"/>
+    <rect x="5" y="160" width="150" height="40" rx="4" fill="url(#meituGrad)"/>
+    <text x="80" y="185" text-anchor="middle" font-family="SimHei, sans-serif" font-size="11" fill="white">美图VIP</text>
+    <text x="220" y="185" text-anchor="middle" font-family="SimSun, serif" font-size="11" fill="#455A64">有限功能</text>
+    <text x="380" y="185" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">¥18/月</text>
+    <text x="540" y="185" text-anchor="middle" font-family="Arial" font-size="11" fill="#455A64">¥168/年</text>
+    <text x="660" y="185" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">修图工具</text>
+    
+    <!-- 拾光 -->
+    <rect x="0" y="210" width="700" height="55" fill="#FFF8E1" stroke="#F4A261" stroke-width="2"/>
+    <rect x="5" y="215" width="150" height="45" rx="4" fill="url(#seekGrad)"/>
+    <text x="80" y="243" text-anchor="middle" font-family="SimHei, sans-serif" font-size="12" fill="white" font-weight="bold">拾光</text>
+    <text x="220" y="238" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="#E65100">端侧AI +</text>
+    <text x="220" y="253" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="#E65100">1000张索引</text>
+    <text x="380" y="243" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#E65100">¥12/月</text>
+    <text x="540" y="243" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#E65100">¥98/年</text>
+    <text x="660" y="238" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#E65100">隐私优先</text>
+    <text x="660" y="253" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="#E65100">本地AI</text>
+  </g>
+  
+  <!-- 定价策略说明 -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="700" height="35" rx="4" fill="#E8F5E9"/>
+    <text x="350" y="22" text-anchor="middle" font-family="SimSun, serif" font-size="11" fill="#2E7D32">定价策略：低于国际竞品，参考美图定价，适应中国市场消费习惯</text>
+  </g>
+</svg>

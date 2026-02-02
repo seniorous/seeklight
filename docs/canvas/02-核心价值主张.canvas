@@ -1,0 +1,82 @@
+{
+  "nodes": [
+    {
+      "id": "center",
+      "type": "text",
+      "x": 300,
+      "y": 150,
+      "width": 280,
+      "height": 100,
+      "color": "6",
+      "text": "# 拾光核心价值\n\n**用一句话，找到任何截图**"
+    },
+    {
+      "id": "pain1",
+      "type": "text",
+      "x": -100,
+      "y": -50,
+      "width": 220,
+      "height": 120,
+      "color": "1",
+      "text": "## 痛点1: 截图囤积\n\n数字时代FOMO恐惧\n存储容易检索困难\n截图堆积如山"
+    },
+    {
+      "id": "pain2",
+      "type": "text",
+      "x": 200,
+      "y": -80,
+      "width": 220,
+      "height": 100,
+      "color": "1",
+      "text": "## 痛点2: 隐私两难\n\n云端强但担心泄露\n端侧安全但能力弱"
+    },
+    {
+      "id": "pain3",
+      "type": "text",
+      "x": 500,
+      "y": -50,
+      "width": 220,
+      "height": 120,
+      "color": "1",
+      "text": "## 痛点3: 围墙花园\n\n微信/淘宝/抖音割裂\n链接屏蔽迫使截图"
+    },
+    {
+      "id": "sol1",
+      "type": "text",
+      "x": -100,
+      "y": 320,
+      "width": 220,
+      "height": 120,
+      "color": "4",
+      "text": "## 解决方案1\n\n**语义搜索**\n输入『上周咖啡发票』\n直接找到目标截图"
+    },
+    {
+      "id": "sol2",
+      "type": "text",
+      "x": 200,
+      "y": 350,
+      "width": 220,
+      "height": 100,
+      "color": "4",
+      "text": "## 解决方案2\n\n**端云协同**\n默认隐私+可选增强\n选择权在用户手中"
+    },
+    {
+      "id": "sol3",
+      "type": "text",
+      "x": 500,
+      "y": 320,
+      "width": 220,
+      "height": 120,
+      "color": "4",
+      "text": "## 解决方案3\n\n**跨应用跳转**\n截图即时感知\nDeep Link一键跳转"
+    }
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "pain1", "toNode": "center", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e2", "fromNode": "pain2", "toNode": "center", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e3", "fromNode": "pain3", "toNode": "center", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e4", "fromNode": "center", "toNode": "sol1", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e5", "fromNode": "center", "toNode": "sol2", "fromSide": "bottom", "toSide": "top"},
+    {"id": "e6", "fromNode": "center", "toNode": "sol3", "fromSide": "bottom", "toSide": "top"}
+  ]
+}

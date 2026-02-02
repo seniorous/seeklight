@@ -1,0 +1,169 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "x": 300,
+      "y": 0,
+      "width": 300,
+      "height": 50,
+      "color": "6",
+      "text": "# 双塔融合检索架构\n视觉理解 + 文本理解协同"
+    },
+    {
+      "id": "query-input",
+      "type": "text",
+      "x": 350,
+      "y": 80,
+      "width": 200,
+      "height": 50,
+      "color": "5",
+      "text": "**用户查询**\n『上周的咖啡发票』"
+    },
+    {
+      "id": "visual-tower",
+      "type": "text",
+      "x": 50,
+      "y": 200,
+      "width": 220,
+      "height": 140,
+      "color": "4",
+      "text": "## 视觉理解塔 🖼️\n\n**VLM语义描述**\n- 场景识别\n- 物体检测\n- 颜色分析\n- 空间关系"
+    },
+    {
+      "id": "text-tower",
+      "type": "text",
+      "x": 630,
+      "y": 200,
+      "width": 220,
+      "height": 140,
+      "color": "2",
+      "text": "## 文本理解塔 📝\n\n**OCR文字提取**\n- 完整文本识别\n- 结构化数据\n- 关键词索引"
+    },
+    {
+      "id": "embed-visual",
+      "type": "text",
+      "x": 80,
+      "y": 380,
+      "width": 160,
+      "height": 60,
+      "text": "**向量化**\nMiniLM-L6-v2\n384维向量"
+    },
+    {
+      "id": "embed-text",
+      "type": "text",
+      "x": 660,
+      "y": 380,
+      "width": 160,
+      "height": 60,
+      "text": "**向量化**\nMiniLM-L6-v2\n384维向量"
+    },
+    {
+      "id": "fusion-box",
+      "type": "text",
+      "x": 300,
+      "y": 500,
+      "width": 300,
+      "height": 120,
+      "color": "1",
+      "text": "## 混合评分融合\n\n**Score = α×语义相似度**\n       **+ β×关键词匹配度**\n       **+ γ×时间权重**"
+    },
+    {
+      "id": "result",
+      "type": "text",
+      "x": 350,
+      "y": 660,
+      "width": 200,
+      "height": 50,
+      "color": "6",
+      "text": "**搜索结果**\n星巴克小票截图 ✓"
+    },
+    {
+      "id": "db-visual",
+      "type": "text",
+      "x": 50,
+      "y": 500,
+      "width": 160,
+      "height": 60,
+      "color": "3",
+      "text": "**向量数据库**\n图片语义向量"
+    },
+    {
+      "id": "db-text",
+      "type": "text",
+      "x": 690,
+      "y": 500,
+      "width": 160,
+      "height": 60,
+      "color": "3",
+      "text": "**索引数据库**\n结构化字段"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "query-input",
+      "fromSide": "bottom",
+      "toNode": "visual-tower",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "query-input",
+      "fromSide": "bottom",
+      "toNode": "text-tower",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "visual-tower",
+      "fromSide": "bottom",
+      "toNode": "embed-visual",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "text-tower",
+      "fromSide": "bottom",
+      "toNode": "embed-text",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "embed-visual",
+      "fromSide": "bottom",
+      "toNode": "db-visual",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "embed-text",
+      "fromSide": "bottom",
+      "toNode": "db-text",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "db-visual",
+      "fromSide": "right",
+      "toNode": "fusion-box",
+      "toSide": "left",
+      "label": "余弦相似度"
+    },
+    {
+      "id": "e8",
+      "fromNode": "db-text",
+      "fromSide": "left",
+      "toNode": "fusion-box",
+      "toSide": "right",
+      "label": "精确匹配"
+    },
+    {
+      "id": "e9",
+      "fromNode": "fusion-box",
+      "fromSide": "bottom",
+      "toNode": "result",
+      "toSide": "top"
+    }
+  ]
+}

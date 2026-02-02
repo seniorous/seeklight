@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <defs>
+    <linearGradient id="bubbleWarm" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4A261"/>
+      <stop offset="100%" style="stop-color:#E9C46A"/>
+    </linearGradient>
+    <filter id="bubbleGlow">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#F4A261" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- 暖白背景 -->
+  <rect width="320" height="120" fill="#FDFCF0"/>
+  
+  <!-- 气泡群 -->
+  <g transform="translate(12, 8)">
+    <!-- 主气泡 -->
+    <circle cx="52" cy="52" r="44" fill="#FFFFFF" filter="url(#bubbleGlow)"/>
+    <circle cx="52" cy="45" r="28" fill="url(#bubbleWarm)"/>
+    <circle cx="52" cy="45" r="12" fill="#FDFCF0" opacity="0.5"/>
+    <circle cx="44" cy="38" r="5" fill="#FDFCF0" opacity="0.8"/>
+    <!-- 小气泡 -->
+    <circle cx="85" cy="25" r="10" fill="#FFFFFF" filter="url(#bubbleGlow)"/>
+    <circle cx="85" cy="25" r="5" fill="#2A9D8F" opacity="0.6"/>
+    <circle cx="78" cy="80" r="7" fill="#FFFFFF" filter="url(#bubbleGlow)"/>
+    <circle cx="78" cy="80" r="3" fill="#E76F51" opacity="0.5"/>
+  </g>
+  
+  <!-- 精简文字 -->
+  <text x="115" y="55" font-family="-apple-system, 'SF Pro Rounded', sans-serif" font-size="40" font-weight="700" fill="#353535">拾光</text>
+  <text x="115" y="85" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#2A9D8F" letter-spacing="1">Seeklight</text>
+</svg>

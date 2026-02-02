@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="180" viewBox="0 0 400 180">
+  <defs>
+    <linearGradient id="blurpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5856D6"/>
+      <stop offset="100%" style="stop-color:#FF2D55"/>
+    </linearGradient>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#5856D6" flood-opacity="0.25"/>
+    </filter>
+    <filter id="frostedGlass">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+    </filter>
+  </defs>
+  
+  <!-- Adaptive Light Background -->
+  <rect width="400" height="180" fill="#F2F2F7"/>
+  
+  <!-- Floating Capsule Icon -->
+  <g transform="translate(30, 25)">
+    <!-- Frosted glass base -->
+    <rect x="0" y="0" width="115" height="130" rx="28" fill="#FFFFFF" opacity="0.9" filter="url(#softShadow)"/>
+    <!-- Inner translucent layer -->
+    <rect x="8" y="8" width="99" height="114" rx="22" fill="#F2F2F7" opacity="0.6"/>
+    
+    <!-- Light orb -->
+    <circle cx="57" cy="50" r="28" fill="url(#blurpleGrad)" filter="url(#softShadow)"/>
+    <circle cx="57" cy="50" r="15" fill="#FFFFFF" opacity="0.4"/>
+    <circle cx="50" cy="43" r="5" fill="#FFFFFF" opacity="0.8"/>
+    
+    <!-- Pill-shaped search hint -->
+    <rect x="15" y="95" width="85" height="26" rx="13" fill="url(#blurpleGrad)" opacity="0.15"/>
+    <text x="57" y="112" font-family="'SF Pro Rounded', -apple-system, sans-serif" font-size="10" fill="#5856D6" text-anchor="middle" font-weight="500">Search memories</text>
+  </g>
+  
+  <!-- Friendly Typography -->
+  <g transform="translate(165, 45)">
+    <text x="0" y="0" font-family="'SF Pro Rounded', -apple-system, sans-serif" font-size="42" font-weight="700" fill="#1C1C1E">拾光</text>
+    <text x="0" y="35" font-family="'SF Pro Rounded', sans-serif" font-size="16" font-weight="600" fill="url(#blurpleGrad)" letter-spacing="1">Seeklight</text>
+    <text x="0" y="62" font-family="'SF Pro Text', sans-serif" font-size="12" fill="#8E8E93" letter-spacing="0.5">Your memories, beautifully organized</text>
+    
+    <!-- Pill button accent -->
+    <rect x="0" y="78" width="100" height="32" rx="16" fill="url(#blurpleGrad)" filter="url(#softShadow)"/>
+    <text x="50" y="99" font-family="'SF Pro Text', sans-serif" font-size="12" font-weight="600" fill="#FFFFFF" text-anchor="middle">Get Started</text>
+  </g>
+</svg>

@@ -1,0 +1,105 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# SeekLight 商业模式画布",
+      "x": 300,
+      "y": 0,
+      "width": 280,
+      "height": 50,
+      "color": "6"
+    },
+    {
+      "id": "partners",
+      "type": "text",
+      "text": "## 关键合作\n- 阿里云「DashScope」\n- 手机厂商合作\n- 高校实验室",
+      "x": 0,
+      "y": 70,
+      "width": 180,
+      "height": 120,
+      "color": "5"
+    },
+    {
+      "id": "activities",
+      "type": "text",
+      "text": "## 关键活动\n- 端侧模型优化\n- 用户体验迭代\n- 场景适配开发",
+      "x": 200,
+      "y": 70,
+      "width": 180,
+      "height": 120,
+      "color": "4"
+    },
+    {
+      "id": "resources",
+      "type": "text",
+      "text": "## 核心资源\n- AI模型资产\n- 技术团队\n- 用户数据洞察",
+      "x": 200,
+      "y": 210,
+      "width": 180,
+      "height": 120,
+      "color": "4"
+    },
+    {
+      "id": "value",
+      "type": "text",
+      "text": "## 价值主张\n\n**端侧AI截图管理**\n✓ 跨品牌通用\n✓ 隐私保护\n✓ 离线可用\n✓ 语义检索",
+      "x": 400,
+      "y": 70,
+      "width": 180,
+      "height": 170,
+      "color": "1"
+    },
+    {
+      "id": "relations",
+      "type": "text",
+      "text": "## 客户关系\n- 自助服务\n- 社区运营\n- 反馈迭代",
+      "x": 600,
+      "y": 70,
+      "width": 160,
+      "height": 120,
+      "color": "2"
+    },
+    {
+      "id": "channels",
+      "type": "text",
+      "text": "## 渠道通路\n- 应用商店\n- 科技媒体\n- 社交传播",
+      "x": 600,
+      "y": 210,
+      "width": 160,
+      "height": 120,
+      "color": "2"
+    },
+    {
+      "id": "segments",
+      "type": "text",
+      "text": "## 客户细分\n- 大学生\n- 职场新人\n- 商务人士\n- 数码爱好者",
+      "x": 780,
+      "y": 70,
+      "width": 160,
+      "height": 140,
+      "color": "3"
+    },
+    {
+      "id": "costs",
+      "type": "text",
+      "text": "## 成本结构\n- 研发人力成本\n- 云端API调用费\n- 运营推广费用",
+      "x": 0,
+      "y": 360,
+      "width": 380,
+      "height": 100,
+      "color": "1"
+    },
+    {
+      "id": "revenue",
+      "type": "text",
+      "text": "## 收入来源\n- 高级功能订阅\n- 云端API增值\n- 企业定制服务",
+      "x": 400,
+      "y": 360,
+      "width": 380,
+      "height": 100,
+      "color": "4"
+    }
+  ],
+  "edges": []
+}

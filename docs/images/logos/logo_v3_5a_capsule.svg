@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <defs>
+    <linearGradient id="blurple1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5856D6"/>
+      <stop offset="100%" style="stop-color:#AF52DE"/>
+    </linearGradient>
+    <filter id="glow1">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#5856D6" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  
+  <rect width="320" height="120" fill="#F2F2F7"/>
+  
+  <!-- 发光胶囊图标 -->
+  <g transform="translate(20, 15)">
+    <rect x="0" y="0" width="80" height="90" rx="24" fill="#FFFFFF" filter="url(#glow1)"/>
+    <circle cx="40" cy="38" r="22" fill="url(#blurple1)"/>
+    <circle cx="40" cy="38" r="10" fill="#FFFFFF" opacity="0.4"/>
+    <circle cx="34" cy="32" r="4" fill="#FFFFFF" opacity="0.7"/>
+  </g>
+  
+  <!-- 精简文字 -->
+  <text x="115" y="55" font-family="-apple-system, 'SF Pro Rounded', sans-serif" font-size="38" font-weight="700" fill="#1C1C1E">拾光</text>
+  <text x="115" y="82" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="url(#blurple1)" letter-spacing="1">Seeklight</text>
+</svg>

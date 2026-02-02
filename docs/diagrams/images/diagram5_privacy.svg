@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <filter id="shadow5" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="450" fill="#f5f6fa"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="18" font-weight="bold" fill="#2c3e50">SeekLight 隐私保护架构</text>
+  
+  <!-- 用户设备框 -->
+  <rect x="50" y="55" width="500" height="280" rx="15" fill="none" stroke="#27ae60" stroke-width="3" stroke-dasharray="10,5"/>
+  <text x="300" y="80" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" font-weight="bold" fill="#27ae60">用户设备 - 数据不出端</text>
+  
+  <!-- 设备内组件 -->
+  <rect x="80" y="100" width="130" height="80" rx="10" fill="#3498db" filter="url(#shadow5)"/>
+  <text x="145" y="135" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">图片存储</text>
+  <text x="145" y="155" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">(本地文件系统)</text>
+  
+  <rect x="235" y="100" width="130" height="80" rx="10" fill="#9b59b6" filter="url(#shadow5)"/>
+  <text x="300" y="135" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">AI推理引擎</text>
+  <text x="300" y="155" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">(NPU本地计算)</text>
+  
+  <rect x="390" y="100" width="130" height="80" rx="10" fill="#e67e22" filter="url(#shadow5)"/>
+  <text x="455" y="135" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">向量数据库</text>
+  <text x="455" y="155" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">(Room加密存储)</text>
+  
+  <!-- 安全标识 -->
+  <rect x="80" y="200" width="440" height="50" rx="8" fill="#2ecc71" filter="url(#shadow5)"/>
+  <text x="300" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" fill="white" font-weight="bold">核心数据本地处理：图片、AI模型、向量索引 100% 本地存储</text>
+  
+  <!-- 隔离线 -->
+  <rect x="80" y="265" width="440" height="50" rx="8" fill="#f39c12" filter="url(#shadow5)"/>
+  <text x="300" y="295" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">可选云端服务（仅传输查询文本，图片不上传）</text>
+  
+  <!-- 云端服务（可选） -->
+  <rect x="600" y="120" width="160" height="200" rx="15" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="680" y="145" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#e74c3c">云端VLM（可选）</text>
+  
+  <rect x="620" y="160" width="120" height="60" rx="8" fill="#e74c3c" filter="url(#shadow5)"/>
+  <text x="680" y="185" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="white">Qwen-VL-235B</text>
+  <text x="680" y="205" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">高精度推理</text>
+  
+  <rect x="620" y="235" width="120" height="60" rx="8" fill="#c0392b" filter="url(#shadow5)"/>
+  <text x="680" y="260" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="white">阿里云DashScope</text>
+  <text x="680" y="278" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">API服务</text>
+  
+  <!-- 连接线（可选） -->
+  <path d="M520,290 C560,290 560,220 600,220" stroke="#f39c12" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+  <text x="565" y="250" text-anchor="middle" font-family="Arial" font-size="9" fill="#f39c12">仅文本</text>
+  
+  <!-- PIPL合规说明 -->
+  <rect x="50" y="355" width="700" height="80" rx="10" fill="#34495e" filter="url(#shadow5)"/>
+  <text x="400" y="380" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" font-weight="bold" fill="white">符合《个人信息保护法》(PIPL) 合规要求</text>
+  <text x="400" y="405" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#bdc3c7">✓ 数据最小化原则 ✓ 本地处理优先 ✓ 无跨境数据传输 ✓ 用户完全控制</text>
+  <text x="400" y="425" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#95a5a6">身份证、银行卡、聊天记录等敏感信息完全在设备端处理，杜绝云端泄露风险</text>
+</svg>

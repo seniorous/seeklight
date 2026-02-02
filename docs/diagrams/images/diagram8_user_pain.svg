@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <filter id="shadow8" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="400" fill="#f5f6fa"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="18" font-weight="bold" fill="#2c3e50">目标用户场景与痛点分析</text>
+  
+  <!-- 用户群体1: 大学生 -->
+  <rect x="50" y="60" width="220" height="150" rx="10" fill="white" stroke="#3498db" stroke-width="2" filter="url(#shadow8)"/>
+  <rect x="50" y="60" width="220" height="35" rx="10" ry="0" fill="#3498db"/>
+  <text x="160" y="83" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="13" fill="white" font-weight="bold">大学生群体</text>
+  
+  <text x="70" y="115" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">痛点：</text>
+  <text x="70" y="135" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 奖学金通知截图找不到</text>
+  <text x="70" y="155" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 课程PPT截图无法检索</text>
+  <text x="70" y="175" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 社团活动二维码过期</text>
+  <text x="70" y="195" font-family="Microsoft YaHei, Arial" font-size="10" fill="#27ae60" font-weight="bold">→ 自然语言搜索"期末重点"</text>
+  
+  <!-- 用户群体2: 职场新人 -->
+  <rect x="290" y="60" width="220" height="150" rx="10" fill="white" stroke="#e67e22" stroke-width="2" filter="url(#shadow8)"/>
+  <rect x="290" y="60" width="220" height="35" rx="10" ry="0" fill="#e67e22"/>
+  <text x="400" y="83" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="13" fill="white" font-weight="bold">职场新人</text>
+  
+  <text x="310" y="115" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">痛点：</text>
+  <text x="310" y="135" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 双十一多平台比价混乱</text>
+  <text x="310" y="155" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 工作聊天记录难以留存</text>
+  <text x="310" y="175" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 快递单号手动复制麻烦</text>
+  <text x="310" y="195" font-family="Microsoft YaHei, Arial" font-size="10" fill="#27ae60" font-weight="bold">→ 一键比价+自动提取单号</text>
+  
+  <!-- 用户群体3: 商务人士 -->
+  <rect x="530" y="60" width="220" height="150" rx="10" fill="white" stroke="#9b59b6" stroke-width="2" filter="url(#shadow8)"/>
+  <rect x="530" y="60" width="220" height="35" rx="10" ry="0" fill="#9b59b6"/>
+  <text x="640" y="83" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="13" fill="white" font-weight="bold">商务人士</text>
+  
+  <text x="550" y="115" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">痛点：</text>
+  <text x="550" y="135" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 机场安检翻找登机牌</text>
+  <text x="550" y="155" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 票据报销整理耗时</text>
+  <text x="550" y="175" font-family="Microsoft YaHei, Arial" font-size="10" fill="#7f8c8d">• 会议二维码时效性焦虑</text>
+  <text x="550" y="195" font-family="Microsoft YaHei, Arial" font-size="10" fill="#27ae60" font-weight="bold">→ 二维码智能置顶+过期归档</text>
+  
+  <!-- 核心价值 -->
+  <rect x="100" y="240" width="600" height="140" rx="15" fill="#2c3e50" filter="url(#shadow8)"/>
+  <text x="400" y="275" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="16" font-weight="bold" fill="white">SeekLight 核心价值主张</text>
+  
+  <rect x="130" y="295" width="160" height="65" rx="8" fill="#27ae60"/>
+  <text x="210" y="320" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">被动智能</text>
+  <text x="210" y="345" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#dfe6e9">截图即分析</text>
+  <text x="210" y="360" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#dfe6e9">无需手动整理</text>
+  
+  <rect x="320" y="295" width="160" height="65" rx="8" fill="#3498db"/>
+  <text x="400" y="320" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">语义检索</text>
+  <text x="400" y="345" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#dfe6e9">自然语言搜索</text>
+  <text x="400" y="360" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#dfe6e9">"找那张红裙子"</text>
+  
+  <rect x="510" y="295" width="160" height="65" rx="8" fill="#9b59b6"/>
+  <text x="590" y="320" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">隐私优先</text>
+  <text x="590" y="345" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#dfe6e9">数据不出端</text>
+  <text x="590" y="360" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#dfe6e9">完全本地处理</text>
+</svg>

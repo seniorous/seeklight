@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550">
+  <defs>
+    <linearGradient id="trl9" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="trl8" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0D9488;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14B8A6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="trl7" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0891B2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22D3EE;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="900" height="550" fill="#FFFFFF"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="40" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1E293B">功能依赖技术的成熟度分布</text>
+  <text x="450" y="65" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#475569">Technology Readiness Level (TRL) Distribution by Function</text>
+  
+  <!-- TRL等级背景区域 -->
+  <rect x="60" y="90" width="780" height="380" fill="#F1F5F9" rx="8"/>
+  
+  <!-- TRL等级刻度 (Y轴: TRL 1-9) -->
+  <text x="45" y="130" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 9</text>
+  <text x="45" y="170" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 8</text>
+  <text x="45" y="210" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 7</text>
+  <text x="45" y="250" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 6</text>
+  <text x="45" y="290" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 5</text>
+  <text x="45" y="330" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 4</text>
+  <text x="45" y="370" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 3</text>
+  <text x="45" y="410" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 2</text>
+  <text x="45" y="450" text-anchor="end" font-family="Arial" font-size="11" fill="#1E293B">TRL 1</text>
+  
+  <!-- 水平网格线 -->
+  <line x1="60" y1="125" x2="840" y2="125" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="60" y1="165" x2="840" y2="165" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="60" y1="205" x2="840" y2="205" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="60" y1="285" x2="840" y2="285" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="60" y1="365" x2="840" y2="365" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3,3"/>
+  
+  <!-- TRL 7基准线（本项目最低可接受成熟度）-->
+  <line x1="60" y1="205" x2="840" y2="205" stroke="#F59E0B" stroke-width="2"/>
+  <text x="845" y="210" font-family="SimSun, Arial" font-size="10" fill="#F59E0B">基准线</text>
+  
+  <!-- 功能1: 多模态语义搜索 -->
+  <g transform="translate(100, 0)">
+    <rect x="0" y="125" width="80" height="335" fill="url(#trl9)" opacity="0.3"/>
+    <rect x="10" y="125" width="60" height="80" rx="4" fill="url(#trl9)"/>
+    <text x="40" y="160" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">MiniLM</text>
+    <text x="40" y="175" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">TRL 9</text>
+    
+    <rect x="10" y="165" width="60" height="40" rx="4" fill="url(#trl8)"/>
+    <text x="40" y="188" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">HNSW</text>
+    
+    <rect x="10" y="205" width="60" height="80" rx="4" fill="url(#trl7)"/>
+    <text x="40" y="240" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">VLM</text>
+    <text x="40" y="255" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">TRL 7</text>
+    
+    <text x="40" y="480" text-anchor="middle" font-family="SimHei, Arial" font-size="11" fill="#1E293B">语义搜索</text>
+  </g>
+  
+  <!-- 功能2: 快速内容识别 -->
+  <g transform="translate(240, 0)">
+    <rect x="0" y="125" width="80" height="335" fill="url(#trl9)" opacity="0.3"/>
+    <rect x="10" y="125" width="60" height="80" rx="4" fill="url(#trl9)"/>
+    <text x="40" y="155" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">ML Kit</text>
+    <text x="40" y="170" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">TRL 9</text>
+    
+    <rect x="10" y="125" width="60" height="40" rx="4" fill="url(#trl9)"/>
+    <text x="40" y="150" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">ZXing</text>
+    
+    <text x="40" y="480" text-anchor="middle" font-family="SimHei, Arial" font-size="11" fill="#1E293B">快速识别</text>
+  </g>
+  
+  <!-- 功能3: 结构化提取 -->
+  <g transform="translate(380, 0)">
+    <rect x="0" y="125" width="80" height="335" fill="url(#trl9)" opacity="0.3"/>
+    <rect x="10" y="125" width="60" height="80" rx="4" fill="url(#trl9)"/>
+    <text x="40" y="155" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">正则引擎</text>
+    <text x="40" y="170" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">TRL 9</text>
+    
+    <text x="40" y="480" text-anchor="middle" font-family="SimHei, Arial" font-size="11" fill="#1E293B">结构化提取</text>
+  </g>
+  
+  <!-- 功能4: 智能跳转 -->
+  <g transform="translate(520, 0)">
+    <rect x="0" y="125" width="80" height="335" fill="url(#trl9)" opacity="0.3"/>
+    <rect x="10" y="125" width="60" height="80" rx="4" fill="url(#trl9)"/>
+    <text x="40" y="155" text-anchor="middle" font-family="SimSun, Arial" font-size="10" fill="#FFFFFF">Deep Link</text>
+    <text x="40" y="170" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">TRL 9</text>
+    
+    <text x="40" y="480" text-anchor="middle" font-family="SimHei, Arial" font-size="11" fill="#1E293B">智能跳转</text>
+  </g>
+  
+  <!-- 功能5: 隐私保险箱 -->
+  <g transform="translate(660, 0)">
+    <rect x="0" y="125" width="80" height="335" fill="url(#trl9)" opacity="0.3"/>
+    <rect x="10" y="125" width="60" height="40" rx="4" fill="url(#trl9)"/>
+    <text x="40" y="150" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">Biometric</text>
+    
+    <rect x="10" y="165" width="60" height="40" rx="4" fill="url(#trl8)"/>
+    <text x="40" y="190" text-anchor="middle" font-family="SimSun, Arial" font-size="9" fill="#FFFFFF">EncryptedFile</text>
+    
+    <text x="40" y="480" text-anchor="middle" font-family="SimHei, Arial" font-size="11" fill="#1E293B">隐私保险箱</text>
+  </g>
+  
+  <!-- 图例 -->
+  <rect x="100" y="495" width="700" height="45" rx="6" fill="#E2E8F0"/>
+  <rect x="120" y="510" width="20" height="15" fill="url(#trl9)"/>
+  <text x="145" y="522" font-family="SimSun, Arial" font-size="11" fill="#1E293B">TRL 9 (成熟技术)</text>
+  <rect x="280" y="510" width="20" height="15" fill="url(#trl8)"/>
+  <text x="305" y="522" font-family="SimSun, Arial" font-size="11" fill="#1E293B">TRL 8 (系统验证)</text>
+  <rect x="440" y="510" width="20" height="15" fill="url(#trl7)"/>
+  <text x="465" y="522" font-family="SimSun, Arial" font-size="11" fill="#1E293B">TRL 7 (原型验证)</text>
+  <rect x="600" y="510" width="20" height="15" fill="#F59E0B"/>
+  <text x="625" y="522" font-family="SimSun, Arial" font-size="11" fill="#1E293B">最低可接受成熟度</text>
+</svg>

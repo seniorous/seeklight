@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="550" viewBox="0 0 800 550">
+  <defs>
+    <linearGradient id="mem1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/><stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="mem2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/><stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="mem3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/><stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <filter id="shadow5"><feDropShadow dx="3" dy="3" stdDeviation="4" flood-opacity="0.2"/></filter>
+  </defs>
+  <rect width="800" height="550" fill="#f8fafc"/>
+  <text x="400" y="35" text-anchor="middle" font-family="Microsoft YaHei" font-size="22" font-weight="bold" fill="#1e293b">层次化记忆架构</text>
+  <text x="400" y="58" text-anchor="middle" font-family="Microsoft YaHei" font-size="13" fill="#64748b">借鉴 Stanford Generative Agents Reflection 机制</text>
+  
+  <!-- 金字塔层级 -->
+  <path d="M300,90 L500,90 L580,200 L220,200 Z" fill="url(#mem1)" filter="url(#shadow5)"/>
+  <text x="400" y="140" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">第三层：隐式记忆</text>
+  <text x="400" y="165" text-anchor="middle" font-family="Microsoft YaHei" font-size="12" fill="rgba(255,255,255,0.9)">UserPreference | 行为偏好</text>
+  <text x="400" y="185" text-anchor="middle" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.8)">场景化修图偏好 · 隐式反馈学习</text>
+  
+  <path d="M220,210 L580,210 L660,350 L140,350 Z" fill="url(#mem2)" filter="url(#shadow5)"/>
+  <text x="400" y="265" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">第二层：长期记忆</text>
+  <text x="400" y="290" text-anchor="middle" font-family="Microsoft YaHei" font-size="12" fill="rgba(255,255,255,0.9)">HighLevelFact | 高级事实推断</text>
+  <text x="400" y="315" text-anchor="middle" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.8)">Reflection机制 · 跨图片洞察 · 生活事件理解</text>
+  <text x="400" y="338" text-anchor="middle" font-family="Arial" font-size="10" fill="rgba(255,255,255,0.7)">例：「用户正在三亚旅行」「用户在准备考试」</text>
+  
+  <path d="M140,360 L660,360 L740,510 L60,510 Z" fill="url(#mem3)" filter="url(#shadow5)"/>
+  <text x="400" y="415" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">第一层：短期记忆</text>
+  <text x="400" y="440" text-anchor="middle" font-family="Microsoft YaHei" font-size="12" fill="rgba(255,255,255,0.9)">ImageMemory | 单图即时描述</text>
+  <text x="400" y="465" text-anchor="middle" font-family="Arial" font-size="11" fill="rgba(255,255,255,0.8)">VLM语义描述 · OCR文字内容 · 场景分类标签 · 结构化信息</text>
+  <text x="400" y="490" text-anchor="middle" font-family="Arial" font-size="10" fill="rgba(255,255,255,0.7)">例：「星巴克美式咖啡，¥32，2026-01-28，微信支付」</text>
+  
+  <!-- 右侧Reflection流程 -->
+  <rect x="680" y="90" width="110" height="420" rx="8" fill="white" stroke="#e2e8f0" filter="url(#shadow5)"/>
+  <text x="735" y="115" text-anchor="middle" font-family="Microsoft YaHei" font-size="12" font-weight="bold" fill="#334155">Reflection</text>
+  <text x="735" y="133" text-anchor="middle" font-family="Microsoft YaHei" font-size="10" fill="#64748b">触发机制</text>
+  <line x1="690" y1="145" x2="780" y2="145" stroke="#e2e8f0"/>
+  
+  <text x="735" y="170" text-anchor="middle" font-family="Microsoft YaHei" font-size="10" fill="#334155">事件驱动</text>
+  <text x="735" y="190" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">导入50+图片</text>
+  <text x="735" y="210" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">地理位置变化</text>
+  <text x="735" y="230" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">相似场景聚集</text>
+  
+  <line x1="690" y1="250" x2="780" y2="250" stroke="#e2e8f0"/>
+  <text x="735" y="275" text-anchor="middle" font-family="Microsoft YaHei" font-size="10" fill="#334155">定时触发</text>
+  <text x="735" y="295" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">每日睡眠时段</text>
+  <text x="735" y="315" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">后台静默执行</text>
+  
+  <line x1="690" y1="335" x2="780" y2="335" stroke="#e2e8f0"/>
+  <text x="735" y="360" text-anchor="middle" font-family="Microsoft YaHei" font-size="10" fill="#334155">隐私设计</text>
+  <text x="735" y="380" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">本地加密存储</text>
+  <text x="735" y="400" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">端侧VLM推理</text>
+  <text x="735" y="420" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">数据不出端</text>
+  <text x="735" y="440" text-anchor="middle" font-family="Arial" font-size="9" fill="#64748b">用户可删除</text>
+</svg>

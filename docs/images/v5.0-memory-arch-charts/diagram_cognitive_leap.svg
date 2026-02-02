@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="gradBasic" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#B0BEC5"/>
+      <stop offset="100%" style="stop-color:#78909C"/>
+    </linearGradient>
+    <linearGradient id="gradAdvanced" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F4A261"/>
+      <stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <linearGradient id="gradArrow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2A9D8F"/>
+      <stop offset="100%" style="stop-color:#264653"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="450" fill="#FAFAFA"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="35" font-family="SimHei, sans-serif" font-size="20" font-weight="bold" fill="#353535" text-anchor="middle">认知跃升：从「照片是什么」到「用户经历了什么」</text>
+  
+  <!-- 左侧：传统相册 -->
+  <g transform="translate(50, 70)">
+    <rect x="0" y="0" width="280" height="320" rx="12" fill="#FFFFFF" stroke="#B0BEC5" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="280" height="45" rx="12 12 0 0" fill="url(#gradBasic)"/>
+    <text x="140" y="30" font-family="SimHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">传统AI相册</text>
+    
+    <!-- 单图理解 -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="240" height="55" rx="6" fill="#ECEFF1"/>
+      <text x="10" y="22" font-family="SimSun, serif" font-size="13" fill="#455A64">输入：一张海滩照片</text>
+      <text x="10" y="42" font-family="SimSun, serif" font-size="13" fill="#455A64">输出：沙滩、椰子树、天空</text>
+    </g>
+    
+    <g transform="translate(20, 135)">
+      <rect x="0" y="0" width="240" height="55" rx="6" fill="#ECEFF1"/>
+      <text x="10" y="22" font-family="SimSun, serif" font-size="13" fill="#455A64">输入：一张酒店照片</text>
+      <text x="10" y="42" font-family="SimSun, serif" font-size="13" fill="#455A64">输出：床、窗户、电视</text>
+    </g>
+    
+    <g transform="translate(20, 205)">
+      <rect x="0" y="0" width="240" height="55" rx="6" fill="#ECEFF1"/>
+      <text x="10" y="22" font-family="SimSun, serif" font-size="13" fill="#455A64">输入：一张美食照片</text>
+      <text x="10" y="42" font-family="SimSun, serif" font-size="13" fill="#455A64">输出：海鲜、餐厅、盘子</text>
+    </g>
+    
+    <!-- 痛点 -->
+    <rect x="20" y="275" width="240" height="35" rx="6" fill="#FFEBEE" stroke="#E53935" stroke-width="1"/>
+    <text x="140" y="297" font-family="SimSun, serif" font-size="12" fill="#C62828" text-anchor="middle">❌ 无法搜索「上次去海边的照片」</text>
+  </g>
+  
+  <!-- 中间：跃升箭头 -->
+  <g transform="translate(345, 180)">
+    <path d="M0,50 L80,50 L80,30 L110,55 L80,80 L80,60 L0,60 Z" fill="url(#gradArrow)"/>
+    <text x="55" y="100" font-family="SimHei, sans-serif" font-size="12" fill="#2A9D8F" text-anchor="middle">层次化记忆</text>
+    <text x="55" y="116" font-family="SimHei, sans-serif" font-size="12" fill="#2A9D8F" text-anchor="middle">架构</text>
+  </g>
+  
+  <!-- 右侧：拾光 -->
+  <g transform="translate(470, 70)">
+    <rect x="0" y="0" width="280" height="320" rx="12" fill="#FFFFFF" stroke="#E76F51" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="280" height="45" rx="12 12 0 0" fill="url(#gradAdvanced)"/>
+    <text x="140" y="30" font-family="SimHei, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF" text-anchor="middle">拾光 · 层次化记忆</text>
+    
+    <!-- 三层记忆 -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="240" height="42" rx="6" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+      <text x="120" y="18" font-family="SimHei, sans-serif" font-size="12" fill="#2E7D32" text-anchor="middle">短期记忆（单图理解）</text>
+      <text x="120" y="34" font-family="SimSun, serif" font-size="11" fill="#455A64" text-anchor="middle">沙滩+椰子树 | 酒店+床 | 海鲜+餐厅</text>
+    </g>
+    
+    <text x="140" y="118" font-family="SimHei, sans-serif" font-size="14" fill="#2A9D8F" text-anchor="middle">↓ Reflection推断 ↓</text>
+    
+    <g transform="translate(20, 130)">
+      <rect x="0" y="0" width="240" height="60" rx="6" fill="#FFF3E0" stroke="#FF9800" stroke-width="1"/>
+      <text x="120" y="20" font-family="SimHei, sans-serif" font-size="12" fill="#E65100" text-anchor="middle">长期记忆（跨图推断）</text>
+      <text x="120" y="40" font-family="SimSun, serif" font-size="12" fill="#455A64" text-anchor="middle">高级事实：用户正在三亚旅行</text>
+      <text x="120" y="54" font-family="SimSun, serif" font-size="10" fill="#78909C" text-anchor="middle">置信度: 0.92 | 证据: 15张照片</text>
+    </g>
+    
+    <g transform="translate(20, 205)">
+      <rect x="0" y="0" width="240" height="45" rx="6" fill="#F3E5F5" stroke="#9C27B0" stroke-width="1"/>
+      <text x="120" y="18" font-family="SimHei, sans-serif" font-size="12" fill="#6A1B9A" text-anchor="middle">隐式记忆（偏好学习）</text>
+      <text x="120" y="36" font-family="SimSun, serif" font-size="11" fill="#455A64" text-anchor="middle">用户旅行时偏好高饱和度风景滤镜</text>
+    </g>
+    
+    <!-- 优势 -->
+    <rect x="20" y="265" width="240" height="45" rx="6" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
+    <text x="140" y="285" font-family="SimSun, serif" font-size="12" fill="#2E7D32" text-anchor="middle">✓ 搜索「上次去海边」→ 返回50张</text>
+    <text x="140" y="302" font-family="SimSun, serif" font-size="11" fill="#4CAF50" text-anchor="middle">理解「用户经历」而非「照片内容」</text>
+  </g>
+  
+  <!-- 底部说明 -->
+  <text x="400" y="425" font-family="SimSun, serif" font-size="12" fill="#78909C" text-anchor="middle">层次化记忆架构使拾光从「存储工具」进化为「生活伙伴」</text>
+</svg>

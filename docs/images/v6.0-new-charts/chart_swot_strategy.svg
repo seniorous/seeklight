@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="520" viewBox="0 0 850 520">
+  <defs>
+    <linearGradient id="soGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2A9D8F"/><stop offset="100%" style="stop-color:#52B788"/>
+    </linearGradient>
+    <linearGradient id="woGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F4A261"/><stop offset="100%" style="stop-color:#E9C46A"/>
+    </linearGradient>
+    <linearGradient id="stGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4A6FA5"/><stop offset="100%" style="stop-color:#6090C0"/>
+    </linearGradient>
+    <linearGradient id="wtGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#9B59B6"/><stop offset="100%" style="stop-color:#BB8FCE"/>
+    </linearGradient>
+    <filter id="shadowS"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  
+  <rect width="850" height="520" fill="#FAFBFC"/>
+  
+  <!-- 标题 -->
+  <text x="425" y="30" text-anchor="middle" font-family="SimHei, sans-serif" font-size="18" font-weight="bold" fill="#2C3E50">SWOT战略组合矩阵</text>
+  <text x="425" y="50" text-anchor="middle" font-family="SimSun, serif" font-size="11" fill="#7F8C8D">基于优势/劣势 × 机会/威胁的四象限战略</text>
+  
+  <!-- 2x2矩阵布局 -->
+  <!-- SO战略（左上）-->
+  <g transform="translate(25, 70)">
+    <rect x="0" y="0" width="395" height="200" rx="10" fill="#FFFFFF" stroke="#2A9D8F" stroke-width="2" filter="url(#shadowS)"/>
+    <rect x="0" y="0" width="395" height="40" rx="10 10 0 0" fill="url(#soGrad)"/>
+    <text x="198" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">SO战略（增长型）优势×机会</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="365" height="55" rx="4" fill="#E8F5E9"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#2E7D32" font-weight="bold">策略1：快速迭代产品功能</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">利用开源生态优势（Qwen/MNN免费）+ 端侧AI成熟机会</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 模型推理成本降低90%+，快速验证新功能</text>
+    </g>
+    
+    <g transform="translate(15, 120)">
+      <rect x="0" y="0" width="365" height="65" rx="4" fill="#C8E6C9"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#2E7D32" font-weight="bold">策略2：高校市场建立口碑</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">借助大学生高付费意愿（55%）+ AI热度（7.29亿月活）</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 聚焦4763万大学生种子用户，形成口碑传播</text>
+    </g>
+  </g>
+  
+  <!-- WO战略（右上）-->
+  <g transform="translate(430, 70)">
+    <rect x="0" y="0" width="395" height="200" rx="10" fill="#FFFFFF" stroke="#F4A261" stroke-width="2" filter="url(#shadowS)"/>
+    <rect x="0" y="0" width="395" height="40" rx="10 10 0 0" fill="url(#woGrad)"/>
+    <text x="198" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">WO战略（扭转型）劣势×机会</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="365" height="55" rx="4" fill="#FFF3E0"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#E65100" font-weight="bold">策略1：云端增强弥补端侧能力</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">劣势：端侧2B模型能力受限 → 机会：云端235B模型可选</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 参数量比1:117，复杂任务可切换云端处理</text>
+    </g>
+    
+    <g transform="translate(15, 120)">
+      <rect x="0" y="0" width="365" height="65" rx="4" fill="#FFE0B2"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#E65100" font-weight="bold">策略2：大赛提升品牌知名度</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">劣势：新产品冷启动 → 机会：高校创业大赛曝光</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 全国大学生软件创新大赛 + 高校媒体报道</text>
+    </g>
+  </g>
+  
+  <!-- ST战略（左下）-->
+  <g transform="translate(25, 285)">
+    <rect x="0" y="0" width="395" height="200" rx="10" fill="#FFFFFF" stroke="#4A6FA5" stroke-width="2" filter="url(#shadowS)"/>
+    <rect x="0" y="0" width="395" height="40" rx="10 10 0 0" fill="url(#stGrad)"/>
+    <text x="198" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">ST战略（多元化）优势×威胁</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="365" height="55" rx="4" fill="#E3F2FD"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#1565C0" font-weight="bold">策略1：聚焦隐私敏感场景差异化</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">威胁：手机厂商AI助手5.35亿用户竞争</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 专注身份证/银行卡等敏感场景，做深而非做广</text>
+    </g>
+    
+    <g transform="translate(15, 120)">
+      <rect x="0" y="0" width="365" height="65" rx="4" fill="#BBDEFB"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#1565C0" font-weight="bold">策略2：模块化架构快速适配</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">威胁：VLM模型每季度更新</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 模型可插拔设计，保持架构灵活性</text>
+    </g>
+  </g>
+  
+  <!-- WT战略（右下）-->
+  <g transform="translate(430, 285)">
+    <rect x="0" y="0" width="395" height="200" rx="10" fill="#FFFFFF" stroke="#9B59B6" stroke-width="2" filter="url(#shadowS)"/>
+    <rect x="0" y="0" width="395" height="40" rx="10 10 0 0" fill="url(#wtGrad)"/>
+    <text x="198" y="26" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">WT战略（防御型）劣势×威胁</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="365" height="55" rx="4" fill="#F3E5F5"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#7B1FA2" font-weight="bold">策略1：MVP聚焦核心功能</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">劣势：3人团队资源有限 + 威胁：大厂竞争</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 避免功能膨胀，聚焦语义搜索+隐私保险箱核心</text>
+    </g>
+    
+    <g transform="translate(15, 120)">
+      <rect x="0" y="0" width="365" height="65" rx="4" fill="#E1BEE7"/>
+      <text x="10" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#7B1FA2" font-weight="bold">策略2：用户反馈闭环</text>
+      <text x="10" y="35" font-family="SimSun, serif" font-size="9" fill="#455A64">劣势：付费意愿不确定 + 威胁：用户留存挑战</text>
+      <text x="10" y="50" font-family="SimSun, serif" font-size="9" fill="#7F8C8D">→ 建立用户反馈渠道，持续优化体验，强化价值感知</text>
+    </g>
+  </g>
+</svg>

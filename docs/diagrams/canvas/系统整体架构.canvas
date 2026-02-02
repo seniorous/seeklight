@@ -1,0 +1,135 @@
+{
+  "nodes": [
+    {
+      "id": "center",
+      "type": "text",
+      "text": "# SeekLight\n## 系统整体架构",
+      "x": 350,
+      "y": 0,
+      "width": 200,
+      "height": 80,
+      "color": "6"
+    },
+    {
+      "id": "input",
+      "type": "text",
+      "text": "## 图像输入\n截图 / 相册",
+      "x": 350,
+      "y": 120,
+      "width": 200,
+      "height": 70,
+      "color": "5"
+    },
+    {
+      "id": "layer1",
+      "type": "text",
+      "text": "### Layer 1: 快速预处理\n「<100ms」\n- 二维码识别\n- 场景分类\n- 快速OCR\n- 文本向量化",
+      "x": 100,
+      "y": 230,
+      "width": 220,
+      "height": 140,
+      "color": "1"
+    },
+    {
+      "id": "layer2",
+      "type": "text",
+      "text": "### Layer 2: 结构化提取\n「~200ms」\n- 价格提取\n- 日期提取\n- 单号提取\n- 联系方式",
+      "x": 580,
+      "y": 230,
+      "width": 220,
+      "height": 140,
+      "color": "2"
+    },
+    {
+      "id": "layer3-local",
+      "type": "text",
+      "text": "### 端侧VLM\n「Qwen3-VL-2B」\n本地推理\n14 tok/s",
+      "x": 100,
+      "y": 420,
+      "width": 180,
+      "height": 100,
+      "color": "4"
+    },
+    {
+      "id": "layer3-cloud",
+      "type": "text",
+      "text": "### 云端VLM\n「Qwen3-VL-235B」\n高精度推理\n复杂场景",
+      "x": 620,
+      "y": 420,
+      "width": 180,
+      "height": 100,
+      "color": "6"
+    },
+    {
+      "id": "storage",
+      "type": "text",
+      "text": "## 本地存储\nRoom数据库 + 向量索引",
+      "x": 350,
+      "y": 570,
+      "width": 200,
+      "height": 70,
+      "color": "3"
+    },
+    {
+      "id": "ui",
+      "type": "text",
+      "text": "## 用户交互\n语义搜索 | 智能建议 | Deep Link",
+      "x": 350,
+      "y": 680,
+      "width": 200,
+      "height": 70,
+      "color": "5"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "input",
+      "fromSide": "bottom",
+      "toNode": "layer1",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "input",
+      "fromSide": "bottom",
+      "toNode": "layer2",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "layer1",
+      "fromSide": "bottom",
+      "toNode": "layer3-local",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "layer2",
+      "fromSide": "bottom",
+      "toNode": "layer3-cloud",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "layer3-local",
+      "fromSide": "bottom",
+      "toNode": "storage",
+      "toSide": "left"
+    },
+    {
+      "id": "e6",
+      "fromNode": "layer3-cloud",
+      "fromSide": "bottom",
+      "toNode": "storage",
+      "toSide": "right"
+    },
+    {
+      "id": "e7",
+      "fromNode": "storage",
+      "fromSide": "bottom",
+      "toNode": "ui",
+      "toSide": "top"
+    }
+  ]
+}

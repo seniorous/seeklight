@@ -1,0 +1,248 @@
+{
+  "nodes": [
+    {
+      "id": "title-node",
+      "type": "text",
+      "x": 300,
+      "y": 0,
+      "width": 300,
+      "height": 50,
+      "color": "6",
+      "text": "# 多层处理管道\n快速响应与深度理解的平衡"
+    },
+    {
+      "id": "input-node",
+      "type": "text",
+      "x": 380,
+      "y": 80,
+      "width": 140,
+      "height": 40,
+      "color": "5",
+      "text": "📷 图片输入"
+    },
+    {
+      "id": "layer1-group",
+      "type": "group",
+      "x": 0,
+      "y": 150,
+      "width": 900,
+      "height": 120,
+      "color": "4",
+      "label": "Layer 1: 快速预处理层「<100ms」"
+    },
+    {
+      "id": "qr-detect",
+      "type": "text",
+      "x": 20,
+      "y": 180,
+      "width": 150,
+      "height": 70,
+      "text": "**二维码检测**\nZXing\n延迟: <50ms"
+    },
+    {
+      "id": "scene-class",
+      "type": "text",
+      "x": 200,
+      "y": 180,
+      "width": 150,
+      "height": 70,
+      "text": "**场景分类**\n规则引擎\n延迟: <50ms"
+    },
+    {
+      "id": "fast-ocr",
+      "type": "text",
+      "x": 380,
+      "y": 180,
+      "width": 150,
+      "height": 70,
+      "text": "**快速OCR**\nML Kit\n延迟: <200ms"
+    },
+    {
+      "id": "layer2-group",
+      "type": "group",
+      "x": 0,
+      "y": 300,
+      "width": 900,
+      "height": 120,
+      "color": "2",
+      "label": "Layer 2: 结构化提取层「~200ms」"
+    },
+    {
+      "id": "price-ext",
+      "type": "text",
+      "x": 20,
+      "y": 330,
+      "width": 130,
+      "height": 60,
+      "text": "**价格提取**\n¥299.00"
+    },
+    {
+      "id": "date-ext",
+      "type": "text",
+      "x": 170,
+      "y": 330,
+      "width": 130,
+      "height": 60,
+      "text": "**日期提取**\n2026-01-28"
+    },
+    {
+      "id": "track-ext",
+      "type": "text",
+      "x": 320,
+      "y": 330,
+      "width": 130,
+      "height": 60,
+      "text": "**单号提取**\nSF123456789"
+    },
+    {
+      "id": "phone-ext",
+      "type": "text",
+      "x": 470,
+      "y": 330,
+      "width": 130,
+      "height": 60,
+      "text": "**电话提取**\n138****8888"
+    },
+    {
+      "id": "layer3-group",
+      "type": "group",
+      "x": 0,
+      "y": 450,
+      "width": 900,
+      "height": 120,
+      "color": "1",
+      "label": "Layer 3: 深度理解层「3-5s, 按需触发」"
+    },
+    {
+      "id": "vlm-analyze",
+      "type": "text",
+      "x": 20,
+      "y": 480,
+      "width": 200,
+      "height": 70,
+      "text": "**VLM语义分析**\nQwen3-VL\n生成完整描述"
+    },
+    {
+      "id": "vector-gen",
+      "type": "text",
+      "x": 250,
+      "y": 480,
+      "width": 200,
+      "height": 70,
+      "text": "**向量生成**\nMiniLM-L6-v2\n384维语义向量"
+    },
+    {
+      "id": "output-node",
+      "type": "text",
+      "x": 330,
+      "y": 600,
+      "width": 240,
+      "height": 50,
+      "color": "6",
+      "text": "📊 结构化数据 + 语义向量\n存入记忆数据库"
+    },
+    {
+      "id": "time-label-1",
+      "type": "text",
+      "x": 700,
+      "y": 190,
+      "width": 180,
+      "height": 40,
+      "color": "4",
+      "text": "⚡ 即时反馈\n截图后500ms内响应"
+    },
+    {
+      "id": "time-label-2",
+      "type": "text",
+      "x": 700,
+      "y": 340,
+      "width": 180,
+      "height": 40,
+      "color": "2",
+      "text": "📋 可查询数据\n支持精确检索"
+    },
+    {
+      "id": "time-label-3",
+      "type": "text",
+      "x": 700,
+      "y": 490,
+      "width": 180,
+      "height": 40,
+      "color": "1",
+      "text": "🧠 深度理解\n复杂场景按需触发"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "input-node",
+      "fromSide": "bottom",
+      "toNode": "qr-detect",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "input-node",
+      "fromSide": "bottom",
+      "toNode": "scene-class",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "input-node",
+      "fromSide": "bottom",
+      "toNode": "fast-ocr",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "fast-ocr",
+      "fromSide": "bottom",
+      "toNode": "price-ext",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "fast-ocr",
+      "fromSide": "bottom",
+      "toNode": "date-ext",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "fast-ocr",
+      "fromSide": "bottom",
+      "toNode": "track-ext",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "fast-ocr",
+      "fromSide": "bottom",
+      "toNode": "phone-ext",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "scene-class",
+      "fromSide": "bottom",
+      "toNode": "vlm-analyze",
+      "toSide": "top",
+      "label": "复杂场景"
+    },
+    {
+      "id": "e9",
+      "fromNode": "vlm-analyze",
+      "fromSide": "right",
+      "toNode": "vector-gen",
+      "toSide": "left"
+    },
+    {
+      "id": "e10",
+      "fromNode": "vector-gen",
+      "fromSide": "bottom",
+      "toNode": "output-node",
+      "toSide": "top"
+    }
+  ]
+}

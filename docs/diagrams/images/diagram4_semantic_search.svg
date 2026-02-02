@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="380" viewBox="0 0 800 380">
+  <defs>
+    <filter id="shadow4" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  
+  <rect width="800" height="380" fill="#f8f9fa"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="18" font-weight="bold" fill="#2c3e50">语义向量检索流程</text>
+  
+  <!-- 用户输入 -->
+  <rect x="50" y="60" width="140" height="70" rx="10" fill="#3498db" filter="url(#shadow4)"/>
+  <text x="120" y="90" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">用户查询</text>
+  <text x="120" y="110" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">"红色的裙子"</text>
+  
+  <line x1="190" y1="95" x2="230" y2="95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow4)"/>
+  
+  <!-- 文本嵌入 -->
+  <rect x="240" y="60" width="160" height="70" rx="10" fill="#9b59b6" filter="url(#shadow4)"/>
+  <text x="320" y="85" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">MiniLM嵌入</text>
+  <text x="320" y="103" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">384维向量化</text>
+  <text x="320" y="118" text-anchor="middle" font-family="Arial" font-size="9" fill="#f1c40f">~50ms</text>
+  
+  <line x1="400" y1="95" x2="440" y2="95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow4)"/>
+  
+  <!-- 相似度计算 -->
+  <rect x="450" y="60" width="150" height="70" rx="10" fill="#e67e22" filter="url(#shadow4)"/>
+  <text x="525" y="85" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">余弦相似度</text>
+  <text x="525" y="103" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">cos(query, doc)</text>
+  <text x="525" y="118" text-anchor="middle" font-family="Arial" font-size="9" fill="#f1c40f">Top-K排序</text>
+  
+  <line x1="600" y1="95" x2="640" y2="95" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow4)"/>
+  
+  <!-- 结果返回 -->
+  <rect x="650" y="60" width="100" height="70" rx="10" fill="#27ae60" filter="url(#shadow4)"/>
+  <text x="700" y="90" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">搜索结果</text>
+  <text x="700" y="110" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">图片列表</text>
+  
+  <!-- 数据库连接 -->
+  <rect x="450" y="160" width="150" height="60" rx="10" fill="#34495e" filter="url(#shadow4)"/>
+  <text x="525" y="185" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">向量数据库</text>
+  <text x="525" y="203" text-anchor="middle" font-family="Arial" font-size="10" fill="#dfe6e9">Room + Float[]</text>
+  
+  <line x1="525" y1="130" x2="525" y2="155" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow4)"/>
+  
+  <!-- 公式框 -->
+  <rect x="50" y="250" width="700" height="110" rx="10" fill="white" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="400" y="280" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" font-weight="bold" fill="#2c3e50">余弦相似度计算公式</text>
+  
+  <text x="400" y="320" text-anchor="middle" font-family="Times New Roman" font-size="18" fill="#2c3e50">similarity(A, B) = (A · B) / (||A|| × ||B||)</text>
+  
+  <text x="400" y="350" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#7f8c8d">其中 A = 查询向量，B = 文档向量，均为384维浮点数组</text>
+</svg>

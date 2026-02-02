@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120">
+  <defs>
+    <linearGradient id="seedGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#2A9D8F"/>
+      <stop offset="100%" style="stop-color:#F4A261"/>
+    </linearGradient>
+    <filter id="seedGlow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#F4A261" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="320" height="120" fill="#FDFCF0"/>
+  
+  <!-- 种子萌芽 -->
+  <g transform="translate(15, 8)">
+    <!-- 土壤底座 -->
+    <ellipse cx="48" cy="90" rx="38" ry="10" fill="#E9C46A" opacity="0.4"/>
+    <!-- 主茎 -->
+    <path d="M48 85 Q48 60 48 45" stroke="#2A9D8F" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 叶片 -->
+    <ellipse cx="35" cy="55" rx="12" ry="6" fill="#2A9D8F" transform="rotate(-30 35 55)" opacity="0.8"/>
+    <ellipse cx="61" cy="50" rx="12" ry="6" fill="#2A9D8F" transform="rotate(30 61 50)" opacity="0.8"/>
+    <!-- 光芒花苞 -->
+    <circle cx="48" cy="28" r="18" fill="url(#seedGrad)" filter="url(#seedGlow)"/>
+    <circle cx="48" cy="28" r="8" fill="#FDFCF0" opacity="0.5"/>
+    <circle cx="44" cy="24" r="3" fill="#FDFCF0" opacity="0.8"/>
+    <!-- 散落光点 -->
+    <circle cx="25" cy="20" r="3" fill="#F4A261" opacity="0.5"/>
+    <circle cx="72" cy="25" r="3" fill="#E9C46A" opacity="0.5"/>
+    <circle cx="80" cy="45" r="2" fill="#F4A261" opacity="0.4"/>
+  </g>
+  
+  <text x="115" y="50" font-family="-apple-system, sans-serif" font-size="26" font-weight="700" fill="#353535">拾光团队</text>
+  <text x="115" y="78" font-family="-apple-system, sans-serif" font-size="13" font-weight="500" fill="#2A9D8F" letter-spacing="0.5">Seeklight Team</text>
+</svg>

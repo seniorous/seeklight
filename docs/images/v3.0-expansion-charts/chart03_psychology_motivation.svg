@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="psychGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2c5282"/>
+      <stop offset="100%" style="stop-color:#4a6fa5"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="900" height="500" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="40" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1a365d">数字囤积行为心理动机分析</text>
+  <text x="450" y="65" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#4a5568">数据来源：新华日报专题调查 [6]</text>
+  
+  <!-- 心理动机图标和数据 -->
+  <g transform="translate(100, 100)">
+    <!-- 心理安慰 53.3% -->
+    <circle cx="50" cy="50" r="40" fill="#edf2f7" stroke="#2c5282" stroke-width="2"/>
+    <text x="50" y="45" text-anchor="middle" font-family="SimHei" font-size="24">🧠</text>
+    <text x="50" y="68" text-anchor="middle" font-family="SimHei" font-size="10" fill="#2d3748">心理</text>
+    <text x="130" y="40" font-family="SimHei" font-size="15" font-weight="bold" fill="#1a365d">心理安慰</text>
+    <text x="130" y="60" font-family="SimSun" font-size="12" fill="#4a5568">「存上就尽在掌握中」</text>
+    <rect x="130" y="70" width="293.15000000000003" height="20" fill="url(#psychGrad)" rx="10"/>
+    <text x="438.15000000000003" y="85" font-family="Arial" font-size="16" font-weight="bold" fill="#2c5282">53.3%</text>
+    
+    <!-- 留住时光 52.4% -->
+    <circle cx="50" cy="150" r="40" fill="#edf2f7" stroke="#4a6fa5" stroke-width="2"/>
+    <text x="50" y="145" text-anchor="middle" font-family="SimHei" font-size="24">⏳</text>
+    <text x="50" y="168" text-anchor="middle" font-family="SimHei" font-size="10" fill="#2d3748">时光</text>
+    <text x="130" y="140" font-family="SimHei" font-size="15" font-weight="bold" fill="#1a365d">保留过去</text>
+    <text x="130" y="160" font-family="SimSun" font-size="12" fill="#4a5568">希望留住时光与记忆</text>
+    <rect x="130" y="170" width="288.20000000000005" height="20" fill="#4a6fa5" rx="10"/>
+    <text x="433.20000000000005" y="185" font-family="Arial" font-size="16" font-weight="bold" fill="#4a6fa5">52.4%</text>
+    
+    <!-- 安全感 50% -->
+    <circle cx="50" cy="250" r="40" fill="#edf2f7" stroke="#6b8cae" stroke-width="2"/>
+    <text x="50" y="245" text-anchor="middle" font-family="SimHei" font-size="24">🛡️</text>
+    <text x="50" y="268" text-anchor="middle" font-family="SimHei" font-size="10" fill="#2d3748">安全</text>
+    <text x="130" y="240" font-family="SimHei" font-size="15" font-weight="bold" fill="#1a365d">追求安全感</text>
+    <text x="130" y="260" font-family="SimSun" font-size="12" fill="#4a5568">担心以后可能用到</text>
+    <rect x="130" y="270" width="275" height="20" fill="#6b8cae" rx="10"/>
+    <text x="420" y="285" font-family="Arial" font-size="16" font-weight="bold" fill="#6b8cae">50.0%</text>
+    
+    <!-- 满足感 42.2% -->
+    <circle cx="50" cy="350" r="40" fill="#edf2f7" stroke="#8ba7c7" stroke-width="2"/>
+    <text x="50" y="345" text-anchor="middle" font-family="SimHei" font-size="24">✨</text>
+    <text x="50" y="368" text-anchor="middle" font-family="SimHei" font-size="10" fill="#2d3748">满足</text>
+    <text x="130" y="340" font-family="SimHei" font-size="15" font-weight="bold" fill="#1a365d">自我满足感</text>
+    <text x="130" y="360" font-family="SimSun" font-size="12" fill="#4a5568">获得控制感与成就感</text>
+    <rect x="130" y="370" width="232.10000000000002" height="20" fill="#8ba7c7" rx="10"/>
+    <text x="377.1" y="385" font-family="Arial" font-size="16" font-weight="bold" fill="#8ba7c7">42.2%</text>
+  </g>
+  
+  <!-- 右侧结论 -->
+  <g transform="translate(580, 120)">
+    <rect x="0" y="0" width="280" height="260" fill="#fef3e7" rx="12" stroke="#e07c4a" stroke-width="2"/>
+    <text x="140" y="35" text-anchor="middle" font-family="SimHei" font-size="16" font-weight="bold" fill="#e07c4a">💡 产品启示</text>
+    <line x1="20" y1="55" x2="260" y2="55" stroke="#e07c4a" stroke-width="1" stroke-opacity="0.3"/>
+    
+    <text x="20" y="90" font-family="SimSun" font-size="13" fill="#2d3748">用户的囤积行为源于</text>
+    <text x="20" y="110" font-family="SimHei" font-size="14" font-weight="bold" fill="#1a365d">深层心理需求而非懒惰</text>
+    
+    <line x1="20" y1="130" x2="260" y2="130" stroke="#cbd5e0" stroke-width="1"/>
+    
+    <text x="20" y="155" font-family="SimSun" font-size="13" fill="#2d3748">「一键清理」无法解决问题</text>
+    <text x="20" y="180" font-family="SimHei" font-size="14" font-weight="bold" fill="#1a365d">用户需要的是：</text>
+    <text x="30" y="205" font-family="SimSun" font-size="13" fill="#e07c4a">✓ 保留信息的安全感</text>
+    <text x="30" y="228" font-family="SimSun" font-size="13" fill="#e07c4a">✓ 快速检索的便利性</text>
+    
+    <text x="140" y="250" text-anchor="middle" font-family="SimHei" font-size="12" fill="#2c5282">→ 拾光=保留+检索</text>
+  </g>
+</svg>

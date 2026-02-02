@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="380" viewBox="0 0 800 380">
+  <defs>
+    <linearGradient id="gradOld" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#B0BEC5"/>
+      <stop offset="100%" style="stop-color:#90A4AE"/>
+    </linearGradient>
+    <linearGradient id="gradNew" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F4A261"/>
+      <stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <filter id="shadowLight">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="380" fill="#FAFAFA"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="30" font-family="SimHei, sans-serif" font-size="18" font-weight="bold" fill="#353535" text-anchor="middle">技术创新点排序重构</text>
+  
+  <!-- 左侧：原排序 -->
+  <g transform="translate(50, 55)">
+    <rect x="0" y="0" width="300" height="280" rx="10" fill="#FFFFFF" stroke="#B0BEC5" stroke-width="2" filter="url(#shadowLight)"/>
+    <rect x="0" y="0" width="300" height="40" rx="10 10 0 0" fill="url(#gradOld)"/>
+    <text x="150" y="26" font-family="SimHei, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">原排序（待修正）</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#FFEBEE" stroke="#E53935" stroke-width="1"/>
+      <circle cx="25" cy="30" r="18" fill="#E53935"/>
+      <text x="25" y="35" font-family="SimHei, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">1</text>
+      <text x="55" y="25" font-family="SimHei, sans-serif" font-size="12" fill="#C62828">端云协同推理架构</text>
+      <text x="55" y="45" font-family="SimSun, serif" font-size="10" fill="#78909C">技术难度: ⭐ | 代码量: ~50行</text>
+    </g>
+    
+    <g transform="translate(15, 125)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#FFF8E1"/>
+      <circle cx="25" cy="30" r="18" fill="#FF9800"/>
+      <text x="25" y="35" font-family="SimHei, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">2</text>
+      <text x="55" y="25" font-family="SimHei, sans-serif" font-size="12" fill="#E65100">多层处理管道</text>
+      <text x="55" y="45" font-family="SimSun, serif" font-size="10" fill="#78909C">技术难度: ⭐⭐ | 代码量: ~200行</text>
+    </g>
+    
+    <g transform="translate(15, 195)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#E8F5E9"/>
+      <circle cx="25" cy="30" r="18" fill="#4CAF50"/>
+      <text x="25" y="35" font-family="SimHei, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">3</text>
+      <text x="55" y="25" font-family="SimHei, sans-serif" font-size="12" fill="#2E7D32">层次化记忆架构</text>
+      <text x="55" y="45" font-family="SimSun, serif" font-size="10" fill="#78909C">技术难度: ⭐⭐⭐⭐ | 代码量: ~2000行</text>
+    </g>
+  </g>
+  
+  <!-- 中间：调整箭头 -->
+  <g transform="translate(365, 180)">
+    <path d="M0,15 L50,15 L50,0 L70,20 L50,40 L50,25 L0,25 Z" fill="#2A9D8F"/>
+    <text x="35" y="60" font-family="SimSun, serif" font-size="11" fill="#2A9D8F" text-anchor="middle">重新排序</text>
+  </g>
+  
+  <!-- 右侧：新排序 -->
+  <g transform="translate(450, 55)">
+    <rect x="0" y="0" width="300" height="280" rx="10" fill="#FFFFFF" stroke="#E76F51" stroke-width="2" filter="url(#shadowLight)"/>
+    <rect x="0" y="0" width="300" height="40" rx="10 10 0 0" fill="url(#gradNew)"/>
+    <text x="150" y="26" font-family="SimHei, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">新排序（推荐）</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#FFF3E0" stroke="#FF9800" stroke-width="2"/>
+      <circle cx="25" cy="30" r="18" fill="#E76F51"/>
+      <text x="25" y="35" font-family="SimHei, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">1</text>
+      <text x="55" y="20" font-family="SimHei, sans-serif" font-size="12" fill="#E65100" font-weight="bold">层次化记忆架构</text>
+      <text x="55" y="37" font-family="SimSun, serif" font-size="10" fill="#455A64">核心认知创新 | 竞品无</text>
+      <text x="55" y="52" font-family="SimSun, serif" font-size="9" fill="#4CAF50">⬆ 篇幅扩充至800字</text>
+    </g>
+    
+    <g transform="translate(15, 125)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#E3F2FD"/>
+      <circle cx="25" cy="30" r="18" fill="#1976D2"/>
+      <text x="25" y="35" font-family="SimHei, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">2</text>
+      <text x="55" y="25" font-family="SimHei, sans-serif" font-size="12" fill="#1565C0">多层处理管道</text>
+      <text x="55" y="45" font-family="SimSun, serif" font-size="10" fill="#455A64">工程架构创新 | 部分竞品有</text>
+    </g>
+    
+    <g transform="translate(15, 195)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#ECEFF1"/>
+      <circle cx="25" cy="30" r="18" fill="#78909C"/>
+      <text x="25" y="35" font-family="SimHei, sans-serif" font-size="14" fill="#FFFFFF" text-anchor="middle">3</text>
+      <text x="55" y="20" font-family="SimHei, sans-serif" font-size="12" fill="#455A64">端云协同推理架构</text>
+      <text x="55" y="37" font-family="SimSun, serif" font-size="10" fill="#455A64">隐私合规创新 | 很多产品有</text>
+      <text x="55" y="52" font-family="SimSun, serif" font-size="9" fill="#E53935">⬇ 篇幅精简至150字</text>
+    </g>
+  </g>
+  
+  <!-- 底部说明 -->
+  <text x="400" y="355" font-family="SimSun, serif" font-size="12" fill="#78909C" text-anchor="middle">排序依据：技术难度 × 竞品差异化 × 代码复杂度</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#FAFAFA"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="35" font-family="SimHei, sans-serif" font-size="18" fill="#333" text-anchor="middle" font-weight="bold">传统OCR方案 vs 层次化记忆架构</text>
+  
+  <!-- 左侧：传统OCR方案 -->
+  <rect x="30" y="60" width="355" height="370" rx="10" fill="#FFF5F5" stroke="#E74C3C" stroke-width="2"/>
+  <text x="208" y="90" font-family="SimHei" font-size="16" fill="#C0392B" text-anchor="middle" font-weight="bold">传统方案：OCR + 关键词匹配</text>
+  
+  <!-- 传统方案流程 -->
+  <g transform="translate(50, 110)">
+    <!-- 输入 -->
+    <rect x="0" y="0" width="120" height="40" rx="5" fill="#FFCDD2"/>
+    <text x="60" y="25" font-family="SimSun" font-size="12" fill="#333" text-anchor="middle">用户输入查询</text>
+    
+    <path d="M 120 20 L 145 20" stroke="#999" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- OCR处理 -->
+    <rect x="150" y="0" width="120" height="40" rx="5" fill="#FFCDD2"/>
+    <text x="210" y="25" font-family="SimSun" font-size="12" fill="#333" text-anchor="middle">OCR文字识别</text>
+    
+    <!-- 孤立图片 -->
+    <g transform="translate(0, 70)">
+      <rect x="30" y="0" width="60" height="50" rx="3" fill="#FFE0E0" stroke="#E57373"/>
+      <text x="60" y="30" font-family="SimSun" font-size="10" fill="#666" text-anchor="middle">图片A</text>
+      <rect x="110" y="0" width="60" height="50" rx="3" fill="#FFE0E0" stroke="#E57373"/>
+      <text x="140" y="30" font-family="SimSun" font-size="10" fill="#666" text-anchor="middle">图片B</text>
+      <rect x="190" y="0" width="60" height="50" rx="3" fill="#FFE0E0" stroke="#E57373"/>
+      <text x="220" y="30" font-family="SimSun" font-size="10" fill="#666" text-anchor="middle">图片C</text>
+    </g>
+    <text x="140" y="145" font-family="SimSun" font-size="11" fill="#999" text-anchor="middle">每张图片独立处理，无关联</text>
+    
+    <!-- 问题示例 -->
+    <rect x="0" y="165" width="295" height="80" rx="5" fill="#FFEBEE" stroke="#E57373" stroke-dasharray="3,2"/>
+    <text x="148" y="190" font-family="SimHei" font-size="12" fill="#C0392B" text-anchor="middle">典型问题场景</text>
+    <text x="148" y="210" font-family="SimSun" font-size="11" fill="#666" text-anchor="middle">搜索「咖啡发票」→ 仅匹配含「咖啡」文字的图</text>
+    <text x="148" y="228" font-family="SimSun" font-size="11" fill="#C0392B" text-anchor="middle">星巴克小票无「咖啡」二字 → 无法匹配 ✗</text>
+  </g>
+  
+  <!-- 右侧：层次化记忆架构 -->
+  <rect x="415" y="60" width="355" height="370" rx="10" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="593" y="90" font-family="SimHei" font-size="16" fill="#2E7D32" text-anchor="middle" font-weight="bold">拾光：层次化记忆架构</text>
+  
+  <!-- 三层记忆 -->
+  <g transform="translate(435, 110)">
+    <!-- 短期记忆 -->
+    <rect x="0" y="0" width="315" height="55" rx="5" fill="#C8E6C9"/>
+    <text x="158" y="22" font-family="SimHei" font-size="13" fill="#2E7D32" text-anchor="middle">短期记忆层 (ImageMemory)</text>
+    <text x="158" y="42" font-family="SimSun" font-size="10" fill="#555" text-anchor="middle">VLM语义描述 + OCR文字 + 场景标签 + 语义向量</text>
+    
+    <!-- 长期记忆 -->
+    <rect x="0" y="65" width="315" height="55" rx="5" fill="#A5D6A7"/>
+    <text x="158" y="87" font-family="SimHei" font-size="13" fill="#1B5E20" text-anchor="middle">长期记忆层 (HighLevelFact)</text>
+    <text x="158" y="107" font-family="SimSun" font-size="10" fill="#555" text-anchor="middle">Reflection推断：「用户正在三亚旅行」「用户喜欢咖啡」</text>
+    
+    <!-- 隐式记忆 -->
+    <rect x="0" y="130" width="315" height="55" rx="5" fill="#81C784"/>
+    <text x="158" y="152" font-family="SimHei" font-size="13" fill="#1B5E20" text-anchor="middle">隐式记忆层 (UserPreference)</text>
+    <text x="158" y="172" font-family="SimSun" font-size="10" fill="#555" text-anchor="middle">场景化偏好：拍食物→暖色调 / 拍风景→高饱和</text>
+    
+    <!-- 优势示例 -->
+    <rect x="0" y="200" width="315" height="80" rx="5" fill="#E8F5E9" stroke="#66BB6A" stroke-dasharray="3,2"/>
+    <text x="158" y="225" font-family="SimHei" font-size="12" fill="#2E7D32" text-anchor="middle">语义理解能力</text>
+    <text x="158" y="245" font-family="SimSun" font-size="11" fill="#666" text-anchor="middle">搜索「咖啡发票」→ 理解星巴克=咖啡品牌</text>
+    <text x="158" y="263" font-family="SimSun" font-size="11" fill="#2E7D32" text-anchor="middle">语义向量相似度匹配 → 成功返回 ✓</text>
+  </g>
+  
+  <!-- 底部对比总结 -->
+  <g transform="translate(0, 400)">
+    <rect x="80" y="0" width="250" height="35" rx="5" fill="#FFCDD2"/>
+    <text x="205" y="22" font-family="SimSun" font-size="12" fill="#C0392B" text-anchor="middle">关键词匹配 → 字面相同才能找到</text>
+    
+    <rect x="470" y="0" width="250" height="35" rx="5" fill="#C8E6C9"/>
+    <text x="595" y="22" font-family="SimSun" font-size="12" fill="#2E7D32" text-anchor="middle">语义理解 → 意思相近即可找到</text>
+  </g>
+  
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#999"/>
+    </marker>
+  </defs>
+</svg>

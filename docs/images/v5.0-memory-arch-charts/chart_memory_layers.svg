@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650" viewBox="0 0 900 650">
+  <defs>
+    <linearGradient id="shortMemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="longMemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="implicitMemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="900" height="650" fill="#F9FAFB"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="40" font-family="SimHei, Microsoft YaHei" font-size="22" font-weight="bold" fill="#1F2937" text-anchor="middle">层次化记忆架构三层体系</text>
+  
+  <!-- 第一层：短期记忆 -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="150" rx="12" fill="url(#shortMemGrad)" filter="url(#shadow1)"/>
+    <text x="400" y="30" font-family="SimHei" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">短期记忆层 (ImageMemory) - TRL 7</text>
+    
+    <!-- 数据结构示意 -->
+    <rect x="20" y="50" width="230" height="85" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="135" y="72" font-family="Consolas" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">数据模型</text>
+    <text x="30" y="90" font-family="Consolas" font-size="10" fill="#6B7280">imageId: String (PK)</text>
+    <text x="30" y="104" font-family="Consolas" font-size="10" fill="#6B7280">description: String</text>
+    <text x="30" y="118" font-family="Consolas" font-size="10" fill="#6B7280">embedding: Float[384]</text>
+    <text x="30" y="132" font-family="Consolas" font-size="10" fill="#6B7280">sceneType: String</text>
+    
+    <!-- 技术栈 -->
+    <rect x="270" y="50" width="230" height="85" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="385" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">技术实现</text>
+    <text x="280" y="90" font-family="SimSun" font-size="10" fill="#6B7280">• Room + SQLite 结构化存储</text>
+    <text x="280" y="106" font-family="SimSun" font-size="10" fill="#6B7280">• ObjectBox 4.0 HNSW索引</text>
+    <text x="280" y="122" font-family="SimSun" font-size="10" fill="#6B7280">• MiniLM-L6-v2 语义向量化</text>
+    
+    <!-- 性能指标 -->
+    <rect x="520" y="50" width="260" height="85" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="650" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">性能指标</text>
+    <text x="530" y="90" font-family="SimSun" font-size="10" fill="#6B7280">• 向量化延迟: 50-100ms/张</text>
+    <text x="530" y="106" font-family="SimSun" font-size="10" fill="#6B7280">• 检索延迟: &lt;10ms (10万级)</text>
+    <text x="530" y="122" font-family="SimSun" font-size="10" fill="#10B981">✓ 成熟技术，可直接复用</text>
+  </g>
+  
+  <!-- 箭头1 -->
+  <path d="M450,235 L450,260" stroke="#2563EB" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="470" y="252" font-family="SimSun" font-size="11" fill="#2563EB">Reflection触发</text>
+  
+  <!-- 第二层：长期记忆 -->
+  <g transform="translate(50, 270)">
+    <rect x="0" y="0" width="800" height="170" rx="12" fill="url(#longMemGrad)" filter="url(#shadow1)"/>
+    <text x="400" y="30" font-family="SimHei" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">长期记忆层 (HighLevelFact) - TRL 4</text>
+    
+    <!-- 开源参考 -->
+    <rect x="20" y="50" width="250" height="105" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="145" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">开源实现参考</text>
+    <text x="30" y="92" font-family="SimSun" font-size="10" fill="#6B7280">• generative_agents (20.3k⭐)</text>
+    <text x="30" y="108" font-family="SimSun" font-size="10" fill="#6B7280">• LangChain GenerativeAgent</text>
+    <text x="30" y="124" font-family="SimSun" font-size="10" fill="#6B7280">• MNN-LLM Tokenizer</text>
+    <text x="30" y="140" font-family="SimSun" font-size="10" fill="#6B7280">• Native-LLM-for-Android</text>
+    
+    <!-- 核心算法 -->
+    <rect x="285" y="50" width="230" height="105" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="400" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">Reflection核心逻辑</text>
+    <text x="295" y="92" font-family="Consolas" font-size="9" fill="#6B7280">if (images>=50 || gps>50km</text>
+    <text x="295" y="106" font-family="Consolas" font-size="9" fill="#6B7280">    || sceneEntropy&lt;0.5):</text>
+    <text x="295" y="120" font-family="Consolas" font-size="9" fill="#6B7280">  fact = vlm.reflect(memories)</text>
+    <text x="295" y="134" font-family="Consolas" font-size="9" fill="#6B7280">  fact.conf = calcConfidence()</text>
+    <text x="295" y="148" font-family="Consolas" font-size="9" fill="#6B7280">  if fact.conf > 0.6: save()</text>
+    
+    <!-- 性能基准 -->
+    <rect x="530" y="50" width="250" height="105" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="655" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">移动端VLM性能基准</text>
+    <text x="540" y="92" font-family="SimSun" font-size="9" fill="#6B7280">• Qwen3-VL-2B (q4f32): 15 tok/s</text>
+    <text x="540" y="108" font-family="SimSun" font-size="9" fill="#6B7280">• 单次Reflection: 45-60s估算</text>
+    <text x="540" y="124" font-family="SimSun" font-size="9" fill="#6B7280">• 触发时机: 充电+息屏空闲</text>
+    <text x="540" y="140" font-family="SimSun" font-size="9" fill="#F59E0B">⚠ 需原型验证实际性能</text>
+  </g>
+  
+  <!-- 箭头2 -->
+  <path d="M450,445 L450,470" stroke="#8B5CF6" stroke-width="3" fill="none"/>
+  <text x="470" y="462" font-family="SimSun" font-size="11" fill="#8B5CF6">行为观察</text>
+  
+  <!-- 第三层：隐式记忆 -->
+  <g transform="translate(50, 480)">
+    <rect x="0" y="0" width="800" height="150" rx="12" fill="url(#implicitMemGrad)" filter="url(#shadow1)"/>
+    <text x="400" y="30" font-family="SimHei" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="middle">隐式记忆层 (UserPreference) - TRL 3</text>
+    
+    <!-- 数据结构 -->
+    <rect x="20" y="50" width="250" height="85" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="145" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">偏好数据模型</text>
+    <text x="30" y="90" font-family="Consolas" font-size="10" fill="#6B7280">sceneType: String (PK)</text>
+    <text x="30" y="106" font-family="Consolas" font-size="10" fill="#6B7280">filterPref: Float[] (EMA)</text>
+    <text x="30" y="122" font-family="Consolas" font-size="10" fill="#6B7280">brightnessAvg, contrastAvg</text>
+    
+    <!-- EMA算法 -->
+    <rect x="285" y="50" width="230" height="85" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="400" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">EMA偏好更新</text>
+    <text x="295" y="92" font-family="Consolas" font-size="9" fill="#6B7280">α = 0.2  // 平滑系数</text>
+    <text x="295" y="108" font-family="Consolas" font-size="9" fill="#6B7280">pref_new = α×edit + (1-α)×pref</text>
+    <text x="295" y="124" font-family="SimSun" font-size="10" fill="#6B7280">按场景分组: food/landscape/...</text>
+    
+    <!-- 实现特点 -->
+    <rect x="530" y="50" width="250" height="85" rx="6" fill="#FFFFFF" opacity="0.95"/>
+    <text x="655" y="72" font-family="SimHei" font-size="11" fill="#1F2937" text-anchor="middle" font-weight="bold">实现特点</text>
+    <text x="540" y="92" font-family="SimSun" font-size="10" fill="#6B7280">• 纯统计方法，无ML依赖</text>
+    <text x="540" y="108" font-family="SimSun" font-size="10" fill="#6B7280">• Room数据库存储</text>
+    <text x="540" y="124" font-family="SimSun" font-size="10" fill="#10B981">✓ 实现复杂度低</text>
+  </g>
+  
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563EB"/>
+    </marker>
+  </defs>
+</svg>

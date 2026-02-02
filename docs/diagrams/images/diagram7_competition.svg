@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <filter id="shadow7" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="450" fill="#f8f9fa"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="18" font-weight="bold" fill="#2c3e50">竞品对比与市场定位</text>
+  
+  <!-- 坐标轴 -->
+  <line x1="100" y1="380" x2="700" y2="380" stroke="#bdc3c7" stroke-width="2"/>
+  <line x1="100" y1="380" x2="100" y2="80" stroke="#bdc3c7" stroke-width="2"/>
+  
+  <!-- 轴标签 -->
+  <text x="400" y="415" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#7f8c8d">覆盖范围（品牌限定 → 全品牌）</text>
+  <text x="50" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="#7f8c8d" transform="rotate(-90, 50, 230)">智能程度（手动 → AI自动）</text>
+  
+  <!-- 竞品气泡 -->
+  <!-- 荣耀 MagicOS -->
+  <circle cx="200" cy="150" r="40" fill="#e74c3c" opacity="0.8" filter="url(#shadow7)"/>
+  <text x="200" y="145" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="white">荣耀</text>
+  <text x="200" y="160" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="white">MagicOS</text>
+  
+  <!-- OPPO ColorOS -->
+  <circle cx="250" cy="220" r="35" fill="#e67e22" opacity="0.8" filter="url(#shadow7)"/>
+  <text x="250" y="215" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="white">OPPO</text>
+  <text x="250" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="white">ColorOS</text>
+  
+  <!-- 华为 HarmonyOS -->
+  <circle cx="180" cy="180" r="45" fill="#9b59b6" opacity="0.8" filter="url(#shadow7)"/>
+  <text x="180" y="175" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="white">华为</text>
+  <text x="180" y="192" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="white">HarmonyOS</text>
+  
+  <!-- Cubox/Flomo -->
+  <circle cx="450" cy="300" r="30" fill="#3498db" opacity="0.8" filter="url(#shadow7)"/>
+  <text x="450" y="295" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="white">Cubox</text>
+  <text x="450" y="310" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="white">Flomo</text>
+  
+  <!-- SeekLight（突出显示） -->
+  <circle cx="580" cy="130" r="55" fill="#27ae60" opacity="0.9" filter="url(#shadow7)"/>
+  <text x="580" y="120" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" font-weight="bold" fill="white">SeekLight</text>
+  <text x="580" y="140" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="white">寻光</text>
+  
+  <!-- 差异化标注 -->
+  <rect x="500" y="60" width="200" height="45" rx="5" fill="white" stroke="#27ae60" stroke-width="2"/>
+  <text x="600" y="80" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#27ae60">✓ 跨品牌通用</text>
+  <text x="600" y="95" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="10" fill="#27ae60">✓ 端侧AI + 被动智能</text>
+  
+  <!-- 象限标注 -->
+  <text x="150" y="100" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#95a5a6">品牌限定</text>
+  <text x="150" y="115" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#95a5a6">系统级AI</text>
+  
+  <text x="650" y="100" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#27ae60" font-weight="bold">全品牌覆盖</text>
+  <text x="650" y="115" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#27ae60" font-weight="bold">端侧AI</text>
+  
+  <text x="150" y="350" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#95a5a6">品牌限定</text>
+  <text x="150" y="365" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#95a5a6">手动整理</text>
+  
+  <text x="650" y="350" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#95a5a6">全品牌覆盖</text>
+  <text x="650" y="365" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#95a5a6">手动整理</text>
+</svg>

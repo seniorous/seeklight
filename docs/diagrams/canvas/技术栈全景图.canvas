@@ -1,0 +1,196 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "text": "# SeekLight 技术栈全景图",
+      "x": 300,
+      "y": 0,
+      "width": 300,
+      "height": 50,
+      "color": "6"
+    },
+    {
+      "id": "android-title",
+      "type": "text",
+      "text": "## Android 原生层",
+      "x": 0,
+      "y": 80,
+      "width": 180,
+      "height": 40,
+      "color": "4"
+    },
+    {
+      "id": "android-kotlin",
+      "type": "text",
+      "text": "**Kotlin**\nJetpack Compose",
+      "x": 0,
+      "y": 140,
+      "width": 140,
+      "height": 60,
+      "color": "4"
+    },
+    {
+      "id": "android-room",
+      "type": "text",
+      "text": "**Room**\n本地数据库",
+      "x": 160,
+      "y": 140,
+      "width": 140,
+      "height": 60,
+      "color": "4"
+    },
+    {
+      "id": "android-mlkit",
+      "type": "text",
+      "text": "**ML Kit**\n快速OCR",
+      "x": 0,
+      "y": 220,
+      "width": 140,
+      "height": 60,
+      "color": "4"
+    },
+    {
+      "id": "android-zxing",
+      "type": "text",
+      "text": "**ZXing**\n二维码识别",
+      "x": 160,
+      "y": 220,
+      "width": 140,
+      "height": 60,
+      "color": "4"
+    },
+    {
+      "id": "ai-title",
+      "type": "text",
+      "text": "## AI 推理层",
+      "x": 360,
+      "y": 80,
+      "width": 180,
+      "height": 40,
+      "color": "1"
+    },
+    {
+      "id": "ai-mnn",
+      "type": "text",
+      "text": "**MNN**\n阿里推理框架\nW4A16量化",
+      "x": 360,
+      "y": 140,
+      "width": 180,
+      "height": 80,
+      "color": "1"
+    },
+    {
+      "id": "ai-qwen",
+      "type": "text",
+      "text": "**Qwen3-VL-2B**\n端侧视觉语言模型\n7.2亿参数",
+      "x": 360,
+      "y": 240,
+      "width": 180,
+      "height": 80,
+      "color": "1"
+    },
+    {
+      "id": "ai-minilm",
+      "type": "text",
+      "text": "**MiniLM-L6-v2**\n文本向量嵌入\n384维",
+      "x": 360,
+      "y": 340,
+      "width": 180,
+      "height": 80,
+      "color": "1"
+    },
+    {
+      "id": "cloud-title",
+      "type": "text",
+      "text": "## 云端服务层",
+      "x": 600,
+      "y": 80,
+      "width": 180,
+      "height": 40,
+      "color": "6"
+    },
+    {
+      "id": "cloud-qwen",
+      "type": "text",
+      "text": "**Qwen3-VL-235B**\n超大规模VLM\n复杂场景理解",
+      "x": 600,
+      "y": 140,
+      "width": 200,
+      "height": 80,
+      "color": "6"
+    },
+    {
+      "id": "cloud-api",
+      "type": "text",
+      "text": "**DashScope API**\n阿里云模型服务\n按量计费",
+      "x": 600,
+      "y": 240,
+      "width": 200,
+      "height": 80,
+      "color": "6"
+    },
+    {
+      "id": "data-title",
+      "type": "text",
+      "text": "## 数据处理层",
+      "x": 180,
+      "y": 320,
+      "width": 160,
+      "height": 40,
+      "color": "3"
+    },
+    {
+      "id": "data-json",
+      "type": "text",
+      "text": "**结构化JSON**\n标准化输出格式",
+      "x": 0,
+      "y": 380,
+      "width": 160,
+      "height": 60,
+      "color": "3"
+    },
+    {
+      "id": "data-vector",
+      "type": "text",
+      "text": "**向量索引**\n余弦相似度检索",
+      "x": 180,
+      "y": 380,
+      "width": 160,
+      "height": 60,
+      "color": "3"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "android-kotlin",
+      "fromSide": "right",
+      "toNode": "ai-mnn",
+      "toSide": "left",
+      "label": "JNI调用"
+    },
+    {
+      "id": "e2",
+      "fromNode": "ai-qwen",
+      "fromSide": "right",
+      "toNode": "cloud-qwen",
+      "toSide": "left",
+      "label": "Fallback"
+    },
+    {
+      "id": "e3",
+      "fromNode": "android-mlkit",
+      "fromSide": "bottom",
+      "toNode": "data-json",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "ai-minilm",
+      "fromSide": "left",
+      "toNode": "data-vector",
+      "toSide": "right"
+    }
+  ]
+}

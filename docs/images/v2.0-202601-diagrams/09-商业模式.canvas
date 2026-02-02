@@ -1,0 +1,102 @@
+{
+  "nodes": [
+    {
+      "id": "title",
+      "type": "text",
+      "x": 250,
+      "y": 0,
+      "width": 300,
+      "height": 50,
+      "color": "6",
+      "text": "# Freemium商业模式\n免费增值盈利策略"
+    },
+    {
+      "id": "free-tier",
+      "type": "text",
+      "x": 50,
+      "y": 100,
+      "width": 280,
+      "height": 200,
+      "color": "4",
+      "text": "## 免费版 🆓\n\n**核心功能**\n- 端侧语义搜索\n- 智能分类\n- 隐私保险箱\n- 场景识别\n\n**定位**\n吸引用户，建立使用习惯\n完整端侧AI能力"
+    },
+    {
+      "id": "pro-tier",
+      "type": "text",
+      "x": 470,
+      "y": 100,
+      "width": 280,
+      "height": 200,
+      "color": "2",
+      "text": "## 专业版 💎 ¥68/年\n\n**增值功能**\n- 云端增强模式\n- 多端同步\n- 批量导入\n- 优先技术支持\n\n**定位**\n为『更强理解能力』付费\n非锁定基础功能"
+    },
+    {
+      "id": "cost-structure",
+      "type": "text",
+      "x": 50,
+      "y": 340,
+      "width": 280,
+      "height": 140,
+      "color": "5",
+      "text": "## 成本结构\n\n**免费版**: 零边际成本\n端侧推理，无服务器费用\n\n**专业版**: API调用成本\n云端推理按量付费\n订阅收入覆盖成本"
+    },
+    {
+      "id": "value-prop",
+      "type": "text",
+      "x": 470,
+      "y": 340,
+      "width": 280,
+      "height": 140,
+      "color": "1",
+      "text": "## 价值主张\n\n**付费本质**:\n为『117倍能力提升』买单\n\n**信任建设**:\n不锁定核心功能\n促进口碑传播"
+    },
+    {
+      "id": "conversion",
+      "type": "text",
+      "x": 250,
+      "y": 520,
+      "width": 300,
+      "height": 80,
+      "color": "3",
+      "text": "## 转化路径\n\n免费试用 → 遇到复杂需求 → \n体验云端增强 → 订阅专业版"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "free-tier",
+      "fromSide": "right",
+      "toNode": "pro-tier",
+      "toSide": "left",
+      "label": "升级"
+    },
+    {
+      "id": "e2",
+      "fromNode": "free-tier",
+      "fromSide": "bottom",
+      "toNode": "cost-structure",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "pro-tier",
+      "fromSide": "bottom",
+      "toNode": "value-prop",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "cost-structure",
+      "fromSide": "bottom",
+      "toNode": "conversion",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "value-prop",
+      "fromSide": "bottom",
+      "toNode": "conversion",
+      "toSide": "right"
+    }
+  ]
+}

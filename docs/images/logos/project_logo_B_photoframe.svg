@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="gradB1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B" />
+      <stop offset="100%" style="stop-color:#D97706" />
+    </linearGradient>
+    <linearGradient id="gradB2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBF24" />
+      <stop offset="100%" style="stop-color:#FB923C" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="400" height="200" fill="#FFFBEB"/>
+  
+  <!-- 相框图标 -->
+  <g transform="translate(45, 40)">
+    <!-- 外框 -->
+    <rect x="0" y="0" width="100" height="120" rx="8" fill="none" stroke="url(#gradB1)" stroke-width="6"/>
+    <!-- 内框 -->
+    <rect x="12" y="12" width="76" height="96" rx="4" fill="#FEF3C7"/>
+    <!-- 光点群 -->
+    <circle cx="35" cy="45" r="12" fill="#FBBF24" opacity="0.9"/>
+    <circle cx="65" cy="55" r="8" fill="#F59E0B" opacity="0.8"/>
+    <circle cx="45" cy="75" r="6" fill="#FB923C" opacity="0.7"/>
+    <circle cx="70" cy="85" r="4" fill="#FDA4AF" opacity="0.6"/>
+    <!-- 山形剪影（照片意象） -->
+    <path d="M12 95 L40 65 L55 80 L75 55 L88 95 Z" fill="#D97706" opacity="0.3"/>
+  </g>
+  
+  <!-- 文字 -->
+  <text x="170" y="85" font-family="SimHei, Microsoft YaHei" font-size="48" font-weight="bold" fill="#92400E">拾光</text>
+  <text x="170" y="120" font-family="Arial, sans-serif" font-size="20" fill="#D97706" letter-spacing="2">SeekLight</text>
+  <text x="170" y="145" font-family="SimSun" font-size="12" fill="#92400E" opacity="0.6">智能相册 · 记忆伙伴</text>
+</svg>

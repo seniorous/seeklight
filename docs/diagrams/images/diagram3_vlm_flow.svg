@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420">
+  <defs>
+    <filter id="shadow3" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  
+  <rect width="800" height="420" fill="#fafafa"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="18" font-weight="bold" fill="#2c3e50">端侧VLM推理流程</text>
+  
+  <!-- 输入 -->
+  <rect x="50" y="60" width="120" height="80" rx="10" fill="#3498db" filter="url(#shadow3)"/>
+  <text x="110" y="95" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">图像输入</text>
+  <text x="110" y="115" text-anchor="middle" font-family="Arial" font-size="10" fill="white">JPEG/PNG</text>
+  
+  <!-- 箭头 -->
+  <line x1="170" y1="100" x2="210" y2="100" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- 预处理 -->
+  <rect x="220" y="60" width="120" height="80" rx="10" fill="#9b59b6" filter="url(#shadow3)"/>
+  <text x="280" y="90" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">图像预处理</text>
+  <text x="280" y="108" text-anchor="middle" font-family="Arial" font-size="9" fill="white">缩放至448×448</text>
+  <text x="280" y="123" text-anchor="middle" font-family="Arial" font-size="9" fill="white">归一化处理</text>
+  
+  <!-- 箭头 -->
+  <line x1="340" y1="100" x2="380" y2="100" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- 视觉编码 -->
+  <rect x="390" y="60" width="140" height="80" rx="10" fill="#e74c3c" filter="url(#shadow3)"/>
+  <text x="460" y="90" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">Vision Encoder</text>
+  <text x="460" y="108" text-anchor="middle" font-family="Arial" font-size="9" fill="white">ViT提取视觉特征</text>
+  <text x="460" y="123" text-anchor="middle" font-family="Arial" font-size="9" fill="white">~1.2s</text>
+  
+  <!-- 箭头 -->
+  <line x1="530" y1="100" x2="570" y2="100" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- MNN推理 -->
+  <rect x="580" y="60" width="160" height="80" rx="10" fill="#27ae60" filter="url(#shadow3)"/>
+  <text x="660" y="90" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="12" fill="white">MNN LLM推理</text>
+  <text x="660" y="108" text-anchor="middle" font-family="Arial" font-size="9" fill="white">W4A16量化推理</text>
+  <text x="660" y="123" text-anchor="middle" font-family="Arial" font-size="9" fill="white">NPU/GPU/CPU</text>
+  
+  <!-- 性能指标框 -->
+  <rect x="50" y="170" width="690" height="100" rx="10" fill="white" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="395" y="195" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" font-weight="bold" fill="#2c3e50">性能指标（骁龙8 Gen3测试数据）</text>
+  
+  <rect x="80" y="210" width="145" height="45" rx="5" fill="#ecf0f1"/>
+  <text x="152" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">首Token延迟</text>
+  <text x="152" y="248" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#e74c3c">3224ms</text>
+  
+  <rect x="240" y="210" width="145" height="45" rx="5" fill="#ecf0f1"/>
+  <text x="312" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">解码速度</text>
+  <text x="312" y="248" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#27ae60">14.0 tok/s</text>
+  
+  <rect x="400" y="210" width="145" height="45" rx="5" fill="#ecf0f1"/>
+  <text x="472" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">模型大小</text>
+  <text x="472" y="248" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#3498db">1.37GB</text>
+  
+  <rect x="560" y="210" width="160" height="45" rx="5" fill="#ecf0f1"/>
+  <text x="640" y="230" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="11" fill="#2c3e50">峰值内存</text>
+  <text x="640" y="248" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#9b59b6">4.2GB</text>
+  
+  <!-- 输出格式 -->
+  <rect x="50" y="290" width="690" height="110" rx="10" fill="#2c3e50" filter="url(#shadow3)"/>
+  <text x="395" y="315" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="14" font-weight="bold" fill="white">输出结构化JSON Schema</text>
+  
+  <rect x="70" y="330" width="130" height="55" rx="5" fill="#3498db"/>
+  <text x="135" y="355" text-anchor="middle" font-family="Arial" font-size="11" fill="white">summary</text>
+  <text x="135" y="373" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">一句话概述</text>
+  
+  <rect x="215" y="330" width="130" height="55" rx="5" fill="#9b59b6"/>
+  <text x="280" y="355" text-anchor="middle" font-family="Arial" font-size="11" fill="white">narrative</text>
+  <text x="280" y="373" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">详细描述</text>
+  
+  <rect x="360" y="330" width="130" height="55" rx="5" fill="#27ae60"/>
+  <text x="425" y="355" text-anchor="middle" font-family="Arial" font-size="11" fill="white">tags[]</text>
+  <text x="425" y="373" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">语义标签</text>
+  
+  <rect x="505" y="330" width="100" height="55" rx="5" fill="#e67e22"/>
+  <text x="555" y="355" text-anchor="middle" font-family="Arial" font-size="11" fill="white">ocrText</text>
+  <text x="555" y="373" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">文字内容</text>
+  
+  <rect x="620" y="330" width="100" height="55" rx="5" fill="#e74c3c"/>
+  <text x="670" y="355" text-anchor="middle" font-family="Arial" font-size="11" fill="white">colors</text>
+  <text x="670" y="373" text-anchor="middle" font-family="Arial" font-size="9" fill="#dfe6e9">主色调</text>
+</svg>

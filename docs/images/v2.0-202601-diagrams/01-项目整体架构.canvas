@@ -1,0 +1,254 @@
+{
+  "nodes": [
+    {
+      "id": "root-node",
+      "type": "text",
+      "x": 400,
+      "y": -50,
+      "width": 280,
+      "height": 80,
+      "color": "6",
+      "text": "# 拾光 SeekLight\n隐私优先、云端增强的AI智能相册"
+    },
+    {
+      "id": "core-layer",
+      "type": "text",
+      "x": 0,
+      "y": 100,
+      "width": 200,
+      "height": 60,
+      "color": "4",
+      "text": "## 核心引擎层\n端云协同推理"
+    },
+    {
+      "id": "process-layer",
+      "type": "text",
+      "x": 300,
+      "y": 100,
+      "width": 200,
+      "height": 60,
+      "color": "5",
+      "text": "## 处理管道层\n多层快速处理"
+    },
+    {
+      "id": "memory-layer",
+      "type": "text",
+      "x": 600,
+      "y": 100,
+      "width": 200,
+      "height": 60,
+      "color": "2",
+      "text": "## 记忆系统层\n层次化记忆架构"
+    },
+    {
+      "id": "search-layer",
+      "type": "text",
+      "x": 900,
+      "y": 100,
+      "width": 200,
+      "height": 60,
+      "color": "1",
+      "text": "## 检索服务层\n双塔融合检索"
+    },
+    {
+      "id": "device-vlm",
+      "type": "text",
+      "x": -50,
+      "y": 220,
+      "width": 140,
+      "height": 50,
+      "color": "4",
+      "text": "端侧VLM\nQwen3-VL-2B"
+    },
+    {
+      "id": "cloud-vlm",
+      "type": "text",
+      "x": 110,
+      "y": 220,
+      "width": 140,
+      "height": 50,
+      "color": "4",
+      "text": "云端VLM\nQwen3-VL-235B"
+    },
+    {
+      "id": "layer1",
+      "type": "text",
+      "x": 270,
+      "y": 220,
+      "width": 130,
+      "height": 50,
+      "color": "5",
+      "text": "Layer 1\n快速预处理"
+    },
+    {
+      "id": "layer2",
+      "type": "text",
+      "x": 410,
+      "y": 220,
+      "width": 130,
+      "height": 50,
+      "color": "5",
+      "text": "Layer 2\n结构化提取"
+    },
+    {
+      "id": "short-mem",
+      "type": "text",
+      "x": 560,
+      "y": 220,
+      "width": 110,
+      "height": 50,
+      "color": "2",
+      "text": "短期记忆\nImageMemory"
+    },
+    {
+      "id": "long-mem",
+      "type": "text",
+      "x": 680,
+      "y": 220,
+      "width": 110,
+      "height": 50,
+      "color": "2",
+      "text": "长期记忆\nHighLevelFact"
+    },
+    {
+      "id": "implicit-mem",
+      "type": "text",
+      "x": 800,
+      "y": 220,
+      "width": 110,
+      "height": 50,
+      "color": "2",
+      "text": "隐式记忆\nUserPreference"
+    },
+    {
+      "id": "visual-tower",
+      "type": "text",
+      "x": 870,
+      "y": 220,
+      "width": 120,
+      "height": 50,
+      "color": "1",
+      "text": "视觉理解塔\nVLM描述"
+    },
+    {
+      "id": "text-tower",
+      "type": "text",
+      "x": 1000,
+      "y": 220,
+      "width": 120,
+      "height": 50,
+      "color": "1",
+      "text": "文本理解塔\nOCR提取"
+    },
+    {
+      "id": "user-layer",
+      "type": "text",
+      "x": 400,
+      "y": 340,
+      "width": 280,
+      "height": 60,
+      "color": "3",
+      "text": "## 用户交互层\n自然语言搜索 | 隐私保险箱 | 智能跳转"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "root-node",
+      "fromSide": "bottom",
+      "toNode": "core-layer",
+      "toSide": "top"
+    },
+    {
+      "id": "e2",
+      "fromNode": "root-node",
+      "fromSide": "bottom",
+      "toNode": "process-layer",
+      "toSide": "top"
+    },
+    {
+      "id": "e3",
+      "fromNode": "root-node",
+      "fromSide": "bottom",
+      "toNode": "memory-layer",
+      "toSide": "top"
+    },
+    {
+      "id": "e4",
+      "fromNode": "root-node",
+      "fromSide": "bottom",
+      "toNode": "search-layer",
+      "toSide": "top"
+    },
+    {
+      "id": "e5",
+      "fromNode": "core-layer",
+      "fromSide": "bottom",
+      "toNode": "device-vlm",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "core-layer",
+      "fromSide": "bottom",
+      "toNode": "cloud-vlm",
+      "toSide": "top"
+    },
+    {
+      "id": "e7",
+      "fromNode": "process-layer",
+      "fromSide": "bottom",
+      "toNode": "layer1",
+      "toSide": "top"
+    },
+    {
+      "id": "e8",
+      "fromNode": "process-layer",
+      "fromSide": "bottom",
+      "toNode": "layer2",
+      "toSide": "top"
+    },
+    {
+      "id": "e9",
+      "fromNode": "memory-layer",
+      "fromSide": "bottom",
+      "toNode": "short-mem",
+      "toSide": "top"
+    },
+    {
+      "id": "e10",
+      "fromNode": "memory-layer",
+      "fromSide": "bottom",
+      "toNode": "long-mem",
+      "toSide": "top"
+    },
+    {
+      "id": "e11",
+      "fromNode": "memory-layer",
+      "fromSide": "bottom",
+      "toNode": "implicit-mem",
+      "toSide": "top"
+    },
+    {
+      "id": "e12",
+      "fromNode": "search-layer",
+      "fromSide": "bottom",
+      "toNode": "visual-tower",
+      "toSide": "top"
+    },
+    {
+      "id": "e13",
+      "fromNode": "search-layer",
+      "fromSide": "bottom",
+      "toNode": "text-tower",
+      "toSide": "top"
+    },
+    {
+      "id": "e14",
+      "fromNode": "user-layer",
+      "fromSide": "top",
+      "toNode": "process-layer",
+      "toSide": "bottom"
+    }
+  ]
+}

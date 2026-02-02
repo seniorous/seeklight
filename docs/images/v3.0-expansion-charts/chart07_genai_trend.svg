@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c5282;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#2c5282;stop-opacity:0.1"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="900" height="500" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="35" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1a365d">全球生成式AI智能手机市场占比预测</text>
+  <text x="450" y="58" text-anchor="middle" font-family="SimSun, Arial" font-size="14" fill="#4a5568">数据来源：IDC《Worldwide AI Smartphone Forecast, 2025–2029》[4][5]</text>
+  
+  <!-- 坐标系 -->
+  <g transform="translate(100, 90)">
+    <!-- Y轴 -->
+    <line x1="0" y1="0" x2="0" y2="320" stroke="#cbd5e0" stroke-width="2"/>
+    <text x="-50" y="160" text-anchor="middle" font-family="SimSun" font-size="13" fill="#2d3748" transform="rotate(-90, -50, 160)">市场占比 (%)</text>
+    
+    <!-- Y轴刻度 -->
+    <line x1="-5" y1="320" x2="700" y2="320" stroke="#cbd5e0" stroke-width="1"/>
+    <line x1="-5" y1="256" x2="700" y2="256" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="-5" y1="192" x2="700" y2="192" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="-5" y1="128" x2="700" y2="128" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="-5" y1="64" x2="700" y2="64" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="-5" y1="0" x2="700" y2="0" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="5,5"/>
+    
+    <text x="-15" y="324" text-anchor="end" font-family="Arial" font-size="11" fill="#4a5568">0%</text>
+    <text x="-15" y="260" text-anchor="end" font-family="Arial" font-size="11" fill="#4a5568">20%</text>
+    <text x="-15" y="196" text-anchor="end" font-family="Arial" font-size="11" fill="#4a5568">40%</text>
+    <text x="-15" y="132" text-anchor="end" font-family="Arial" font-size="11" fill="#4a5568">60%</text>
+    <text x="-15" y="68" text-anchor="end" font-family="Arial" font-size="11" fill="#4a5568">80%</text>
+    <text x="-15" y="4" text-anchor="end" font-family="Arial" font-size="11" fill="#4a5568">100%</text>
+    
+    <!-- X轴刻度 -->
+    <text x="70" y="345" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d3748">2024</text>
+    <text x="210" y="345" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d3748">2025</text>
+    <text x="350" y="345" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d3748">2026</text>
+    <text x="490" y="345" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d3748">2027</text>
+    <text x="630" y="345" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d3748">2028-29</text>
+    
+    <!-- 趋势线和面积 -->
+    <!-- 数据点: 2024: ~18%, 2025: ~35%, 2026: ~50%, 2027: ~60%, 2029: 70.6% -->
+    <path d="M 70 262.4 L 210 208 L 350 160 L 490 128 L 630 94.08000000000001 L 630 320 L 70 320 Z" fill="url(#areaGrad)"/>
+    <polyline points="70,262.4 210,208 350,160 490,128 630,94.08000000000001" fill="none" stroke="#2c5282" stroke-width="3"/>
+    
+    <!-- 数据点 -->
+    <circle cx="70" cy="262.4" r="6" fill="#ffffff" stroke="#2c5282" stroke-width="2"/>
+    <circle cx="210" cy="208" r="6" fill="#ffffff" stroke="#2c5282" stroke-width="2"/>
+    <circle cx="350" cy="160" r="8" fill="#e07c4a" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="490" cy="128" r="6" fill="#ffffff" stroke="#2c5282" stroke-width="2"/>
+    <circle cx="630" cy="94.08000000000001" r="6" fill="#ffffff" stroke="#2c5282" stroke-width="2"/>
+    
+    <!-- 数据标签 -->
+    <text x="70" y="247.39999999999998" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#2c5282">18%</text>
+    <text x="210" y="193" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#2c5282">35%</text>
+    
+    <!-- 2026关键节点标注 -->
+    <rect x="300" y="105" width="100" height="45" fill="#fef3e7" rx="6" stroke="#e07c4a" stroke-width="2"/>
+    <text x="350" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#e07c4a">~50%</text>
+    <text x="350" y="142" text-anchor="middle" font-family="SimHei" font-size="10" fill="#e07c4a">中端机型普及年</text>
+    
+    <text x="490" y="113" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#2c5282">60%</text>
+    <text x="630" y="79.08000000000001" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold" fill="#2c5282">70.6%</text>
+    
+    <!-- 增长率标注 -->
+    <text x="140" y="236.8" font-family="SimSun" font-size="11" fill="#22c55e">+73.1% YoY</text>
+  </g>
+  
+  <!-- 右侧说明 -->
+  <g transform="translate(720, 120)">
+    <rect x="0" y="0" width="160" height="180" fill="#edf2f7" rx="8"/>
+    <text x="80" y="25" text-anchor="middle" font-family="SimHei" font-size="13" font-weight="bold" fill="#1a365d">关键洞察</text>
+    
+    <circle cx="20" cy="55" r="8" fill="#e07c4a"/>
+    <text x="35" y="60" font-family="SimSun" font-size="11" fill="#2d3748">2026年是关键</text>
+    <text x="35" y="75" font-family="SimSun" font-size="11" fill="#2d3748">转折点</text>
+    
+    <circle cx="20" cy="105" r="8" fill="#2c5282"/>
+    <text x="35" y="110" font-family="SimSun" font-size="11" fill="#2d3748">中端机型开始</text>
+    <text x="35" y="125" font-family="SimSun" font-size="11" fill="#2d3748">搭载GenAI</text>
+    
+    <circle cx="20" cy="155" r="8" fill="#22c55e"/>
+    <text x="35" y="160" font-family="SimSun" font-size="11" fill="#2d3748">拾光4GB门槛</text>
+    <text x="35" y="175" font-family="SimSun" font-size="11" fill="#2d3748">完美契合</text>
+  </g>
+</svg>

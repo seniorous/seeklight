@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#FFFBEB"/>
+  
+  <!-- 拼图图标 -->
+  <g transform="translate(25, 35)">
+    <!-- 拼图块1（左上） -->
+    <path d="M10 10 L45 10 Q45 25 55 25 Q65 25 65 10 L100 10 L100 45 Q85 45 85 55 Q85 65 100 65 L100 60 L55 60 Q55 45 45 45 Q35 45 35 60 L10 60 Z" 
+          fill="#F59E0B" opacity="0.9"/>
+    
+    <!-- 拼图块2（右上） -->
+    <path d="M65 10 L100 10 L100 45 Q85 45 85 55 Q85 65 100 65 L100 100 L65 100 Q65 85 55 85 Q45 85 45 100 L45 60 Q60 60 60 50 Q60 40 45 40 L45 10 Z" 
+          fill="#FBBF24" opacity="0.9" transform="translate(10, 0)"/>
+    
+    <!-- 拼图块3（下方） -->
+    <path d="M10 65 L45 65 Q45 80 55 80 Q65 80 65 65 L100 65 L100 110 L10 110 Z" 
+          fill="#FB923C" opacity="0.9"/>
+    
+    <!-- 中心装饰 -->
+    <circle cx="55" cy="55" r="8" fill="#FFFFFF"/>
+    <circle cx="55" cy="55" r="4" fill="#D97706"/>
+  </g>
+  
+  <!-- 文字 -->
+  <text x="150" y="80" font-family="SimHei" font-size="24" font-weight="bold" fill="#92400E">拾光团队</text>
+  <text x="150" y="110" font-family="Arial" font-size="14" fill="#D97706">SeekLight Team</text>
+  <text x="150" y="135" font-family="SimSun" font-size="10" fill="#92400E" opacity="0.6">携手共进 · 拼出精彩</text>
+</svg>

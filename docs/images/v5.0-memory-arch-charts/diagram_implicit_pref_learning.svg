@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="350" viewBox="0 0 800 350">
+  <defs>
+    <linearGradient id="gradPref" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F4A261"/>
+      <stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <filter id="shadowPref">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <rect width="800" height="350" fill="#FAFAFA"/>
+  
+  <!-- 标题 -->
+  <text x="400" y="30" font-family="SimHei, sans-serif" font-size="18" font-weight="bold" fill="#353535" text-anchor="middle">隐式偏好学习：无声的个性化体验</text>
+  
+  <!-- 流程步骤 -->
+  <!-- 步骤1：行为观察 -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="160" height="220" rx="10" fill="#FFFFFF" stroke="#3498db" stroke-width="2" filter="url(#shadowPref)"/>
+    <circle cx="80" cy="30" r="20" fill="#3498db"/>
+    <text x="80" y="36" font-family="Arial" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">1</text>
+    <text x="80" y="65" font-family="SimHei, sans-serif" font-size="13" fill="#1565C0" text-anchor="middle">行为观察</text>
+    
+    <g transform="translate(15, 80)">
+      <rect x="0" y="0" width="130" height="30" rx="4" fill="#E3F2FD"/>
+      <text x="65" y="20" font-family="SimSun, serif" font-size="10" fill="#455A64" text-anchor="middle">修图历史</text>
+    </g>
+    <g transform="translate(15, 118)">
+      <rect x="0" y="0" width="130" height="30" rx="4" fill="#E3F2FD"/>
+      <text x="65" y="20" font-family="SimSun, serif" font-size="10" fill="#455A64" text-anchor="middle">浏览时长</text>
+    </g>
+    <g transform="translate(15, 156)">
+      <rect x="0" y="0" width="130" height="30" rx="4" fill="#E3F2FD"/>
+      <text x="65" y="20" font-family="SimSun, serif" font-size="10" fill="#455A64" text-anchor="middle">收藏行为</text>
+    </g>
+    <g transform="translate(15, 194)">
+      <rect x="0" y="0" width="130" height="20" rx="4" fill="#BBDEFB"/>
+      <text x="65" y="14" font-family="SimSun, serif" font-size="9" fill="#1565C0" text-anchor="middle">无需用户配置</text>
+    </g>
+  </g>
+  
+  <!-- 箭头1 -->
+  <path d="M200,170 L230,170 L230,160 L250,175 L230,190 L230,180 L200,180 Z" fill="#3498db"/>
+  
+  <!-- 步骤2：模式识别 -->
+  <g transform="translate(260, 60)">
+    <rect x="0" y="0" width="160" height="220" rx="10" fill="#FFFFFF" stroke="#F4A261" stroke-width="2" filter="url(#shadowPref)"/>
+    <circle cx="80" cy="30" r="20" fill="#F4A261"/>
+    <text x="80" y="36" font-family="Arial" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">2</text>
+    <text x="80" y="65" font-family="SimHei, sans-serif" font-size="13" fill="#E65100" text-anchor="middle">模式识别</text>
+    
+    <g transform="translate(15, 80)">
+      <rect x="0" y="0" width="130" height="45" rx="4" fill="#FFF3E0"/>
+      <text x="65" y="18" font-family="SimSun, serif" font-size="10" fill="#455A64" text-anchor="middle">食物照片</text>
+      <text x="65" y="36" font-family="SimSun, serif" font-size="10" fill="#E65100" text-anchor="middle">→ 偏好暖色调</text>
+    </g>
+    <g transform="translate(15, 133)">
+      <rect x="0" y="0" width="130" height="45" rx="4" fill="#FFF3E0"/>
+      <text x="65" y="18" font-family="SimSun, serif" font-size="10" fill="#455A64" text-anchor="middle">风景照片</text>
+      <text x="65" y="36" font-family="SimSun, serif" font-size="10" fill="#E65100" text-anchor="middle">→ 偏好高饱和度</text>
+    </g>
+    <g transform="translate(15, 186)">
+      <rect x="0" y="0" width="130" height="28" rx="4" fill="#FFE0B2"/>
+      <text x="65" y="18" font-family="SimSun, serif" font-size="9" fill="#E65100" text-anchor="middle">场景化偏好聚类</text>
+    </g>
+  </g>
+  
+  <!-- 箭头2 -->
+  <path d="M430,170 L460,170 L460,160 L480,175 L460,190 L460,180 L430,180 Z" fill="#F4A261"/>
+  
+  <!-- 步骤3：EMA更新 -->
+  <g transform="translate(490, 60)">
+    <rect x="0" y="0" width="160" height="220" rx="10" fill="#FFFFFF" stroke="#9C27B0" stroke-width="2" filter="url(#shadowPref)"/>
+    <circle cx="80" cy="30" r="20" fill="#9C27B0"/>
+    <text x="80" y="36" font-family="Arial" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">3</text>
+    <text x="80" y="65" font-family="SimHei, sans-serif" font-size="13" fill="#7B1FA2" text-anchor="middle">渐进式更新</text>
+    
+    <g transform="translate(15, 85)">
+      <rect x="0" y="0" width="130" height="55" rx="4" fill="#F3E5F5"/>
+      <text x="65" y="18" font-family="SimHei, sans-serif" font-size="10" fill="#7B1FA2" text-anchor="middle">EMA算法</text>
+      <text x="65" y="36" font-family="SimSun, serif" font-size="9" fill="#455A64" text-anchor="middle">Pref = 0.2×New</text>
+      <text x="65" y="50" font-family="SimSun, serif" font-size="9" fill="#455A64" text-anchor="middle">+ 0.8×Old</text>
+    </g>
+    <g transform="translate(15, 150)">
+      <rect x="0" y="0" width="130" height="30" rx="4" fill="#EDE7F6"/>
+      <text x="65" y="20" font-family="SimSun, serif" font-size="10" fill="#455A64" text-anchor="middle">抵抗偶发噪声</text>
+    </g>
+    <g transform="translate(15, 188)">
+      <rect x="0" y="0" width="130" height="26" rx="4" fill="#E1BEE7"/>
+      <text x="65" y="17" font-family="SimSun, serif" font-size="9" fill="#7B1FA2" text-anchor="middle">捕捉渐进演变</text>
+    </g>
+  </g>
+  
+  <!-- 箭头3 -->
+  <path d="M660,170 L690,170 L690,160 L710,175 L690,190 L690,180 L660,180 Z" fill="#9C27B0"/>
+  
+  <!-- 步骤4：智能推荐 -->
+  <g transform="translate(720, 100)">
+    <rect x="0" y="0" width="60" height="140" rx="8" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2"/>
+    <text x="30" y="30" font-family="SimHei, sans-serif" font-size="11" fill="#2E7D32" text-anchor="middle">智能</text>
+    <text x="30" y="50" font-family="SimHei, sans-serif" font-size="11" fill="#2E7D32" text-anchor="middle">推荐</text>
+    <text x="30" y="80" font-family="SimSun, serif" font-size="9" fill="#455A64" text-anchor="middle">主动</text>
+    <text x="30" y="95" font-family="SimSun, serif" font-size="9" fill="#455A64" text-anchor="middle">建议</text>
+    <text x="30" y="110" font-family="SimSun, serif" font-size="9" fill="#455A64" text-anchor="middle">滤镜</text>
+    <text x="30" y="130" font-family="SimSun, serif" font-size="9" fill="#4CAF50" text-anchor="middle">✓</text>
+  </g>
+  
+  <!-- 底部说明 -->
+  <text x="400" y="320" font-family="SimSun, serif" font-size="12" fill="#78909C" text-anchor="middle">无需用户手动设置，系统自动学习场景化偏好</text>
+</svg>

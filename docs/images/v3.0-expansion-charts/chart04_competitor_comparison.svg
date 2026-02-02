@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="450" y="40" text-anchor="middle" font-family="SimHei, Arial" font-size="22" font-weight="bold" fill="#1a365d">智能相册竞品功能对比矩阵</text>
+  
+  <!-- 表格 -->
+  <g transform="translate(50, 70)">
+    <!-- 表头 -->
+    <rect x="0" y="0" width="200" height="50" fill="#2c5282"/>
+    <rect x="200" y="0" width="200" height="50" fill="#2c5282"/>
+    <rect x="400" y="0" width="200" height="50" fill="#2c5282"/>
+    <rect x="600" y="0" width="200" height="50" fill="#e07c4a"/>
+    
+    <text x="100" y="32" text-anchor="middle" font-family="SimHei" font-size="15" font-weight="bold" fill="white">功能维度</text>
+    <text x="300" y="32" text-anchor="middle" font-family="SimHei" font-size="15" font-weight="bold" fill="white">Google Photos</text>
+    <text x="500" y="32" text-anchor="middle" font-family="SimHei" font-size="15" font-weight="bold" fill="white">Apple Photos</text>
+    <text x="700" y="32" text-anchor="middle" font-family="SimHei" font-size="15" font-weight="bold" fill="white">拾光 (本项目)</text>
+    
+    <!-- 行1: AI搜索能力 -->
+    <rect x="0" y="50" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="50" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="50" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="50" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="78" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">AI语义搜索</text>
+    <text x="300" y="78" text-anchor="middle" font-family="SimHei" font-size="13" fill="#22c55e">★★★★★ 强大</text>
+    <text x="500" y="78" text-anchor="middle" font-family="SimHei" font-size="13" fill="#eab308">★★★☆☆ 基础</text>
+    <text x="700" y="78" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">★★★★☆ 专注截图</text>
+    
+    <!-- 行2: 隐私保护 -->
+    <rect x="0" y="95" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="95" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="95" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="95" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="123" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">隐私保护</text>
+    <text x="300" y="123" text-anchor="middle" font-family="SimHei" font-size="13" fill="#ef4444">★★☆☆☆ 云端依赖</text>
+    <text x="500" y="123" text-anchor="middle" font-family="SimHei" font-size="13" fill="#22c55e">★★★★★ 本地优先</text>
+    <text x="700" y="123" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">★★★★★ 端云可选</text>
+    
+    <!-- 行3: 中国市场合规 -->
+    <rect x="0" y="140" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="140" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="140" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="140" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="168" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">PIPL合规</text>
+    <text x="300" y="168" text-anchor="middle" font-family="SimHei" font-size="13" fill="#ef4444">✗ 不可用</text>
+    <text x="500" y="168" text-anchor="middle" font-family="SimHei" font-size="13" fill="#22c55e">✓ 合规</text>
+    <text x="700" y="168" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">✓ 完全合规</text>
+    
+    <!-- 行4: Android支持 -->
+    <rect x="0" y="185" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="185" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="185" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="185" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="213" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">Android支持</text>
+    <text x="300" y="213" text-anchor="middle" font-family="SimHei" font-size="13" fill="#22c55e">✓ 支持</text>
+    <text x="500" y="213" text-anchor="middle" font-family="SimHei" font-size="13" fill="#ef4444">✗ 仅iOS</text>
+    <text x="700" y="213" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">✓ 首选平台</text>
+    
+    <!-- 行5: 换机数据延续 -->
+    <rect x="0" y="230" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="230" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="230" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="230" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="258" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">跨品牌延续</text>
+    <text x="300" y="258" text-anchor="middle" font-family="SimHei" font-size="13" fill="#eab308">△ 需Google账号</text>
+    <text x="500" y="258" text-anchor="middle" font-family="SimHei" font-size="13" fill="#ef4444">✗ 品牌锁定</text>
+    <text x="700" y="258" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">✓ 完全跨品牌</text>
+    
+    <!-- 行6: 层次化记忆 -->
+    <rect x="0" y="275" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="275" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="275" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="275" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="303" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">层次化记忆</text>
+    <text x="300" y="303" text-anchor="middle" font-family="SimHei" font-size="13" fill="#ef4444">✗ 无</text>
+    <text x="500" y="303" text-anchor="middle" font-family="SimHei" font-size="13" fill="#ef4444">✗ 无</text>
+    <text x="700" y="303" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">✓ 独创功能</text>
+    
+    <!-- 行7: 截图OCR -->
+    <rect x="0" y="320" width="200" height="45" fill="#edf2f7"/>
+    <rect x="200" y="320" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="400" y="320" width="200" height="45" fill="#ffffff" stroke="#cbd5e0"/>
+    <rect x="600" y="320" width="200" height="45" fill="#fef9f3" stroke="#e07c4a"/>
+    
+    <text x="100" y="348" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">截图文字识别</text>
+    <text x="300" y="348" text-anchor="middle" font-family="SimHei" font-size="13" fill="#eab308">△ 通用OCR</text>
+    <text x="500" y="348" text-anchor="middle" font-family="SimHei" font-size="13" fill="#eab308">△ 通用OCR</text>
+    <text x="700" y="348" text-anchor="middle" font-family="SimHei" font-size="13" fill="#e07c4a">★ VLM深度理解</text>
+  </g>
+  
+  <!-- 底部说明 -->
+  <g transform="translate(50, 450)">
+    <rect x="0" y="0" width="800" height="50" fill="#edf2f7" rx="8"/>
+    <text x="400" y="20" text-anchor="middle" font-family="SimHei" font-size="13" fill="#1a365d">竞争优势总结：</text>
+    <text x="400" y="40" text-anchor="middle" font-family="SimSun" font-size="12" fill="#2d3748">拾光在PIPL合规、跨品牌支持、层次化记忆三个维度形成独特竞争壁垒，填补市场空白</text>
+  </g>
+</svg>

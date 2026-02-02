@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <filter id="shadow2"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+  </defs>
+  <rect width="800" height="600" fill="#fafafa"/>
+  <text x="400" y="35" text-anchor="middle" font-family="Microsoft YaHei" font-size="22" font-weight="bold" fill="#1e293b">SWOT 战略分析矩阵</text>
+  
+  <!-- S - 优势 -->
+  <rect x="50" y="60" width="340" height="250" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="50" y="60" width="340" height="40" rx="12" fill="#16a34a"/>
+  <text x="220" y="87" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">S 优势 (Strengths)</text>
+  <text x="70" y="125" font-family="Microsoft YaHei" font-size="12" fill="#166534">● 端云协同架构，117倍能力跃升</text>
+  <text x="70" y="150" font-family="Microsoft YaHei" font-size="12" fill="#166534">● 隐私优先设计，数据不出端</text>
+  <text x="70" y="175" font-family="Microsoft YaHei" font-size="12" fill="#166534">● 500ms快速响应，用户体验优</text>
+  <text x="70" y="200" font-family="Microsoft YaHei" font-size="12" fill="#166534">● 跨品牌通用，不绑定厂商</text>
+  <text x="70" y="225" font-family="Microsoft YaHei" font-size="12" fill="#166534">● 层次化记忆，理解用户生活</text>
+  <text x="70" y="250" font-family="Microsoft YaHei" font-size="12" fill="#166534">● 隐式偏好学习，无声个性化</text>
+  <text x="70" y="275" font-family="Microsoft YaHei" font-size="12" fill="#166534">● MVP已验证，技术可行性高</text>
+  
+  <!-- W - 劣势 -->
+  <rect x="410" y="60" width="340" height="250" rx="12" fill="#fef9c3" stroke="#ca8a04" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="410" y="60" width="340" height="40" rx="12" fill="#ca8a04"/>
+  <text x="580" y="87" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">W 劣势 (Weaknesses)</text>
+  <text x="430" y="125" font-family="Microsoft YaHei" font-size="12" fill="#854d0e">● 端侧VLM需≥4GB RAM</text>
+  <text x="430" y="150" font-family="Microsoft YaHei" font-size="12" fill="#854d0e">● 当前仅覆盖中高端机型</text>
+  <text x="430" y="175" font-family="Microsoft YaHei" font-size="12" fill="#854d0e">● 云端API存在持续运营成本</text>
+  <text x="430" y="200" font-family="Microsoft YaHei" font-size="12" fill="#854d0e">● 首Token延迟约3秒，需优化</text>
+  <text x="430" y="225" font-family="Microsoft YaHei" font-size="12" fill="#854d0e">● 品牌知名度尚待建立</text>
+  <text x="430" y="250" font-family="Microsoft YaHei" font-size="12" fill="#854d0e">● 团队规模小，资源有限</text>
+  
+  <!-- O - 机会 -->
+  <rect x="50" y="330" width="340" height="250" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="50" y="330" width="340" height="40" rx="12" fill="#2563eb"/>
+  <text x="220" y="357" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">O 机会 (Opportunities)</text>
+  <text x="70" y="395" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● 2028年AI手机占70%市场份额</text>
+  <text x="70" y="420" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● Edge AI硬件市场CAGR 17.6%</text>
+  <text x="70" y="445" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● PIPL合规红利，端侧处理受鼓励</text>
+  <text x="70" y="470" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● 手机厂商布局Agent生态</text>
+  <text x="70" y="495" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● 跨品牌市场空白待填补</text>
+  <text x="70" y="520" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● 大学生数字囤积痛点明确</text>
+  <text x="70" y="545" font-family="Microsoft YaHei" font-size="12" fill="#1e40af">● 端侧AI算力快速普及</text>
+  
+  <!-- T - 威胁 -->
+  <rect x="410" y="330" width="340" height="250" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2" filter="url(#shadow2)"/>
+  <rect x="410" y="330" width="340" height="40" rx="12" fill="#dc2626"/>
+  <text x="580" y="357" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" fill="white" font-weight="bold">T 威胁 (Threats)</text>
+  <text x="430" y="395" font-family="Microsoft YaHei" font-size="12" fill="#991b1b">● Android/iOS原生相册可能集成</text>
+  <text x="430" y="420" font-family="Microsoft YaHei" font-size="12" fill="#991b1b">● 系统级权限和预装优势</text>
+  <text x="430" y="445" font-family="Microsoft YaHei" font-size="12" fill="#991b1b">● 厂商方案持续迭代升级</text>
+  <text x="430" y="470" font-family="Microsoft YaHei" font-size="12" fill="#991b1b">● 大厂资源和品牌优势</text>
+  <text x="430" y="495" font-family="Microsoft YaHei" font-size="12" fill="#991b1b">● 用户隐私意识提升的双刃剑</text>
+  <text x="430" y="520" font-family="Microsoft YaHei" font-size="12" fill="#991b1b">● 云端API服务稳定性风险</text>
+</svg>

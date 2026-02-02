@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="320" viewBox="0 0 850 320">
+  <defs>
+    <linearGradient id="hl1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4A261"/><stop offset="100%" style="stop-color:#E76F51"/>
+    </linearGradient>
+    <linearGradient id="hl2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2A9D8F"/><stop offset="100%" style="stop-color:#52B788"/>
+    </linearGradient>
+    <linearGradient id="hl3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A6FA5"/><stop offset="100%" style="stop-color:#6090C0"/>
+    </linearGradient>
+    <linearGradient id="hl4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9B59B6"/><stop offset="100%" style="stop-color:#BB8FCE"/>
+    </linearGradient>
+    <filter id="shadowHL"><feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.15"/></filter>
+  </defs>
+  
+  <rect width="850" height="320" fill="#FAFBFC"/>
+  
+  <!-- 标题 -->
+  <text x="425" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="20" font-weight="bold" fill="#2C3E50">项目四大亮点</text>
+  
+  <!-- 亮点1 -->
+  <g transform="translate(25, 70)">
+    <rect x="0" y="0" width="190" height="220" rx="12" fill="url(#hl1)" filter="url(#shadowHL)"/>
+    <text x="95" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="28" fill="white">🎯</text>
+    <text x="95" y="65" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">痛点精准</text>
+    <line x1="20" y1="80" x2="170" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="95" y="105" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">82%用户有数字囤积</text>
+    <text x="95" y="125" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">21.5%年轻人病理性</text>
+    <text x="95" y="145" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">照片占囤积内容59%</text>
+    <rect x="20" y="165" width="150" height="40" rx="6" fill="rgba(255,255,255,0.2)"/>
+    <text x="95" y="190" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">存储易检索难的</text>
+    <text x="95" y="205" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">核心矛盾</text>
+  </g>
+  
+  <!-- 亮点2 -->
+  <g transform="translate(230, 70)">
+    <rect x="0" y="0" width="190" height="220" rx="12" fill="url(#hl2)" filter="url(#shadowHL)"/>
+    <text x="95" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="28" fill="white">🔒</text>
+    <text x="95" y="65" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">隐私优先</text>
+    <line x1="20" y1="80" x2="170" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="95" y="105" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">端侧推理数据不出端</text>
+    <text x="95" y="125" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">AES-256加密存储</text>
+    <text x="95" y="145" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">46.7%用户关注隐私</text>
+    <rect x="20" y="165" width="150" height="40" rx="6" fill="rgba(255,255,255,0.2)"/>
+    <text x="95" y="190" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">符合PIPL</text>
+    <text x="95" y="205" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">数据最小化原则</text>
+  </g>
+  
+  <!-- 亮点3 -->
+  <g transform="translate(435, 70)">
+    <rect x="0" y="0" width="190" height="220" rx="12" fill="url(#hl3)" filter="url(#shadowHL)"/>
+    <text x="95" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="28" fill="white">🧠</text>
+    <text x="95" y="65" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">记忆认知</text>
+    <line x1="20" y1="80" x2="170" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="95" y="105" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">Stanford论文级技术</text>
+    <text x="95" y="125" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">三层记忆架构</text>
+    <text x="95" y="145" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">GitHub 20.3k stars</text>
+    <rect x="20" y="165" width="150" height="40" rx="6" fill="rgba(255,255,255,0.2)"/>
+    <text x="95" y="190" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">理解「经历」</text>
+    <text x="95" y="205" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">而非仅理解「图片」</text>
+  </g>
+  
+  <!-- 亮点4 -->
+  <g transform="translate(640, 70)">
+    <rect x="0" y="0" width="190" height="220" rx="12" fill="url(#hl4)" filter="url(#shadowHL)"/>
+    <text x="95" y="35" text-anchor="middle" font-family="SimHei, sans-serif" font-size="28" fill="white">📱</text>
+    <text x="95" y="65" text-anchor="middle" font-family="SimHei, sans-serif" font-size="13" fill="white" font-weight="bold">技术可行</text>
+    <line x1="20" y1="80" x2="170" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text x="95" y="105" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">端侧VLM原型验证</text>
+    <text x="95" y="125" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">3224ms首Token</text>
+    <text x="95" y="145" text-anchor="middle" font-family="SimSun, serif" font-size="10" fill="white">14 tok/s解码</text>
+    <rect x="20" y="165" width="150" height="40" rx="6" fill="rgba(255,255,255,0.2)"/>
+    <text x="95" y="190" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">TRL 7级验证</text>
+    <text x="95" y="205" text-anchor="middle" font-family="SimSun, serif" font-size="9" fill="white">(团队实测验证)</text>
+  </g>
+</svg>

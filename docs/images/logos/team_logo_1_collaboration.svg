@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <defs>
+    <linearGradient id="teamGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B" />
+      <stop offset="100%" style="stop-color:#D97706" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="300" height="200" fill="#FFFBEB"/>
+  
+  <!-- 三人协作图标 -->
+  <g transform="translate(30, 40)">
+    <!-- 中心圆 -->
+    <circle cx="60" cy="60" r="50" fill="#FEF3C7"/>
+    
+    <!-- 三个人形 -->
+    <!-- 人1（顶部） -->
+    <g transform="translate(60, 20)" fill="#F59E0B">
+      <circle cx="0" cy="0" r="8"/>
+      <path d="M-10 12 Q0 25 10 12" stroke="#F59E0B" stroke-width="4" fill="none"/>
+    </g>
+    <!-- 人2（左下） -->
+    <g transform="translate(25, 85)" fill="#FBBF24">
+      <circle cx="0" cy="0" r="8"/>
+      <path d="M-10 12 Q0 25 10 12" stroke="#FBBF24" stroke-width="4" fill="none"/>
+    </g>
+    <!-- 人3（右下） -->
+    <g transform="translate(95, 85)" fill="#FB923C">
+      <circle cx="0" cy="0" r="8"/>
+      <path d="M-10 12 Q0 25 10 12" stroke="#FB923C" stroke-width="4" fill="none"/>
+    </g>
+    
+    <!-- 连接线（协作） -->
+    <line x1="60" y1="35" x2="35" y2="75" stroke="#D97706" stroke-width="2" opacity="0.5"/>
+    <line x1="60" y1="35" x2="85" y2="75" stroke="#D97706" stroke-width="2" opacity="0.5"/>
+    <line x1="35" y1="75" x2="85" y2="75" stroke="#D97706" stroke-width="2" opacity="0.5"/>
+    
+    <!-- 中心光点 -->
+    <circle cx="60" cy="60" r="6" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- 文字 -->
+  <text x="155" y="80" font-family="SimHei" font-size="24" font-weight="bold" fill="#92400E">拾光团队</text>
+  <text x="155" y="110" font-family="Arial" font-size="14" fill="#D97706">SeekLight Team</text>
+  <text x="155" y="135" font-family="SimSun" font-size="10" fill="#92400E" opacity="0.6">算法 · 工程 · 产品</text>
+</svg>
